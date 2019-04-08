@@ -55,24 +55,24 @@ namespace DriversGuide
                 DataTable autobahn = new DataTable();
 
                 Berechnung.CalcReq(ref test, column_speed);
-                Berechnung.SortData(ref test, column_speed, true);
+                Berechnung.SortData(ref test, column_speed);
                 Berechnung.SepIntervals(test, column_speed);
                 Berechnung.GetIntervals(ref city, ref land, ref autobahn);
                 testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
                 testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
                 //testdur = Gueltigkeit.CheckSpeeds(city, land, autobahn, column_speed);
-                //test1 = Berechnung.PosCheck(column_acc);
-                //Berechnung.CalcAvgSpeedInt(column_speed);                
-                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+                test1 = Berechnung.PosCheck(column_acc);
+                Berechnung.CalcAvgSpeedInt(column_speed);                
+                Berechnung.GetIntervals(ref city, ref land, ref autobahn);
                 //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
-                //RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+                RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
 
                 testdur = Gueltigkeit.CheckDuration(test, column_time);
                 testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
                 testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
 
                 testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
-                //Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
+                testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
             }
             else
             {

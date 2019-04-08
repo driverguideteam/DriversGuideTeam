@@ -27,17 +27,19 @@ namespace DriversGuide
         //********************************************************************************************
         private bool MakePosCheckCount (ref DataTable dt, string column)  
         {
-            DataTable temp = dt.Clone();
+            //DataTable temp = dt.Clone();
 
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                if (Convert.ToDouble(dt.Rows[i][column]) >= 0.1)
-                {
-                    temp.ImportRow(dt.Rows[i]);
-                }
-            }
+            //for (int i = 0; i < dt.Rows.Count; i++)
+            //{
+            //    if (Convert.ToDouble(dt.Rows[i][column]) >= 0.1)
+            //    {
+            //        temp.ImportRow(dt.Rows[i]);
+            //    }
+            //}
 
-            dt = temp.Copy();            
+            //dt = temp.Copy();            
+
+            dt = dt.Select("[" + column + "] >= 0.1").CopyToDataTable();
 
             if (dt.Rows.Count >= 100)
                 return true;
@@ -52,17 +54,19 @@ namespace DriversGuide
          *      - column:   string with the name of the column by which to calculate average
         */
         //********************************************************************************************
-        private double CalcAvg (DataTable dt, string column)
-        {
-            double avgVal = 0;
+        //private double CalcAvg (DataTable dt, string column)
+        //{
+        //    //double avgVal = 0;
 
-            for (int i = 0; i < dt.Rows.Count; i++)
-                avgVal += Convert.ToDouble(dt.Rows[i][column]);
+        //    //for (int i = 0; i < dt.Rows.Count; i++)
+        //    //    avgVal += Convert.ToDouble(dt.Rows[i][column]);
 
-            avgVal /= dt.Rows.Count;
+        //    //avgVal /= dt.Rows.Count;
 
-            return avgVal;
-        }
+        //    //return avgVal;
+
+        //    return (double)dt.Compute("AVG([" + column + "])", "");
+        //}
 
         //Calculation of the required values for distance, acceleration and dynamic
         //Values are added to the DataTable dt as new columns
@@ -79,9 +83,9 @@ namespace DriversGuide
             double strecke, beschl, dynamik;
 
             //Add the new columns 
-            dt.Columns.Add("di", typeof(System.Double));
-            dt.Columns.Add("ai", typeof(System.Double));
-            dt.Columns.Add("a*v", typeof(System.Double));
+            dt.Columns.Add(("di"), typeof(System.Double));
+            dt.Columns.Add(("ai"), typeof(System.Double));
+            dt.Columns.Add(("a*v"), typeof(System.Double));
 
             //Add the associated unit to the first row
             //dt.Rows[0]["di"] = "m";
@@ -125,11 +129,8 @@ namespace DriversGuide
          *      - units:    if true, the first row gets deletet from the dataTable
         */
         //********************************************************************************************
-        public void SortData (ref DataTable dt, string column, bool units)
+        public void SortData (ref DataTable dt, string column)
         {
-            if (units)
-                dt.Rows.RemoveAt(0);
-
             //Create temporary DataTable dtSort and clone the structure from DataTable dt
             //Set the datatype for the column to sort to double
             DataTable dtSort = dt.Clone();
@@ -160,20 +161,23 @@ namespace DriversGuide
         public void SepIntervals (DataTable dt, string column)
         {
             //Clone the structure of dt to the intervall DataTables
-            urban = dt.Clone();
-            rural = dt.Clone();
-            motorway = dt.Clone();
+            //urban = dt.Clone();
+            //rural = dt.Clone();
+            //motorway = dt.Clone();          
 
+            urban = dt.Select("[" + column + "] <=  60").CopyToDataTable();
+            rural = dt.Select("[" + column + "] >  60 AND [" + column + "] <= 90").CopyToDataTable();
+            motorway = dt.Select("[" + column + "] >  90").CopyToDataTable();
             //Seperate the DataTable dt into intervalls and store the seperatet data to the new intervalls
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                if (Convert.ToDouble(dt.Rows[i][column]) <= 60)
-                    urban.ImportRow(dt.Rows[i]);
-                else if (Convert.ToDouble(dt.Rows[i][column]) > 60 && Convert.ToDouble(dt.Rows[i][column]) <= 90)
-                    rural.ImportRow(dt.Rows[i]);
-                else
-                    motorway.ImportRow(dt.Rows[i]);
-            }
+            //for (int i = 0; i < dt.Rows.Count; i++)
+            //{
+            //    if (Convert.ToDouble(dt.Rows[i][column]) <= 60)
+            //        urban.ImportRow(dt.Rows[i]);
+            //    else if (Convert.ToDouble(dt.Rows[i][column]) > 60 && Convert.ToDouble(dt.Rows[i][column]) <= 90)
+            //        rural.ImportRow(dt.Rows[i]);
+            //    else
+            //        motorway.ImportRow(dt.Rows[i]);
+            //}
         }
 
         //Call method makePosCheckCount(...) and check if every intervall has more than 100 entries left after deleting negativ acceleration values  
@@ -198,9 +202,12 @@ namespace DriversGuide
         //********************************************************************************************
         public void CalcAvgSpeedInt (string column)
         {
-            avgSpeed_urban = CalcAvg(urban, column);
-            avgSpeed_rural = CalcAvg(rural, column);
-            avgSpeed_motorway = CalcAvg(motorway, column);
+            //avgSpeed_urban = CalcAvg(urban, column);
+            //avgSpeed_rural = CalcAvg(rural, column);
+            //avgSpeed_motorway = CalcAvg(motorway, column);
+            avgSpeed_urban = (double)urban.Compute("AVG([" + column + "])", "");
+            avgSpeed_rural = (double)rural.Compute("AVG([" + column + "])", "");
+            avgSpeed_motorway = (double)motorway.Compute("AVG([" + column + "])", "");
         }
 
         //Return the average speed values of each interval
@@ -248,7 +255,7 @@ namespace DriversGuide
 
             dt_Interval.Columns.Add("Perzentil");
 
-            SortData(ref dt_Interval, column, false);
+            SortData(ref dt_Interval, column);
 
             for (int i = firstRow; i < lastRow; i++)
             {

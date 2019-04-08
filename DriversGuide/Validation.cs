@@ -46,7 +46,7 @@ namespace DriversGuide
             //dt = temp.Copy();
 
             dt = dt.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
-            Berechnungen.SortData(ref dt, column_time, false);
+            Berechnungen.SortData(ref dt, column_time);
 
             //Zur Berechnung ob einzelne Haltezeit länger als 300s war
             for (int i = 1; i < dt.Rows.Count; i++)
@@ -162,7 +162,7 @@ namespace DriversGuide
         {
             double duration = 0;
 
-            Berechnungen.SortData(ref dt, column, false);
+            Berechnungen.SortData(ref dt, column);
 
             duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column]) / 60000;        //duration in minutes
 
@@ -206,17 +206,23 @@ namespace DriversGuide
         public bool CheckColdStart(DataTable dt, string column_speed, string column_time, string column_coolant)
         {
             DataTable temp = new DataTable();
-            temp = dt.Clone();
+            temp = dt.Clone();            
 
             int i = 0;
             double max = 0, avg = 0, time_hold = 0, time_start = 0;
 
-            Berechnungen.SortData(ref dt, column_time, false);
-            temp = dt.Select("[" + column_time + "]" + " <=  300000").CopyToDataTable();
+            Berechnungen.SortData(ref dt, column_time);
+            temp = dt.Select("[" + column_time + "] <=  300000").CopyToDataTable();
+
+            while (Convert.ToDouble(temp.Rows[i][column_coolant]) < 70)
+                i++;
+
+            temp = temp.Select("[" + column_time + "] <= " + temp.Rows[i][column_time]).CopyToDataTable();
 
             max = (double)temp.Compute("MAX([" + column_speed + "])", "");
             avg = (double)temp.Compute("AVG([" + column_speed + "])", "");
 
+            i = 0;
             //Zur Berechnung ob innerhalb von 15s losgefahren
             while (Convert.ToDouble(temp.Rows[i][column_speed]) < 1)
                 i++;
