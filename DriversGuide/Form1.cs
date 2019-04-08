@@ -14,7 +14,8 @@ namespace DriversGuide
     {
         MeasurementFile Datei;
         Calculations Berechnung;
-        
+        Validation Gueltigkeit;
+
         public Form1()
         {
             InitializeComponent();
@@ -39,25 +40,39 @@ namespace DriversGuide
 
                 //txtMeasurement.Text = listofData[1][1].ToString();
                 Berechnung = new Calculations();
-                bool test1;
+                Gueltigkeit = new Validation();
+                bool test1, testdur;
                 string column_speed = "OBD_Vehicle_Speed_(PID_13)";
                 string column_acc = "ai";
                 string column_dynamic = "a*v";
                 string column_distance = "di";
-                double RPA_city, nfPerc; ;
+                string column_time = "Time";
+                string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+                double RPA_city, nfPerc;
 
                 DataTable city = new DataTable();
                 DataTable land = new DataTable();
-                DataTable autobahn = new DataTable();                
+                DataTable autobahn = new DataTable();
 
-                Berechnung.CalcReq(test, column_speed);
+                Berechnung.CalcReq(ref test, column_speed);
                 Berechnung.SortData(ref test, column_speed, true);
                 Berechnung.SepIntervals(test, column_speed);
-                test1 = Berechnung.PosCheck(column_acc);
-                Berechnung.CalcAvgSpeedInt(column_speed);                
                 Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
-                RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+                testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
+                testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
+                //testdur = Gueltigkeit.CheckSpeeds(city, land, autobahn, column_speed);
+                //test1 = Berechnung.PosCheck(column_acc);
+                //Berechnung.CalcAvgSpeedInt(column_speed);                
+                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+                //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
+                //RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+
+                testdur = Gueltigkeit.CheckDuration(test, column_time);
+                testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
+                testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+
+                testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
+                //Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
             }
             else
             {
