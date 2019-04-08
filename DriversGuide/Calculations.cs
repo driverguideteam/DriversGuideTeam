@@ -72,21 +72,21 @@ namespace DriversGuide
          *      - column:   string with the name of the column by which the calculations are done
         */
         //********************************************************************************************
-        public void CalcReq (DataTable dt, string column)
+        public void CalcReq (ref DataTable dt, string column)
         {
             int firstRow = 1;
             int lastRow = dt.Rows.Count;
             double strecke, beschl, dynamik;
 
             //Add the new columns 
-            dt.Columns.Add("di");
-            dt.Columns.Add("ai");
-            dt.Columns.Add("a*v");
+            dt.Columns.Add("di", typeof(System.Double));
+            dt.Columns.Add("ai", typeof(System.Double));
+            dt.Columns.Add("a*v", typeof(System.Double));
 
             //Add the associated unit to the first row
-            dt.Rows[0]["di"] = "m";
-            dt.Rows[0]["ai"] = "m/s^2";
-            dt.Rows[0]["a*v"] = "m^2/s^3";
+            //dt.Rows[0]["di"] = "m";
+            //dt.Rows[0]["ai"] = "m/s^2";
+            //dt.Rows[0]["a*v"] = "m^2/s^3";
 
             //Calculation of distance, acceleration and dynamic
             for (int i = firstRow; i < lastRow; i++)
@@ -264,6 +264,10 @@ namespace DriversGuide
                     y2 = Convert.ToDouble(dt_Interval.Rows[i][column]);
 
                     dynNF = y1 + (((95 - x1) / (x2 - x1)) * (y2 - y1));
+                }
+                else if (Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]) == 95)
+                {
+                    dynNF = Convert.ToDouble(dt_Interval.Rows[i][column]);
                 }
             }
 
