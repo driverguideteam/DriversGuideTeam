@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DriversGuide
 {
@@ -54,17 +55,20 @@ namespace DriversGuide
                 DataTable land = new DataTable();
                 DataTable autobahn = new DataTable();
 
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+
                 Berechnung.CalcReq(ref test, column_speed);
                 Berechnung.SortData(ref test, column_speed);
                 Berechnung.SepIntervals(test, column_speed);
                 Berechnung.GetIntervals(ref city, ref land, ref autobahn);
                 testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
                 testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
-                //testdur = Gueltigkeit.CheckSpeeds(city, land, autobahn, column_speed);
+                
                 test1 = Berechnung.PosCheck(column_acc);
                 Berechnung.CalcAvgSpeedInt(column_speed);                
                 Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
+                nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
                 RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
 
                 testdur = Gueltigkeit.CheckDuration(test, column_time);
@@ -73,6 +77,8 @@ namespace DriversGuide
 
                 testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
                 testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
+                watch.Stop();
+                MessageBox.Show("Time spent: " + watch.Elapsed);
             }
             else
             {

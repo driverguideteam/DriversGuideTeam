@@ -29,7 +29,7 @@ namespace DriversGuide
          
          */
 
-        private DataTable ConvertCSVtoDataTable()   
+        public DataTable ConvertCSVtoDataTable()   
         {
             
             StreamReader sr = new StreamReader(Filename);

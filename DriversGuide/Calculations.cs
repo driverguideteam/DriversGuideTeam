@@ -297,16 +297,19 @@ namespace DriversGuide
             double sumDistance = 0;
 
             //Sum up every product of velocity * acceleration of the intervall
-            for (int i = 0; i < dt_Interval.Rows.Count; i++)
-            {
-                sumDynamic += (Convert.ToDouble(dt_Interval.Rows[i][column_speed]) * Convert.ToDouble(dt_Interval.Rows[i][column_acc]));
-            }
+            //for (int i = 0; i < dt_Interval.Rows.Count; i++)
+            //{
+            //    sumDynamic += (Convert.ToDouble(dt_Interval.Rows[i][column_speed]) * Convert.ToDouble(dt_Interval.Rows[i][column_acc]));
+            //}
+
+            sumDynamic = dt_Interval.AsEnumerable().Sum(r => r.Field<double>(column_speed) * r.Field<double>(column_acc));
 
             //Sum up the distance over the whole dataset
-            for (int i = 0; i < dt_complete.Rows.Count; i++)
-            {
-                sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
-            }
+            //for (int i = 0; i < dt_complete.Rows.Count; i++)
+            //{
+            //    sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
+            //}
+            sumDistance = (double)dt_complete.Compute("SUM([" + column_distance + "])", "");
 
             //Divide the sum of dynamic by the sum of distance
             return (sumDynamic / sumDistance);
