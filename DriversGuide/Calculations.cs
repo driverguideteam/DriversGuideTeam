@@ -78,7 +78,7 @@ namespace DriversGuide
         //********************************************************************************************
         public void CalcReq (ref DataTable dt, string column)
         {
-            int firstRow = 1;
+            int firstRow = 0;
             int lastRow = dt.Rows.Count;
             double strecke, beschl, dynamik;
 
