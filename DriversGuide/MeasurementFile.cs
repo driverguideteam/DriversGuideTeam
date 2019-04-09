@@ -15,9 +15,21 @@ namespace DriversGuide
 
         DataTable dt = new DataTable();
         DataTable units = new DataTable();
-        // Kommentar
+       
+        /*
+         Einlesen des Messfiles + Convertierung in 2 Datentables "dt" und "units"
+         dt: 
+            Datatabel im Double Format mit allen Messwerten nach Zeit geordnet
+            Auf der Time Spalte liegt der PrimaryKey
+            Spaltenname sind die Erste Zeile im Messfile.
+         units:
+            Datentabel mit den Einheiten im String Format
+            Spaltnennamen sind die Erste Zeile im Messfile
+                    
+         
+         */
 
-        public DataTable ConvertCSVtoDataTable()
+        private DataTable ConvertCSVtoDataTable()   
         {
             
             StreamReader sr = new StreamReader(Filename);
@@ -36,7 +48,7 @@ namespace DriversGuide
             {
                 string[] rows = Regex.Split(sr.ReadLine(), "\t"); //",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 DataRow dr = dt.NewRow();
-                for (int i = 0; i < headers.Length; i++)    //Einheiten weglassen
+                for (int i = 0; i < headers.Length; i++)    
                 {
                     dr[i] = Convert.ToDouble( rows[i]);
                 }
@@ -44,6 +56,16 @@ namespace DriversGuide
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             return dt;
+        }
+
+        public DataTable GetMeasurementData()   //Rückgabe der Messdaten
+        {
+            return dt;
+        }
+
+        public DataTable GetMeasurementUnits()  //Rücgabe der Einheiten
+        {
+            return units;
         }
 
         /* public List<List<string>> ReadMeasurementFile()

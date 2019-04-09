@@ -72,3 +72,11 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe.config
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.pdb
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csprojAssemblyReference.cache
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Form1.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.PlotGraphic.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Properties.Resources.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.GenerateResource.cache
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CoreCompileInputs.cache
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.exe
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.pdb
