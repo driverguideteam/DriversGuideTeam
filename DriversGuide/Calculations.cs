@@ -307,7 +307,7 @@ namespace DriversGuide
             {
                 sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
             }
-
+            //Kommentar
             //Divide the sum of dynamic by the sum of distance
             return (sumDynamic / sumDistance);
         }
