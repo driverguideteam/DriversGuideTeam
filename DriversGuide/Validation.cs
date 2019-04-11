@@ -21,7 +21,7 @@ namespace DriversGuide
             distances[2] = (double)motorway.Compute("SUM([" + column_distance + "])", "") / 1000;
         }
 
-        private bool CheckUrban (DataTable dt, string column_speed, string column_time)
+        private bool CheckUrban (DataTable dt_urban, string column_speed, string column_time)
         {
             //DataTable temp = dt.Clone();
 
@@ -32,8 +32,8 @@ namespace DriversGuide
             int countTime = 1;
             
             //avgSpeed = CalcSum(dt, column_speed) / dt.Rows.Count;
-            avgSpeed = (double)dt.Compute("SUM([" + column_speed + "])", "") / dt.Rows.Count;
-            duration_interval = (double)(dt.Rows.Count * 500 - 500) / 60000;            
+            avgSpeed = (double)dt_urban.Compute("SUM([" + column_speed + "])", "") / dt_urban.Rows.Count;
+            duration_interval = (double)(dt_urban.Rows.Count * 500 - 500) / 60000;            
 
             //for (int i = 0; i < dt.Rows.Count; i++)
             //{
@@ -45,19 +45,19 @@ namespace DriversGuide
 
             //dt = temp.Copy();
 
-            dt = dt.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
-            Berechnungen.SortData(ref dt, column_time);
+            dt_urban = dt_urban.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
+            Berechnungen.SortData(ref dt_urban, column_time);
 
             //Zur Berechnung ob einzelne Haltezeit länger als 300s war
-            for (int i = 1; i < dt.Rows.Count; i++)
+            for (int i = 1; i < dt_urban.Rows.Count; i++)
             {
-                if (Convert.ToDouble(dt.Rows[i][column_time]) - Convert.ToDouble(dt.Rows[i - 1][column_time]) == 500)
+                if (Convert.ToDouble(dt_urban.Rows[i][column_time]) - Convert.ToDouble(dt_urban.Rows[i - 1][column_time]) == 500)
                     countTime++;
                 else
                     countTime = 1;
             }
 
-            duration_hold = (double)(dt.Rows.Count * 500 - 500) / 60000;           
+            duration_hold = (double)(dt_urban.Rows.Count * 500 - 500) / 60000;           
 
             //for (int i = 0; i < dt.Rows.Count; i++)                   //Überlegung zu realisierung der aufeinanderfolgenden Standzeitberechnung von 300s / 5min
 
@@ -69,25 +69,25 @@ namespace DriversGuide
                 return false;
         }
 
-        private bool CheckMotorway (DataTable dt, string column_speed)
+        private bool CheckMotorway (DataTable dt_motorway, string column_speed)
         {
             DataTable fasterOH = new DataTable();
             DataTable fasterHFF = new DataTable();
-            fasterOH = dt.Clone();
-            fasterHFF = dt.Clone();
+            fasterOH = dt_motorway.Clone();
+            fasterHFF = dt_motorway.Clone();
 
             double max, min, duration, fasterOnehundred, tooFast = 0;
 
-            max = (double)dt.Compute("MAX([" + column_speed + "])", "");
-            min = (double)dt.Compute("MIN([" + column_speed + "])", "");
+            max = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
+            min = (double)dt_motorway.Compute("MIN([" + column_speed + "])", "");
 
-            fasterOH = dt.Select("[" + column_speed + "]" + " > 100").CopyToDataTable();       
+            fasterOH = dt_motorway.Select("[" + column_speed + "]" + " > 100").CopyToDataTable();       
             fasterOnehundred = (double)(fasterOH.Rows.Count * 500 - 500) / 60000;         
                  
             if (max >= 145 && max <= 160)
             {
-                fasterHFF = dt.Select("[" + column_speed + "]" + " >= 145").CopyToDataTable();
-                duration = (double)(dt.Rows.Count * 500 - 500) / 60000;
+                fasterHFF = dt_motorway.Select("[" + column_speed + "]" + " >= 145").CopyToDataTable();
+                duration = (double)(dt_motorway.Rows.Count * 500 - 500) / 60000;
                 tooFast = (double)(fasterHFF.Rows.Count * 500 - 500) / 60000;
                 tooFast *= 100 / duration;
             }
@@ -158,13 +158,13 @@ namespace DriversGuide
                 return false;
         }
 
-        public bool CheckDuration(DataTable dt, string column)
+        public bool CheckDuration(DataTable dt, string column_time)
         {
             double duration = 0;
 
-            Berechnungen.SortData(ref dt, column);
+            Berechnungen.SortData(ref dt, column_time);
 
-            duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column]) / 60000;        //duration in minutes
+            duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column_time]) / 60000;        //duration in minutes
 
             if (duration >= 90 && duration <= 120)
                 return true;
@@ -235,6 +235,31 @@ namespace DriversGuide
 
             if (time_start <= 15 && time_hold <= 90 && avg >= 15 && avg <= 40 && max <= 60)
                 return true;
+            else
+                return false;
+        }
+               
+        public bool CheckValidity(DataTable dt, string column_speed, string column_time, string column_coolant, string column_distance)
+        {
+            DataTable urban = new DataTable();
+            DataTable rural = new DataTable();
+            DataTable motorway = new DataTable();
+
+            urban = dt.Clone();
+            rural = dt.Clone();
+            motorway = dt.Clone();
+
+            Berechnungen.SepIntervals(dt, column_speed);
+            Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
+
+            if (CheckDistanceComplete(dt, column_speed, column_distance) &&
+                CheckDistributionComplete(dt, column_speed, column_distance) &&
+                CheckDuration(dt, column_time) &&
+                CheckSpeeds(urban, motorway, column_speed, column_time) &&
+                CheckColdStart(dt, column_speed, column_time, column_coolant))
+            {
+                return true;
+            }
             else
                 return false;
         }

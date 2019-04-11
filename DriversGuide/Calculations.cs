@@ -12,8 +12,11 @@ namespace DriversGuide
 {
     class Calculations
     {
-        //Variables and DataTables to store average values and DataTabels to
-        private double avgSpeed_urban, avgSpeed_rural, avgSpeed_motorway;        
+        //Variables and DataTables to store average speed values, interval percentiles, RPA values of the intervals and DataTabels
+        private double avgSpeed_urban, avgSpeed_rural, avgSpeed_motorway;
+        private double perUrban, perRural, perMotorway;
+        private double RPAUrban, RPARural, RPAMotorway;
+        private double distUrban, distRural, distMotorway;
         private DataTable urban;
         private DataTable rural;
         private DataTable motorway;
@@ -45,6 +48,39 @@ namespace DriversGuide
                 return true;
             else
                 return false;
+        }
+
+        private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval)
+        {
+            if (avg_speed <= 74.6 && percentileNF > (0.136 * avg_speed + 14.44))
+                return false;
+            else if (avg_speed > 74.6 && percentileNF > (0.0742 * avg_speed + 18.966))
+                return false;
+            else if (avg_speed <= 94.05 && RPA_interval < (-0.0016 * avg_speed + 0.1755))
+                return false;
+            else if (avg_speed > 94.05 && RPA_interval < 0.025)
+                return false;
+            else
+                return true;
+        }
+
+        private bool CheckCriteria (DataTable urban, DataTable rural, DataTable motorway)
+        {
+            if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban) &&
+                CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural) &&
+                CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private void CalcDistancesInterval (string column_distance)
+        {
+            distUrban = (double)urban.Compute("SUM([" + column_distance + "])", "");
+            distRural = (double)rural.Compute("SUM([" + column_distance + "])", "");
+            distMotorway = (double)motorway.Compute("SUM([" + column_distance + "])", "");
         }
 
         //Calculate the average of a specific column within a Datatable dt and return it
@@ -158,16 +194,17 @@ namespace DriversGuide
          *      - column:   string with the name of the column by which to seperate
         */
         //********************************************************************************************
-        public void SepIntervals (DataTable dt, string column)
+        public void SepIntervals (DataTable dt, string column_speed)
         {
             //Clone the structure of dt to the intervall DataTables
             //urban = dt.Clone();
             //rural = dt.Clone();
             //motorway = dt.Clone();          
 
-            urban = dt.Select("[" + column + "] <=  60").CopyToDataTable();
-            rural = dt.Select("[" + column + "] >  60 AND [" + column + "] <= 90").CopyToDataTable();
-            motorway = dt.Select("[" + column + "] >  90").CopyToDataTable();
+            urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
+            rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
+            motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
+
             //Seperate the DataTable dt into intervalls and store the seperatet data to the new intervalls
             //for (int i = 0; i < dt.Rows.Count; i++)
             //{
@@ -285,34 +322,66 @@ namespace DriversGuide
         //********************************************************************************************
         /*Parameters:
          *      - dt_complete:      DataTable with the complete dataset 
-         *      - dt_interval:     DataTable with the interval data
+         *      - dt_interval:      DataTable with the interval data
          *      - column_speed:     string with the name of the speed column
          *      - column_acc:       string with the name of the acceleration column
          *      - column_distance:  string with the name of the distance column
         */
         //********************************************************************************************
-        public double CalcRPA(DataTable dt_complete, DataTable dt_Interval, string column_speed, string column_acc, string column_distance)
+        public double CalcRPA (DataTable dt_Interval, double distIntComplete, string column_dynamic)
         {
             double sumDynamic = 0;
-            double sumDistance = 0;
-
+            //double sumDistance = 0;
+            
             //Sum up every product of velocity * acceleration of the intervall
             //for (int i = 0; i < dt_Interval.Rows.Count; i++)
             //{
             //    sumDynamic += (Convert.ToDouble(dt_Interval.Rows[i][column_speed]) * Convert.ToDouble(dt_Interval.Rows[i][column_acc]));
             //}
 
-            sumDynamic = dt_Interval.AsEnumerable().Sum(r => r.Field<double>(column_speed) * r.Field<double>(column_acc));
+            //sumDynamic = dt_Interval.AsEnumerable().Sum(r => r.Field<double>(column_speed) / 3.6 * r.Field<double>(column_acc));
 
+            sumDynamic = (double)dt_Interval.Compute("SUM([" + column_dynamic + "])", "");
             //Sum up the distance over the whole dataset
             //for (int i = 0; i < dt_complete.Rows.Count; i++)
             //{
             //    sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
             //}
-            sumDistance = (double)dt_complete.Compute("SUM([" + column_distance + "])", "");
-
+            //sumDistance = (double)dt_complete.Compute("SUM([" + column_distance + "])", "");
+            
             //Divide the sum of dynamic by the sum of distance
-            return (sumDynamic / sumDistance);
+            return (sumDynamic / distIntComplete);
+        }
+
+        public void GetPercentiles (ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
+        {
+            percentileUrban = perUrban;
+            percentileRural = perRural;
+            percentileMotorway = perMotorway;
+        }
+
+        public bool CalcAll (DataTable dt, string column_speed, string column_acc, string column_dynamic, string column_distance)
+        {
+            bool oHdrd, critMatch;
+            
+            CalcReq(ref dt, column_speed);
+            SortData(ref dt, column_speed);
+            SepIntervals(dt, column_speed);
+            CalcDistancesInterval(column_distance);
+            CalcAvgSpeedInt(column_speed);
+            oHdrd = PosCheck(column_acc);
+            perUrban = CalcPercentile_Interval(ref urban, column_dynamic);
+            perRural = CalcPercentile_Interval(ref rural, column_dynamic);
+            perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
+            RPAUrban = CalcRPA(urban, distUrban, column_dynamic);
+            RPARural = CalcRPA(rural, distRural, column_dynamic);
+            RPAMotorway = CalcRPA(motorway, distMotorway, column_dynamic);
+            critMatch = CheckCriteria(urban, rural, motorway);
+
+            if (oHdrd && critMatch)
+                return true;
+            else
+                return false;
         }
     }
 }
