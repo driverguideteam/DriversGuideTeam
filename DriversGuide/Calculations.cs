@@ -56,7 +56,7 @@ namespace DriversGuide
                 return false;
             else if (avg_speed > 74.6 && percentileNF > (0.0742 * avg_speed + 18.966))
                 return false;
-            else if (avg_speed <= 94.05 && RPA_interval < (-0.0016 * avg_speed + 0.1755))
+            else if (avg_speed <= 94.05 && RPA_interval < ((-0.0016 * avg_speed + 0.1755) / 3.6))
                 return false;
             else if (avg_speed > 94.05 && RPA_interval < 0.025)
                 return false;
@@ -328,7 +328,7 @@ namespace DriversGuide
          *      - column_distance:  string with the name of the distance column
         */
         //********************************************************************************************
-        public double CalcRPA (DataTable dt_Interval, double distIntComplete, string column_dynamic)
+        public double CalcRPA (DataTable dt_Interval, double distIntComplete, double deltaTime/*, string column_dynamic*/, string column_speed, string column_acc)
         {
             double sumDynamic = 0;
             //double sumDistance = 0;
@@ -339,9 +339,9 @@ namespace DriversGuide
             //    sumDynamic += (Convert.ToDouble(dt_Interval.Rows[i][column_speed]) * Convert.ToDouble(dt_Interval.Rows[i][column_acc]));
             //}
 
-            //sumDynamic = dt_Interval.AsEnumerable().Sum(r => r.Field<double>(column_speed) / 3.6 * r.Field<double>(column_acc));
+            sumDynamic = dt_Interval.AsEnumerable().Sum(r => ((r.Field<double>(column_speed) / 3.6) * r.Field<double>(column_acc)) * deltaTime);
 
-            sumDynamic = (double)dt_Interval.Compute("SUM([" + column_dynamic + "])", "");
+            //sumDynamic = (double)dt_Interval.Compute("SUM([" + column_dynamic + "])", "");
             //Sum up the distance over the whole dataset
             //for (int i = 0; i < dt_complete.Rows.Count; i++)
             //{
@@ -373,9 +373,9 @@ namespace DriversGuide
             perUrban = CalcPercentile_Interval(ref urban, column_dynamic);
             perRural = CalcPercentile_Interval(ref rural, column_dynamic);
             perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
-            RPAUrban = CalcRPA(urban, distUrban, column_dynamic);
-            RPARural = CalcRPA(rural, distRural, column_dynamic);
-            RPAMotorway = CalcRPA(motorway, distMotorway, column_dynamic);
+            RPAUrban = CalcRPA(urban, distUrban, 0.5, column_speed, column_acc);
+            RPARural = CalcRPA(rural, distRural, 0.5, column_speed, column_acc);
+            RPAMotorway = CalcRPA(motorway, distMotorway, 0.5, column_speed, column_acc);
             critMatch = CheckCriteria(urban, rural, motorway);
 
             if (oHdrd && critMatch)
