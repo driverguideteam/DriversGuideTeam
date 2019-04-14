@@ -37,10 +37,9 @@
             // 
             // btnReadMeasuremntfile
             // 
-            this.btnReadMeasuremntfile.Location = new System.Drawing.Point(16, 15);
-            this.btnReadMeasuremntfile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnReadMeasuremntfile.Location = new System.Drawing.Point(12, 12);
             this.btnReadMeasuremntfile.Name = "btnReadMeasuremntfile";
-            this.btnReadMeasuremntfile.Size = new System.Drawing.Size(100, 28);
+            this.btnReadMeasuremntfile.Size = new System.Drawing.Size(75, 23);
             this.btnReadMeasuremntfile.TabIndex = 0;
             this.btnReadMeasuremntfile.Text = "Read Measurement File";
             this.btnReadMeasuremntfile.UseVisualStyleBackColor = true;
@@ -48,12 +47,11 @@
             // 
             // txtMeasurement
             // 
-            this.txtMeasurement.Location = new System.Drawing.Point(16, 50);
-            this.txtMeasurement.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMeasurement.Location = new System.Drawing.Point(12, 41);
             this.txtMeasurement.Multiline = true;
             this.txtMeasurement.Name = "txtMeasurement";
             this.txtMeasurement.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtMeasurement.Size = new System.Drawing.Size(1033, 431);
+            this.txtMeasurement.Size = new System.Drawing.Size(776, 351);
             this.txtMeasurement.TabIndex = 1;
             // 
             // ofd
@@ -62,10 +60,9 @@
             // 
             // btnGraphic
             // 
-            this.btnGraphic.Location = new System.Drawing.Point(124, 15);
-            this.btnGraphic.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGraphic.Location = new System.Drawing.Point(93, 12);
             this.btnGraphic.Name = "btnGraphic";
-            this.btnGraphic.Size = new System.Drawing.Size(117, 28);
+            this.btnGraphic.Size = new System.Drawing.Size(88, 23);
             this.btnGraphic.TabIndex = 2;
             this.btnGraphic.Text = "Show Graphic";
             this.btnGraphic.UseVisualStyleBackColor = true;
@@ -73,15 +70,14 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnGraphic);
             this.Controls.Add(this.txtMeasurement);
             this.Controls.Add(this.btnReadMeasuremntfile);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Drivers Guide";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -12,7 +12,8 @@ namespace DriversGuide
 {
     class Calculations
     {
-        //Variables and DataTables to store average speed values, interval percentiles, RPA values of the intervals and DataTabels
+        //Variables and DataTables to store average speed values, interval percentiles,
+        //RPA values of the intervals, distances per interval and DataTables
         private double avgSpeed_urban, avgSpeed_rural, avgSpeed_motorway;
         private double perUrban, perRural, perMotorway;
         private double RPAUrban, RPARural, RPAMotorway;
@@ -30,26 +31,23 @@ namespace DriversGuide
         //********************************************************************************************
         private bool MakePosCheckCount (ref DataTable dt, string column)  
         {
-            //DataTable temp = dt.Clone();
-
-            //for (int i = 0; i < dt.Rows.Count; i++)
-            //{
-            //    if (Convert.ToDouble(dt.Rows[i][column]) >= 0.1)
-            //    {
-            //        temp.ImportRow(dt.Rows[i]);
-            //    }
-            //}
-
-            //dt = temp.Copy();            
-
+            //Copy only entries with an acceleration value greater than 0.1 m/s^2 to DataTable
             dt = dt.Select("[" + column + "] >= 0.1").CopyToDataTable();
 
+            //if more than 100 entries remain, return true
             if (dt.Rows.Count >= 100)
                 return true;
             else
                 return false;
         }
 
+        //Check if the data in the interval matches the 95 percentile and RPA criteria
+        //if any of these criteria is not matched by the interval this method returns false
+        //********************************************************************************************
+        /*Parameters:
+         *      - column_distance:   string with the name of the distance column    
+        */
+        //********************************************************************************************
         private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval)
         {
             if (avg_speed <= 74.6 && percentileNF > (0.136 * avg_speed + 14.44))
@@ -64,45 +62,38 @@ namespace DriversGuide
                 return true;
         }
 
+        //Call method CheckCritInterval(...) and check if criteria is matched in every interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - column_distance:   string with the name of the distance column    
+        */
+        //********************************************************************************************
         private bool CheckCriteria (DataTable urban, DataTable rural, DataTable motorway)
         {
+            //If every interval matches criteria .. 
             if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban) &&
                 CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural) &&
                 CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway))
             {
+                // .. return true
                 return true;
             }
             else
                 return false;
         }
 
+        //Calculate the average speeds per interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - column_distance:   string with the name of the distance column    
+        */
+        //********************************************************************************************
         private void CalcDistancesInterval (string column_distance)
         {
             distUrban = (double)urban.Compute("SUM([" + column_distance + "])", "");
             distRural = (double)rural.Compute("SUM([" + column_distance + "])", "");
             distMotorway = (double)motorway.Compute("SUM([" + column_distance + "])", "");
         }
-
-        //Calculate the average of a specific column within a Datatable dt and return it
-        //********************************************************************************************
-        /*Parameters:
-         *      - dt:       DataTable which contains dataset or column for calculating average
-         *      - column:   string with the name of the column by which to calculate average
-        */
-        //********************************************************************************************
-        //private double CalcAvg (DataTable dt, string column)
-        //{
-        //    //double avgVal = 0;
-
-        //    //for (int i = 0; i < dt.Rows.Count; i++)
-        //    //    avgVal += Convert.ToDouble(dt.Rows[i][column]);
-
-        //    //avgVal /= dt.Rows.Count;
-
-        //    //return avgVal;
-
-        //    return (double)dt.Compute("AVG([" + column + "])", "");
-        //}
 
         //Calculation of the required values for distance, acceleration and dynamic
         //Values are added to the DataTable dt as new columns
@@ -196,28 +187,14 @@ namespace DriversGuide
         //********************************************************************************************
         public void SepIntervals (DataTable dt, string column_speed)
         {
-            //Clone the structure of dt to the intervall DataTables
-            //urban = dt.Clone();
-            //rural = dt.Clone();
-            //motorway = dt.Clone();          
-
+            //Seperate DataTable dt into three intervals according to the speed values
             urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
             rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
             motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
-
-            //Seperate the DataTable dt into intervalls and store the seperatet data to the new intervalls
-            //for (int i = 0; i < dt.Rows.Count; i++)
-            //{
-            //    if (Convert.ToDouble(dt.Rows[i][column]) <= 60)
-            //        urban.ImportRow(dt.Rows[i]);
-            //    else if (Convert.ToDouble(dt.Rows[i][column]) > 60 && Convert.ToDouble(dt.Rows[i][column]) <= 90)
-            //        rural.ImportRow(dt.Rows[i]);
-            //    else
-            //        motorway.ImportRow(dt.Rows[i]);
-            //}
         }
 
-        //Call method makePosCheckCount(...) and check if every intervall has more than 100 entries left after deleting negativ acceleration values  
+        //Call method makePosCheckCount(...) and check if every interval has more than 100 entries
+        //left after deleting negativ acceleration values  
         //********************************************************************************************
         /*Parameters:
          *      - column:       string with the name of the column used to perform check
@@ -239,9 +216,6 @@ namespace DriversGuide
         //********************************************************************************************
         public void CalcAvgSpeedInt (string column)
         {
-            //avgSpeed_urban = CalcAvg(urban, column);
-            //avgSpeed_rural = CalcAvg(rural, column);
-            //avgSpeed_motorway = CalcAvg(motorway, column);
             avgSpeed_urban = (double)urban.Compute("AVG([" + column + "])", "");
             avgSpeed_rural = (double)rural.Compute("AVG([" + column + "])", "");
             avgSpeed_motorway = (double)motorway.Compute("AVG([" + column + "])", "");
@@ -290,31 +264,40 @@ namespace DriversGuide
             int lastRow = dt_Interval.Rows.Count;
             double dynNF = 0;
 
+            //Add new column "Perezentil" to dataTable
             dt_Interval.Columns.Add("Perzentil");
 
+            //Sort Data asc according to the column needed
             SortData(ref dt_Interval, column);
 
+            //Enter the correct percentile values for each row into the dataTable
             for (int i = firstRow; i < lastRow; i++)
             {
                 dt_Interval.Rows[i]["Perzentil"] = (double)i / (lastRow - 1) * 100;
 
+                //if no entry matches exactly 95 percent .. 
                 if (Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]) > 95 && Convert.ToDouble(dt_Interval.Rows[i-1]["Perzentil"]) < 95)
                 {
                     double x1, x2, y1, y2;
 
+                    // .. interpolate the two surrounding entires and ..
                     x1 = Convert.ToDouble(dt_Interval.Rows[i - 1]["Perzentil"]);
                     x2 = Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]);
                     y1 = Convert.ToDouble(dt_Interval.Rows[i - 1][column]);
                     y2 = Convert.ToDouble(dt_Interval.Rows[i][column]);
 
+                    // .. calculate the exact value of it 
                     dynNF = y1 + (((95 - x1) / (x2 - x1)) * (y2 - y1));
                 }
+                //if one entry mathes exactly 95 percent ..
                 else if (Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]) == 95)
                 {
+                    // .. write it to the variable
                     dynNF = Convert.ToDouble(dt_Interval.Rows[i][column]);
                 }
             }
 
+            //return the 95 percentile dynamic value
             return dynNF;
         }
 
@@ -323,36 +306,30 @@ namespace DriversGuide
         /*Parameters:
          *      - dt_complete:      DataTable with the complete dataset 
          *      - dt_interval:      DataTable with the interval data
+         *      - deltaTime:        double with value of timedelta between entries
          *      - column_speed:     string with the name of the speed column
          *      - column_acc:       string with the name of the acceleration column
-         *      - column_distance:  string with the name of the distance column
         */
         //********************************************************************************************
         public double CalcRPA (DataTable dt_Interval, double distIntComplete, double deltaTime/*, string column_dynamic*/, string column_speed, string column_acc)
         {
             double sumDynamic = 0;
-            //double sumDistance = 0;
             
-            //Sum up every product of velocity * acceleration of the intervall
-            //for (int i = 0; i < dt_Interval.Rows.Count; i++)
-            //{
-            //    sumDynamic += (Convert.ToDouble(dt_Interval.Rows[i][column_speed]) * Convert.ToDouble(dt_Interval.Rows[i][column_acc]));
-            //}
-
+            //Sum up every product of velocity * acceleration in the interval
             sumDynamic = dt_Interval.AsEnumerable().Sum(r => ((r.Field<double>(column_speed) / 3.6) * r.Field<double>(column_acc)) * deltaTime);
-
-            //sumDynamic = (double)dt_Interval.Compute("SUM([" + column_dynamic + "])", "");
-            //Sum up the distance over the whole dataset
-            //for (int i = 0; i < dt_complete.Rows.Count; i++)
-            //{
-            //    sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
-            //}
-            //sumDistance = (double)dt_complete.Compute("SUM([" + column_distance + "])", "");
             
             //Divide the sum of dynamic by the sum of distance
             return (sumDynamic / distIntComplete);
         }
 
+        //Return the 95% Percentile values
+        //********************************************************************************************
+        /*Parameters:
+         *      - percentileUrban:       double variable to store urban percentile value
+         *      - percentileRural:       double variable to store rural percentile value
+         *      - percentileMotorway:    double variable to store motorway percentile value
+        */
+        //********************************************************************************************
         public void GetPercentiles (ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
         {
             percentileUrban = perUrban;
@@ -360,6 +337,17 @@ namespace DriversGuide
             percentileMotorway = perMotorway;
         }
 
+        //One method for calculating everything with one call
+        //and to check the fullfillment of the criteria (pecentile and RPA)
+        //********************************************************************************************
+        /*Parameters:
+         *      - dt:               DataTable with the complete dataset
+         *      - column_speed:     string with the name of the speed column
+         *      - column_acc:       string with the name of the acceleration column
+         *      - column_dynamic:   string with the name of the dynamic column
+         *      - column_distance:  string with the name of the distance column
+        */
+        //********************************************************************************************
         public bool CalcAll (DataTable dt, string column_speed, string column_acc, string column_dynamic, string column_distance)
         {
             bool oHdrd, critMatch;
@@ -378,6 +366,8 @@ namespace DriversGuide
             RPAMotorway = CalcRPA(motorway, distMotorway, 0.5, column_speed, column_acc);
             critMatch = CheckCriteria(urban, rural, motorway);
 
+            //return true if dataset in each interval is greater 100 entries
+            //and percentile and RPA criteria are matched
             if (oHdrd && critMatch)
                 return true;
             else

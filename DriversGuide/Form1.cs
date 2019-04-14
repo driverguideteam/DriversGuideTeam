@@ -60,6 +60,7 @@ namespace DriversGuide
                 watch.Start();
 
                 test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+                testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 
                 //Berechnung.CalcReq(ref test, column_speed);
                 //testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
