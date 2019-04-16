@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DriversGuide
 {
@@ -49,30 +50,42 @@ namespace DriversGuide
                 string column_time = "Time";
                 string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
                 double RPA_city, nfPerc;
+                double percUrb = 0, percRur = 0, percMotor = 0;
 
                 DataTable city = new DataTable();
                 DataTable land = new DataTable();
                 DataTable autobahn = new DataTable();
 
-                Berechnung.CalcReq(ref test, column_speed);
-                Berechnung.SortData(ref test, column_speed);
-                Berechnung.SepIntervals(test, column_speed);
-                Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
-                testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
-                //testdur = Gueltigkeit.CheckSpeeds(city, land, autobahn, column_speed);
-                test1 = Berechnung.PosCheck(column_acc);
-                Berechnung.CalcAvgSpeedInt(column_speed);                
-                Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);            
-                RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
 
-                testdur = Gueltigkeit.CheckDuration(test, column_time);
-                testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
-                testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+                test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+                testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 
-                testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
-                testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
+                //Berechnung.CalcReq(ref test, column_speed);
+                //testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+                //Berechnung.SortData(ref test, column_speed);
+                //Berechnung.SepIntervals(test, column_speed);
+                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+                //testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
+                //testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
+                //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+
+                //test1 = Berechnung.PosCheck(column_acc);
+                //Berechnung.CalcAvgSpeedInt(column_speed);
+                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+                //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);
+                //RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+
+                //testdur = Gueltigkeit.CheckDuration(test, column_time);
+                //testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
+                //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+
+                //testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
+                //testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
+                watch.Stop();
+                MessageBox.Show("Time spent: " + watch.Elapsed);
             }
             else
             {
