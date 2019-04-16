@@ -311,12 +311,12 @@ namespace DriversGuide
          *      - column_acc:       string with the name of the acceleration column
         */
         //********************************************************************************************
-        public double CalcRPA (DataTable dt_Interval, double distIntComplete, double deltaTime/*, string column_dynamic*/, string column_speed, string column_acc)
+        public double CalcRPA (DataTable dt_Interval, double distIntComplete/*, string column_dynamic*/, string column_speed, string column_acc)
         {
             double sumDynamic = 0;
             
             //Sum up every product of velocity * acceleration in the interval
-            sumDynamic = dt_Interval.AsEnumerable().Sum(r => ((r.Field<double>(column_speed) / 3.6) * r.Field<double>(column_acc)) * deltaTime);
+            sumDynamic = dt_Interval.AsEnumerable().Sum(r => ((r.Field<double>(column_speed) / 3.6) * r.Field<double>(column_acc)));
             
             //Divide the sum of dynamic by the sum of distance
             return (sumDynamic / distIntComplete);
@@ -361,9 +361,9 @@ namespace DriversGuide
             perUrban = CalcPercentile_Interval(ref urban, column_dynamic);
             perRural = CalcPercentile_Interval(ref rural, column_dynamic);
             perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
-            RPAUrban = CalcRPA(urban, distUrban, 0.5, column_speed, column_acc);
-            RPARural = CalcRPA(rural, distRural, 0.5, column_speed, column_acc);
-            RPAMotorway = CalcRPA(motorway, distMotorway, 0.5, column_speed, column_acc);
+            RPAUrban = CalcRPA(urban, distUrban, column_speed, column_acc);
+            RPARural = CalcRPA(rural, distRural, column_speed, column_acc);
+            RPAMotorway = CalcRPA(motorway, distMotorway, column_speed, column_acc);
             critMatch = CheckCriteria(urban, rural, motorway);
 
             //return true if dataset in each interval is greater 100 entries

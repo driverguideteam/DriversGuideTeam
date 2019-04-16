@@ -49,9 +49,9 @@ namespace DriversGuide
             double duration_ratio = 0;
             int countTime = 1;
             
-            //Calculate the average speed in the interval and the duration of the trip
+            //Calculate the average speed in the interval and the duration of the trip in minutes
             avgSpeed = (double)dt_urban.Compute("SUM([" + column_speed + "])", "") / dt_urban.Rows.Count;
-            duration_interval = (double)(dt_urban.Rows.Count * 500 - 500) / 60000;
+            duration_interval = (double)(dt_urban.Rows.Count - 1) / 60;
 
             //Copy only entries with a speed value lower than 1 km/h to DataTable
             //and sort DataTable by time
@@ -61,7 +61,7 @@ namespace DriversGuide
             //Check if single hold time was longer as 300 seconds
             for (int i = 1; i < dt_urban.Rows.Count; i++)
             {
-                if (Convert.ToDouble(dt_urban.Rows[i][column_time]) - Convert.ToDouble(dt_urban.Rows[i - 1][column_time]) == 500)
+                if (Convert.ToDouble(dt_urban.Rows[i][column_time]) - Convert.ToDouble(dt_urban.Rows[i - 1][column_time]) == 1000)
                     countTime++;
                 else
                     countTime = 1;
@@ -69,7 +69,7 @@ namespace DriversGuide
 
             //Calculate value of longest hold time 
             //and the ratio of the longest hold time to the duration of trip
-            duration_hold = (double)(dt_urban.Rows.Count * 500 - 500) / 60000;        
+            duration_hold = (double)(dt_urban.Rows.Count - 1) / 60;        
             duration_ratio = duration_hold * 100 / duration_interval;
 
             //if urban criteria matched return true
@@ -101,7 +101,7 @@ namespace DriversGuide
             //Copy only entries with a speed value greater than 100 km/h to DataTable fasterOH
             //and calculate time driven with a speed greater 100 km/h
             fasterOH = dt_motorway.Select("[" + column_speed + "]" + " > 100").CopyToDataTable();       
-            fasterOnehundred = (double)(fasterOH.Rows.Count * 500 - 500) / 60000;         
+            fasterOnehundred = (double)(fasterOH.Rows.Count - 1) / 60;         
             
             //if the maximum speed is greater 145 km/h and lower 160 km/h .. 
             if (max >= 145 && max <= 160)
@@ -111,8 +111,8 @@ namespace DriversGuide
                 //Calculate time driven with a speed greater 145 km/h .. 
                 // .. calculate ratio of time driven to fast in comparison to the duration
                 fasterHFF = dt_motorway.Select("[" + column_speed + "]" + " >= 145").CopyToDataTable();
-                duration = (double)(dt_motorway.Rows.Count * 500 - 500) / 60000;
-                tooFast = (double)(fasterHFF.Rows.Count * 500 - 500) / 60000;
+                duration = (double)(dt_motorway.Rows.Count - 1) / 60;
+                tooFast = (double)(fasterHFF.Rows.Count - 1) / 60;
                 tooFast *= 100 / duration;
             }
 
@@ -343,7 +343,7 @@ namespace DriversGuide
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
 
             //Calculate hold time in seconds
-            time_hold = (double)(temp.Rows.Count * 500 - 500) / 1000;      
+            time_hold = (double)(temp.Rows.Count - 1);      
 
             //if criteria are matched, return true
             if (time_start <= 15 && time_hold <= 90 && avg >= 15 && avg <= 40 && max <= 60)
