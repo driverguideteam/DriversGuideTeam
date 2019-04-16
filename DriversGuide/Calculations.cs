@@ -125,7 +125,7 @@ namespace DriversGuide
                 //Calculate distance by integration
                 strecke = Convert.ToDouble(dt.Rows[i][column]) / 3.6;
                 dt.Rows[i]["di"] = strecke;               
-
+                 
                 //Calculate acceleration by derivation
                 if (i == firstRow)
                 {
@@ -322,16 +322,6 @@ namespace DriversGuide
             return (sumDynamic / distIntComplete);
         }
 
-
-            //Sum up the distance over the whole dataset
-            for (int i = 0; i < dt_complete.Rows.Count; i++)
-            {
-                sumDistance += (Convert.ToDouble(dt_complete.Rows[i][column_distance]));
-            }
-            //Kommentar
-            //Divide the sum of dynamic by the sum of distance
-            return (sumDynamic / sumDistance);
-
         //Return the 95% Percentile values
         //********************************************************************************************
         /*Parameters:
@@ -382,7 +372,6 @@ namespace DriversGuide
                 return true;
             else
                 return false;
-
         }
     }
 }

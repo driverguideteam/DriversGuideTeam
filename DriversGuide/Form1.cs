@@ -16,6 +16,7 @@ namespace DriversGuide
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
+        //DataSet dx = new DataSet();
 
         public Form1()
         {
@@ -86,6 +87,8 @@ namespace DriversGuide
                 //testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
                 watch.Stop();
                 MessageBox.Show("Time spent: " + watch.Elapsed);
+               
+               
             }
             else
             {
@@ -98,6 +101,12 @@ namespace DriversGuide
            PlotGraphic NewDiagram = new PlotGraphic();
             NewDiagram.Show();
 
+        }
+
+        private void btnSpielwiese_Click(object sender, EventArgs e)
+        {
+            ChartSpielwiese Test1 = new ChartSpielwiese();
+            Test1.Show();
         }
     }
 }

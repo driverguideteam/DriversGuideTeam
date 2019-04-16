@@ -34,12 +34,12 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.dataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSet1 = new DriversGuide.DataSet1();
+        
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
+          
             this.SuspendLayout();
             // 
             // chart1
@@ -71,14 +71,11 @@
             this.chart1.Text = "chart1";
             // 
             // dataSet1BindingSource
-            // 
-            this.dataSet1BindingSource.DataSource = this.dataSet1;
+          
             this.dataSet1BindingSource.Position = 0;
             // 
             // dataSet1
-            // 
-            this.dataSet1.DataSetName = "DataSet1";
-            this.dataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+
             // 
             // button1
             // 
@@ -113,14 +110,14 @@
             this.Load += new System.EventHandler(this.PlotGraphic_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
+         
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.BindingSource dataSet1BindingSource;
-        private DataSet1 dataSet1;
+       
         public System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

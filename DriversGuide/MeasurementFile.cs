@@ -48,14 +48,25 @@ namespace DriversGuide
             {
                 string[] rows = Regex.Split(sr.ReadLine(), "\t"); //",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 DataRow dr = dt.NewRow();
-                for (int i = 0; i < headers.Length; i++)    
+
+                if ((Convert.ToDouble(rows[0]) % 1000) == 0)
                 {
-                    dr[i] = Convert.ToDouble( rows[i]);
+
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        dr[i] = Convert.ToDouble(rows[i]);
+                    }
+                    dt.Rows.Add(dr);
                 }
-                dt.Rows.Add(dr);
+                else
+                {
+                    //Reihe verwerfen
+                }
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             return dt;
+
         }
 
         public DataTable GetMeasurementData()   //Rückgabe der Messdaten

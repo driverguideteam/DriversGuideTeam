@@ -33,6 +33,7 @@
             this.txtMeasurement = new System.Windows.Forms.TextBox();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.btnGraphic = new System.Windows.Forms.Button();
+            this.btnSpielwiese = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnReadMeasuremntfile
@@ -68,11 +69,22 @@
             this.btnGraphic.UseVisualStyleBackColor = true;
             this.btnGraphic.Click += new System.EventHandler(this.btnGraphic_Click);
             // 
+            // btnSpielwiese
+            // 
+            this.btnSpielwiese.Location = new System.Drawing.Point(187, 12);
+            this.btnSpielwiese.Name = "btnSpielwiese";
+            this.btnSpielwiese.Size = new System.Drawing.Size(75, 23);
+            this.btnSpielwiese.TabIndex = 3;
+            this.btnSpielwiese.Text = "GrafikSpielwiese";
+            this.btnSpielwiese.UseVisualStyleBackColor = true;
+            this.btnSpielwiese.Click += new System.EventHandler(this.btnSpielwiese_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSpielwiese);
             this.Controls.Add(this.btnGraphic);
             this.Controls.Add(this.txtMeasurement);
             this.Controls.Add(this.btnReadMeasuremntfile);
@@ -90,6 +102,7 @@
         private System.Windows.Forms.TextBox txtMeasurement;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.Button btnGraphic;
+        private System.Windows.Forms.Button btnSpielwiese;
     }
 }
 

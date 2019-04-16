@@ -80,3 +80,7 @@ C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\Drivers
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CoreCompileInputs.cache
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.exe
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.pdb
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe.config
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.pdb
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.ChartSpielwiese.resources
