@@ -17,6 +17,7 @@ namespace DriversGuide
         Calculations Berechnung;
         Validation Gueltigkeit;
         //DataSet dx = new DataSet();
+        public DataTable test = new DataTable();
 
         public Form1()
         {
@@ -36,7 +37,7 @@ namespace DriversGuide
             if (dr == DialogResult.OK)
             {
                 Datei = new MeasurementFile(ofd.FileName);
-                DataTable test = new DataTable();
+                //DataTable test = new DataTable();
                 test = Datei.ConvertCSVtoDataTable();
                 // var listofData = Datei.ReadMeasurementFile();
 
@@ -57,8 +58,8 @@ namespace DriversGuide
                 DataTable land = new DataTable();
                 DataTable autobahn = new DataTable();
 
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
+                //Stopwatch watch = new Stopwatch();
+                //watch.Start();
 
                 test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
                 testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
@@ -85,8 +86,8 @@ namespace DriversGuide
 
                 //testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
                 //testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
-                watch.Stop();
-                MessageBox.Show("Time spent: " + watch.Elapsed);
+                //watch.Stop();
+                //MessageBox.Show("Time spent: " + watch.Elapsed);
                
                
             }
@@ -107,6 +108,12 @@ namespace DriversGuide
         {
             ChartSpielwiese Test1 = new ChartSpielwiese();
             Test1.Show();
+        }
+
+        private void btnGPS_Click(object sender, EventArgs e)
+        {
+            GPSVisualization FormGPS = new GPSVisualization(this);
+            FormGPS.ShowDialog();
         }
     }
 }
