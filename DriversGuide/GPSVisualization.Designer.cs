@@ -28,7 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.gMap = new GMap.NET.WindowsForms.GMapControl();
+            this.conMenMap = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.karteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.satelitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kartenquelleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.googleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zurückZurRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomZurücksetzenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hybridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conMenMap.SuspendLayout();
             this.SuspendLayout();
             // 
             // gMap
@@ -58,7 +69,79 @@
             this.gMap.ShowTileGridLines = false;
             this.gMap.Size = new System.Drawing.Size(799, 451);
             this.gMap.TabIndex = 0;
-            this.gMap.Zoom = 13D;
+            this.gMap.Zoom = 11D;
+            // 
+            // conMenMap
+            // 
+            this.conMenMap.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.karteToolStripMenuItem,
+            this.satelitToolStripMenuItem,
+            this.hybridToolStripMenuItem,
+            this.kartenquelleToolStripMenuItem,
+            this.zurückZurRouteToolStripMenuItem,
+            this.zoomZurücksetzenToolStripMenuItem});
+            this.conMenMap.Name = "conMenMap";
+            this.conMenMap.Size = new System.Drawing.Size(181, 158);
+            // 
+            // karteToolStripMenuItem
+            // 
+            this.karteToolStripMenuItem.Checked = true;
+            this.karteToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.karteToolStripMenuItem.Name = "karteToolStripMenuItem";
+            this.karteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.karteToolStripMenuItem.Text = "Karte";
+            this.karteToolStripMenuItem.Click += new System.EventHandler(this.karteToolStripMenuItem_Click);
+            // 
+            // satelitToolStripMenuItem
+            // 
+            this.satelitToolStripMenuItem.Name = "satelitToolStripMenuItem";
+            this.satelitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.satelitToolStripMenuItem.Text = "Satelit";
+            this.satelitToolStripMenuItem.Click += new System.EventHandler(this.satelitToolStripMenuItem_Click);
+            // 
+            // kartenquelleToolStripMenuItem
+            // 
+            this.kartenquelleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.googleToolStripMenuItem,
+            this.bingToolStripMenuItem});
+            this.kartenquelleToolStripMenuItem.Name = "kartenquelleToolStripMenuItem";
+            this.kartenquelleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.kartenquelleToolStripMenuItem.Text = "Kartenquelle";
+            // 
+            // googleToolStripMenuItem
+            // 
+            this.googleToolStripMenuItem.Name = "googleToolStripMenuItem";
+            this.googleToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.googleToolStripMenuItem.Text = "Google";
+            this.googleToolStripMenuItem.Click += new System.EventHandler(this.googleToolStripMenuItem_Click);
+            // 
+            // bingToolStripMenuItem
+            // 
+            this.bingToolStripMenuItem.Name = "bingToolStripMenuItem";
+            this.bingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bingToolStripMenuItem.Text = "Bing";
+            this.bingToolStripMenuItem.Click += new System.EventHandler(this.bingToolStripMenuItem_Click);
+            // 
+            // zurückZurRouteToolStripMenuItem
+            // 
+            this.zurückZurRouteToolStripMenuItem.Name = "zurückZurRouteToolStripMenuItem";
+            this.zurückZurRouteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zurückZurRouteToolStripMenuItem.Text = "Zurück zur Route";
+            this.zurückZurRouteToolStripMenuItem.Click += new System.EventHandler(this.zurückZurRouteToolStripMenuItem_Click);
+            // 
+            // zoomZurücksetzenToolStripMenuItem
+            // 
+            this.zoomZurücksetzenToolStripMenuItem.Name = "zoomZurücksetzenToolStripMenuItem";
+            this.zoomZurücksetzenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zoomZurücksetzenToolStripMenuItem.Text = "Zoom zurücksetzen";
+            this.zoomZurücksetzenToolStripMenuItem.Click += new System.EventHandler(this.zoomZurücksetzenToolStripMenuItem_Click);
+            // 
+            // hybridToolStripMenuItem
+            // 
+            this.hybridToolStripMenuItem.Name = "hybridToolStripMenuItem";
+            this.hybridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hybridToolStripMenuItem.Text = "Hybrid";
+            this.hybridToolStripMenuItem.Click += new System.EventHandler(this.hybridToolStripMenuItem_Click);
             // 
             // GPSVisualization
             // 
@@ -68,6 +151,8 @@
             this.Controls.Add(this.gMap);
             this.Name = "GPSVisualization";
             this.Text = "GPSVisualization";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GPSVisualization_FormClosed);
+            this.conMenMap.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -75,5 +160,14 @@
         #endregion
 
         private GMap.NET.WindowsForms.GMapControl gMap;
+        private System.Windows.Forms.ContextMenuStrip conMenMap;
+        private System.Windows.Forms.ToolStripMenuItem karteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem satelitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zurückZurRouteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoomZurücksetzenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kartenquelleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem googleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hybridToolStripMenuItem;
     }
 }

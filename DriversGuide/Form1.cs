@@ -16,12 +16,17 @@ namespace DriversGuide
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
-        //DataSet dx = new DataSet();
-        public DataTable test = new DataTable();
+        //DataSet dx = new DataSet(); 
+        DataTable test = new DataTable();
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        public DataTable GetDataTable()
+        {
+            return test;
         }
 
         private void btnReadMeasuremntfile_Click(object sender, EventArgs e)
