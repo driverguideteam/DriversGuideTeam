@@ -33,12 +33,12 @@
             this.conMenMap = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.karteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.satelitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hybridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kartenquelleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.googleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zurückZurRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomZurücksetzenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hybridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.conMenMap.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -99,6 +99,13 @@
             this.satelitToolStripMenuItem.Text = "Satelit";
             this.satelitToolStripMenuItem.Click += new System.EventHandler(this.satelitToolStripMenuItem_Click);
             // 
+            // hybridToolStripMenuItem
+            // 
+            this.hybridToolStripMenuItem.Name = "hybridToolStripMenuItem";
+            this.hybridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hybridToolStripMenuItem.Text = "Hybrid";
+            this.hybridToolStripMenuItem.Click += new System.EventHandler(this.hybridToolStripMenuItem_Click);
+            // 
             // kartenquelleToolStripMenuItem
             // 
             this.kartenquelleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -118,7 +125,7 @@
             // bingToolStripMenuItem
             // 
             this.bingToolStripMenuItem.Name = "bingToolStripMenuItem";
-            this.bingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bingToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.bingToolStripMenuItem.Text = "Bing";
             this.bingToolStripMenuItem.Click += new System.EventHandler(this.bingToolStripMenuItem_Click);
             // 
@@ -135,13 +142,6 @@
             this.zoomZurücksetzenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomZurücksetzenToolStripMenuItem.Text = "Zoom zurücksetzen";
             this.zoomZurücksetzenToolStripMenuItem.Click += new System.EventHandler(this.zoomZurücksetzenToolStripMenuItem_Click);
-            // 
-            // hybridToolStripMenuItem
-            // 
-            this.hybridToolStripMenuItem.Name = "hybridToolStripMenuItem";
-            this.hybridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.hybridToolStripMenuItem.Text = "Hybrid";
-            this.hybridToolStripMenuItem.Click += new System.EventHandler(this.hybridToolStripMenuItem_Click);
             // 
             // GPSVisualization
             // 

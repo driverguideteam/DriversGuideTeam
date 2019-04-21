@@ -157,5 +157,6 @@ namespace DriversGuide
             else if (hybridToolStripMenuItem.Checked)
                 gMap.MapProvider = tempHyb.MapProvider;            
         }
+
     }
 }

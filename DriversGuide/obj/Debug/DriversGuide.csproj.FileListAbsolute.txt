@@ -85,15 +85,6 @@ C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\Drivers
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.pdb
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.ChartSpielwiese.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.ChartSpielwiese.resources
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\GMap.NET.Core.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\GMap.NET.WindowsForms.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\GMap.NET.WindowsPresentation.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\Newtonsoft.Json.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.EF6.dll
-C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.Linq.dll
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.xml
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\Newtonsoft.Json.xml
@@ -101,3 +92,4 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.dll.config
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.GPSVisualization.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CopyComplete
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.Fody.CopyLocal.cache

@@ -47,60 +47,14 @@ namespace DriversGuide
                 // var listofData = Datei.ReadMeasurementFile();
 
                 //txtMeasurement.Text = listofData[1][1].ToString();
-                Berechnung = new Calculations();
-                Gueltigkeit = new Validation();
-                bool test1, testdur;
-                string column_speed = "OBD_Vehicle_Speed_(PID_13)";
-                string column_acc = "ai";
-                string column_dynamic = "a*v";
-                string column_distance = "di";
-                string column_time = "Time";
-                string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
-                double RPA_city, nfPerc;
-                double percUrb = 0, percRur = 0, percMotor = 0;
-
-                DataTable city = new DataTable();
-                DataTable land = new DataTable();
-                DataTable autobahn = new DataTable();
-
-                //Stopwatch watch = new Stopwatch();
-                //watch.Start();
-
-                test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
-                testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
-
-                //Berechnung.CalcReq(ref test, column_speed);
-                //testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
-
-                //Berechnung.SortData(ref test, column_speed);
-                //Berechnung.SepIntervals(test, column_speed);
-                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                //testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
-                //testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
-                //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
-
-                //test1 = Berechnung.PosCheck(column_acc);
-                //Berechnung.CalcAvgSpeedInt(column_speed);
-                //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
-                //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);
-                //RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
-
-                //testdur = Gueltigkeit.CheckDuration(test, column_time);
-                //testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
-                //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
-
-                //testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
-                //testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
-                //watch.Stop();
-                //MessageBox.Show("Time spent: " + watch.Elapsed);
-               
-               
+                berechnungDurchführenToolStripMenuItem.Enabled = true;
+                txtMeasurement.Text = "Berechnung durchführen bevor Grafik - Zeichnen möglich ist!";
             }
             else
             {
                 txtMeasurement.Text = "Fail";
             }
-        }
+        }              
 
         private void btnGraphic_Click(object sender, EventArgs e)
         {
@@ -120,5 +74,61 @@ namespace DriversGuide
             GPSVisualization FormGPS = new GPSVisualization(this);
             FormGPS.ShowDialog();
         }
+
+        private void btnBerechnen_Click(object sender, EventArgs e)
+        {
+            Berechnung = new Calculations();
+            Gueltigkeit = new Validation();
+            bool test1, testdur;
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
+            string column_distance = "di";
+            string column_time = "Time";
+            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+            string erg;
+
+            DataTable city = new DataTable();
+            DataTable land = new DataTable();
+            DataTable autobahn = new DataTable();
+
+            //Stopwatch watch = new Stopwatch();
+            //watch.Start();
+
+            test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+            testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+            if (test1 && testdur)
+                erg = "gültig";
+            else
+                erg = "ungültig";
+
+            //Berechnung.CalcReq(ref test, column_speed);
+            //testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+            //Berechnung.SortData(ref test, column_speed);
+            //Berechnung.SepIntervals(test, column_speed);
+            //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+            //testdur = Gueltigkeit.CheckDistanceIntervals(city, land, autobahn, column_distance);
+            //testdur = Gueltigkeit.CheckDistributionIntervals(city, land, autobahn, column_distance);
+            //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+
+            //test1 = Berechnung.PosCheck(column_acc);
+            //Berechnung.CalcAvgSpeedInt(column_speed);
+            //Berechnung.GetIntervals(ref city, ref land, ref autobahn);
+            //nfPerc = Berechnung.CalcPercentile_Interval(ref city, column_dynamic);
+            //RPA_city = Berechnung.CalcRPA(test, city, column_speed, column_acc, column_distance);
+
+            //testdur = Gueltigkeit.CheckDuration(test, column_time);
+            //testdur = Gueltigkeit.CheckDistanceComplete(test, column_speed, column_distance);
+            //testdur = Gueltigkeit.CheckDistributionComplete(test, column_speed, column_distance);
+
+            //testdur = Gueltigkeit.CheckSpeeds(city, autobahn, column_speed, column_time);
+            //testdur = Gueltigkeit.CheckColdStart(test, column_speed, column_time, column_coolant);
+            //watch.Stop();
+            MessageBox.Show("Berechnung durchgeführt!\nFahrt ist " + erg, "Berechnungsergebnis");
+            grafikToolStripMenuItem.Enabled = true;
+        }
+
     }
 }
