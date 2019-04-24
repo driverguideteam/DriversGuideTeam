@@ -16,8 +16,9 @@ namespace DriversGuide
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
-        //DataSet dx = new DataSet(); 
-        DataTable test = new DataTable();
+        public DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
+        public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
+        //DataSet dx = new DataSet();
 
         public Form1()
         {
@@ -44,6 +45,7 @@ namespace DriversGuide
                 Datei = new MeasurementFile(ofd.FileName);
                 //DataTable test = new DataTable();
                 test = Datei.ConvertCSVtoDataTable();
+                ColumnHeaders = Datei.Titles();   //Ausgabe Spaltenüberschriften
                 // var listofData = Datei.ReadMeasurementFile();
 
                 //txtMeasurement.Text = listofData[1][1].ToString();
@@ -58,9 +60,17 @@ namespace DriversGuide
 
         private void btnGraphic_Click(object sender, EventArgs e)
         {
-           PlotGraphic NewDiagram = new PlotGraphic();
-            NewDiagram.Show();
-
+            //Anzeige MessageBox falls Datatable leer!
+            if (test.Rows.Count == 0)
+            {
+                MessageBox.Show("Keine Daten geladen!");
+            }
+            //Öffnen des Diagramm-Forms, falls Datatable gefüllt
+            else
+            {
+                Datenauswahl DataDiagram = new Datenauswahl(this);
+                DataDiagram.Show();
+            }
         }
 
         private void btnSpielwiese_Click(object sender, EventArgs e)

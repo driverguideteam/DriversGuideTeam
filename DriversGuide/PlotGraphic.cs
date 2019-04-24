@@ -7,60 +7,84 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;   //für einige Chart-Optionen benötigt
 
 namespace DriversGuide
 {
     public partial class PlotGraphic : Form
     {
-        public PlotGraphic()
+        Form1 Form1Copy;                   //Verbindung zu Hauptform
+        Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
+        DataTable tt = new DataTable();    //Erstellung neues Datatable
+
+        public PlotGraphic(Form1 CreateForm)
         {
+            Form1Copy = CreateForm;   //Zugriff auf Hauptform
             InitializeComponent();
         }
 
-        Random z = new Random();
+        public void GetChosenData(Datenauswahl CreateForm)
+        {
+            AuswahlCopy = CreateForm;   //Zugriff auf Datenauswahlform
+        }
 
-        //public double function(double x)
-        //{
-        //    //function: sin(x)                              //Testfunktion
-        //    return (Math.Exp(Math.Sin(x)));
-        //}
+        public string GiveChosenData()
+        {
+            string GewDaten = AuswahlCopy.ChosenData();
+            return GewDaten;
+        }
 
         public void PlotGraphic_Load(object sender, EventArgs e)
         {
+            this.WindowState = FormWindowState.Maximized;   //Fenster maximieren
+            //this.MinimumSize = this.Size;
+            //this.MaximumSize = this.Size;
 
+            lblPos.Visible = false;
 
-            for (double i = -300; i <= 300; i += 0.5)   //füllen Datenpunke-Serie
+            tt = Form1Copy.test.Copy();   //Kopie des Datatables
+
+            for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
             {
-                chart1.Series["TestDaten1"].Points.AddXY(i, z.NextDouble() * 20);   //erzeugt Serie von Punkten mit denen gezeichnet wird
+                tt.Rows[i]["Time"] = Convert.ToInt64((tt.Rows[i]["Time"])) / 1000;
             }
-            
-            var Chart1 = chart1.ChartAreas["TestDaten1"];
 
-            Chart1.AxisX.ScaleView.Zoom(-100, 100);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            //Chart1.AxisY.ScaleView.Zoom(1.1, 1.1);   //Startskalierung der y-Achse
+            chart1.Series.Clear();       //Leeren der Daten für Diagramm
+            chart1.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
 
-            chart1.Series["TestDaten1"].ChartType = SeriesChartType.Spline;   //legt Diagrammtyp fest -> smooth-lin
+            GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
+            newchart.ConnectToForm1(Form1Copy);   //Form1-Verlinkung zu GraphicsCreate
+            newchart.GetChosenData(this);
+            newchart.Drawchart(ref chart1);
 
-            Chart newch = new Chart();
-            newch.Show();
+            string GewDaten = GiveChosenData();
 
-            Button xzy = new Button();
-            xzy.Show();
+            for (int i = 0; i < tt.Rows.Count; i++)   //füllen Datenpunke-Serie
+            {
+                chart1.Series[GewDaten].Points.AddXY(Convert.ToInt64(tt.Rows[i]["Time"]), Convert.ToDouble(tt.Rows[i][GewDaten]));
+                //erzeugt Serie von Punkten mit denen gezeichnet wird
+            }
+
+            //Chart CreateChart = new Chart();
+            //CreateChart.Show();
+
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void chart1_MouseClick_1(object sender, MouseEventArgs e)
         {
-            chart1.Series.Clear();
-            chart1.ChartAreas.Clear();
-        }
+            lblPos.Visible = true;
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            GraphicsCreate newchart = new GraphicsCreate();
-            newchart.Drawchart();
-            GraphicsCreate newchart2 = new GraphicsCreate();
-            newchart2.Drawchart();
+            string GewDaten = GiveChosenData();
+
+            var xv = chart1.ChartAreas[GewDaten].AxisX.PixelPositionToValue(e.X);
+            Series S = chart1.Series[GewDaten];
+            DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xv).DefaultIfEmpty(S.Points.Last()).Last();
+
+            lblPos.Text = "x = " + pNext.XValue.ToString() + "\n" +
+                          "y = " + Math.Round(pNext.YValues[0], 2).ToString();
+
+            lblPos.Location = new Point(e.X + 20, e.Y - 40);
         }
     }
 }

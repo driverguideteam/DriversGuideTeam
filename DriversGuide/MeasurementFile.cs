@@ -66,7 +66,6 @@ namespace DriversGuide
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             return dt;
-
         }
 
         public DataTable GetMeasurementData()   //Rückgabe der Messdaten
@@ -110,6 +109,14 @@ namespace DriversGuide
         public MeasurementFile ()
         {
 
+        }
+
+        public string[] Titles()      //Ausgabe der Spaltenüberschriften
+        {
+            StreamReader sr = new StreamReader(Filename);
+            string[] headers = sr.ReadLine().Split('\t');
+
+            return headers;
         }
 
     }
