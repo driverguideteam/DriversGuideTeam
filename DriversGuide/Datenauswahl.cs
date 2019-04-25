@@ -22,13 +22,6 @@ namespace DriversGuide
             InitializeComponent();
         }
 
-        private void btnGenerateGraphic_Click(object sender, EventArgs e)
-        {
-            PlotGraphic NewDiagram = new PlotGraphic(Form1Copy);   //Erstellung neue DiagrammForm mit Verbingdung zu Hauptform
-            NewDiagram.GetChosenData(this);                        //Verbindung der DiagrammForm zur DatenauswahlListe
-            NewDiagram.Show();                                     //Anzeige Diagramm
-        }
-
         public string ChosenData()   //Rückgabe gewählte Daten in Liste
         {
             string cdat = lstChooseData.SelectedItem.ToString();
@@ -45,6 +38,13 @@ namespace DriversGuide
                 lstChooseData.Items.Add(Titles[i]);
             }
             lstChooseData.SelectedIndex = 0;   //Starteinstellung gewählter Index
+        }
+
+        private void lstChooseData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            PlotGraphic NewDiagram = new PlotGraphic(Form1Copy);   //Erstellung neue DiagrammForm mit Verbingdung zu Hauptform
+            NewDiagram.GetChosenData(this);                        //Verbindung der DiagrammForm zur DatenauswahlListe
+            NewDiagram.Show();                                     //Anzeige Diagramm
         }
     }
 }

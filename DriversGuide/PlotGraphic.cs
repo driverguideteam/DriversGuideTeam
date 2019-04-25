@@ -17,11 +17,15 @@ namespace DriversGuide
         Form1 Form1Copy;                   //Verbindung zu Hauptform
         Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
         DataTable tt = new DataTable();    //Erstellung neues Datatable
+        GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
+        int i = 0;
+        public bool ChartReady = false;
 
         public PlotGraphic(Form1 CreateForm)
         {
             Form1Copy = CreateForm;   //Zugriff auf Hauptform
             InitializeComponent();
+            this.chart1.MouseWheel += chart1_MouseWheel;
         }
 
         public void GetChosenData(Datenauswahl CreateForm)
@@ -53,7 +57,6 @@ namespace DriversGuide
             chart1.Series.Clear();       //Leeren der Daten für Diagramm
             chart1.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
 
-            GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
             newchart.ConnectToForm1(Form1Copy);   //Form1-Verlinkung zu GraphicsCreate
             newchart.GetChosenData(this);
             newchart.Drawchart(ref chart1);
@@ -69,22 +72,48 @@ namespace DriversGuide
             //Chart CreateChart = new Chart();
             //CreateChart.Show();
 
+            tmrTimeSpan.Enabled = true;
         }
 
         private void chart1_MouseClick_1(object sender, MouseEventArgs e)
         {
-            lblPos.Visible = true;
 
+        }
+
+        private void chart1_MouseWheel(object sender, MouseEventArgs e)
+        {
             string GewDaten = GiveChosenData();
 
-            var xv = chart1.ChartAreas[GewDaten].AxisX.PixelPositionToValue(e.X);
-            Series S = chart1.Series[GewDaten];
-            DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xv).DefaultIfEmpty(S.Points.Last()).Last();
+            chart1.ChartAreas[GewDaten].AxisX.ScaleView.Zoom(chart1.ChartAreas[GewDaten].AxisX.Minimum, chart1.ChartAreas[GewDaten].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
+            chart1.ChartAreas[GewDaten].AxisY.ScaleView.Zoom(chart1.ChartAreas[GewDaten].AxisY.Minimum, chart1.ChartAreas[GewDaten].AxisY.Maximum);   //Startskalierung der y-Achse
+        }
 
-            lblPos.Text = "x = " + pNext.XValue.ToString() + "\n" +
-                          "y = " + Math.Round(pNext.YValues[0], 2).ToString();
+        private void chart1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (ChartReady == true)
+            {
+                double[] AP = newchart.ActualPosition(ref chart1, e);
 
-            lblPos.Location = new Point(e.X + 20, e.Y - 40);
+                string GewDaten = GiveChosenData();
+
+                chart1.ChartAreas[GewDaten].CursorX.Position = AP[0];
+                chart1.ChartAreas[GewDaten].CursorY.Position = AP[1];
+
+                lblPos.Visible = true;
+                lblPos.Text = "x = " + AP[0].ToString() + "\n" +
+                              "y = " + AP[1].ToString();
+            }
+        }
+
+        private void tmrTimeSpan_Tick(object sender, EventArgs e)
+        {
+            i++;
+
+            if (i >= 2)
+            {
+                ChartReady = true;
+                tmrTimeSpan.Enabled = false;
+            }
         }
     }
 }
