@@ -14,14 +14,14 @@ namespace DriversGuide
 {
     public partial class PlotGraphic : Form
     {
-        Form1 Form1Copy;                   //Verbindung zu Hauptform
+        DriversGuideMain Form1Copy;                   //Verbindung zu Hauptform
         Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
         DataTable tt = new DataTable();    //Erstellung neues Datatable
         GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
         int i = 0;
         public bool ChartReady = false;
 
-        public PlotGraphic(Form1 CreateForm)
+        public PlotGraphic(DriversGuideMain CreateForm)
         {
             Form1Copy = CreateForm;   //Zugriff auf Hauptform
             InitializeComponent();

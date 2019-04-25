@@ -13,13 +13,13 @@ namespace DriversGuide
 {
     class GraphicsCreate
     {
-        Form1 Form1Copy;
+        DriversGuideMain Form1Copy;
         PlotGraphic PlotCopy;
         DataTable tt = new DataTable();
         public string xp;
         public string yp;
 
-        public void ConnectToForm1(Form1 CreateForm)
+        public void ConnectToForm1(DriversGuideMain CreateForm)
         {
             Form1Copy = CreateForm;   //Zugriff auf Hauptform
             tt = Form1Copy.test.Copy();
