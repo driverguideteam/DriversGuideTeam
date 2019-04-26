@@ -20,9 +20,7 @@ namespace DriversGuide
         DataTable dataset = new DataTable();
         string lat = "GPS_Latitude";
         string lon = "GPS_Longitude";
-        GMapControl tempMap = new GMapControl();
-        GMapControl tempHyb = new GMapControl();
-        GMapControl tempSat = new GMapControl();
+        GMapProvider provHyb, provMap, provSat;
         Calculations Berechnungen = new Calculations();
 
         public GPSVisualization(DriversGuideMain caller)
@@ -42,12 +40,12 @@ namespace DriversGuide
             gMap.Width = this.ClientSize.Width;
             gMap.Height = this.ClientSize.Height;
 
-            tempMap.MapProvider = GoogleMapProvider.Instance;
-            tempHyb.MapProvider = GoogleHybridMapProvider.Instance;
-            tempSat.MapProvider = GoogleSatelliteMapProvider.Instance;
+            provMap = GoogleMapProvider.Instance;
+            provHyb = GoogleHybridMapProvider.Instance;
+            provSat = GoogleSatelliteMapProvider.Instance;
             googleToolStripMenuItem.Checked = true;
 
-            gMap.MapProvider = tempMap.MapProvider;
+            gMap.MapProvider = provMap;
             GMaps.Instance.Mode = AccessMode.ServerOnly;        
             gMap.ShowCenter = false;
             gMap.DragButton = MouseButtons.Left;
@@ -99,7 +97,6 @@ namespace DriversGuide
                     GMapRoute route = new GMapRoute(points, "Urban");
                     route.Stroke = new Pen(Color.DarkRed, 3);
                     routes.Routes.Add(route);
-                    gMap.Overlays.Add(routes);
 
                     points.Clear();
                 }
@@ -108,7 +105,6 @@ namespace DriversGuide
             GMapRoute routeA = new GMapRoute(points, "Urban");
             routeA.Stroke = new Pen(Color.DarkRed, 3);
             routes.Routes.Add(routeA);
-            gMap.Overlays.Add(routes);
 
             points.Clear();
 
@@ -122,7 +118,6 @@ namespace DriversGuide
                     GMapRoute route = new GMapRoute(points, "Rural");
                     route.Stroke = new Pen(Color.Green, 3);
                     routes.Routes.Add(route);
-                    gMap.Overlays.Add(routes);
 
                     points.Clear();
                 }
@@ -131,7 +126,6 @@ namespace DriversGuide
             GMapRoute routeB = new GMapRoute(points, "Rural");
             routeB.Stroke = new Pen(Color.Green, 3);
             routes.Routes.Add(routeB);
-            gMap.Overlays.Add(routes);
 
             points.Clear();
 
@@ -145,7 +139,6 @@ namespace DriversGuide
                     GMapRoute route = new GMapRoute(points, "motorway");
                     route.Stroke = new Pen(Color.Black, 3);
                     routes.Routes.Add(route);
-                    gMap.Overlays.Add(routes);
 
                     points.Clear();
                 }
@@ -156,28 +149,28 @@ namespace DriversGuide
             routes.Routes.Add(routeC);
             gMap.Overlays.Add(routes);
 
-            //for (int i = 0; i < dataset.Rows.Count; i++)
-            //{
+            points.Clear();
+            for (int i = 0; i < dataset.Rows.Count; i++)
+            {
+                points.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
+            }
 
-            //    pointsUrban.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
-            //}
-
-            //GMapRoute routea = new GMapRoute(pointsUrban, "nn");
-            //routea.Stroke = new Pen(Color.Blue, 1);
-            //routes.Routes.Add(routea);
-            //gMap.Overlays.Add(routes);
+            GMapRoute routee = new GMapRoute(points, "Color Coded Trip");
+            routee.Stroke = new Pen(Color.Blue, 1);
+            routes.Routes.Add(routee);
+            gMap.Overlays.Add(routes);
 
             //MainForm.Controls["txtMeasurement"].Text = "//Gemessene Distanz anhand GPS Datenauswertung:\n" + route.Distance.ToString();
         }
 
-            private void GPSVisualization_FormClosed(object sender, FormClosedEventArgs e)
+        private void GPSVisualization_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainForm.Show();
         }
 
         private void karteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempMap.MapProvider;
+            gMap.MapProvider = provMap;
             karteToolStripMenuItem.Checked = true;
             satelitToolStripMenuItem.Checked = false;
             hybridToolStripMenuItem.Checked = false;
@@ -185,7 +178,7 @@ namespace DriversGuide
 
         private void satelitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempSat.MapProvider;
+            gMap.MapProvider = provSat;
             satelitToolStripMenuItem.Checked = true;
             karteToolStripMenuItem.Checked = false;
             hybridToolStripMenuItem.Checked = false;
@@ -203,23 +196,23 @@ namespace DriversGuide
 
         private void googleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempMap.MapProvider = GoogleMapProvider.Instance;
-            tempHyb.MapProvider = GoogleHybridMapProvider.Instance;
-            tempSat.MapProvider = GoogleSatelliteMapProvider.Instance;
+            provMap = GoogleMapProvider.Instance;
+            provHyb = GoogleHybridMapProvider.Instance;
+            provSat = GoogleSatelliteMapProvider.Instance;
             googleToolStripMenuItem.Checked = true;
             bingToolStripMenuItem.Checked = false;
             
             if (satelitToolStripMenuItem.Checked)
-                gMap.MapProvider = tempSat.MapProvider;
+                gMap.MapProvider = provSat;
             else if (karteToolStripMenuItem.Checked)
-                gMap.MapProvider = tempMap.MapProvider;
+                gMap.MapProvider = provMap;
             else if (hybridToolStripMenuItem.Checked)
-                gMap.MapProvider = tempHyb.MapProvider;            
+                gMap.MapProvider = provHyb;            
         }
 
         private void hybridToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempHyb.MapProvider;
+            gMap.MapProvider = provHyb;
             hybridToolStripMenuItem.Checked = true;
             satelitToolStripMenuItem.Checked = false;
             karteToolStripMenuItem.Checked = false;
@@ -227,18 +220,18 @@ namespace DriversGuide
 
         private void bingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempMap.MapProvider = BingMapProvider.Instance;
-            tempHyb.MapProvider = BingHybridMapProvider.Instance;
-            tempSat.MapProvider = BingSatelliteMapProvider.Instance;
+            provMap = BingMapProvider.Instance;
+            provHyb = BingHybridMapProvider.Instance;
+            provSat = BingSatelliteMapProvider.Instance;
             bingToolStripMenuItem.Checked = true;
-            googleToolStripMenuItem.Checked = false;         
-            
+            googleToolStripMenuItem.Checked = false;
+
             if (satelitToolStripMenuItem.Checked)
-                gMap.MapProvider = tempSat.MapProvider;
+                gMap.MapProvider = provSat;
             else if (karteToolStripMenuItem.Checked)
-                gMap.MapProvider = tempMap.MapProvider;
+                gMap.MapProvider = provMap;
             else if (hybridToolStripMenuItem.Checked)
-                gMap.MapProvider = tempHyb.MapProvider;            
+                gMap.MapProvider = provHyb;
         }
 
     }
