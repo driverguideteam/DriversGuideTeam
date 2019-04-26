@@ -104,7 +104,7 @@ namespace DriversGuide
 
             //Stopwatch watch = new Stopwatch();
             //watch.Start();
-
+            
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 

@@ -65,7 +65,7 @@ namespace DriversGuide
             centerLat = (maxLat - minLat) / 2 + minLat;
             centerLon = (maxLon - minLon) / 2 + minLon;
 
-            gMap.Position = new GMap.NET.PointLatLng(centerLat, centerLon);
+            gMap.Position = new PointLatLng(centerLat, centerLon);
         }
 
         private void AddRoute(string column_latitude, string column_longitude)
@@ -79,6 +79,7 @@ namespace DriversGuide
             DataTable urban = new DataTable();
             DataTable rural = new DataTable();
             DataTable motorway = new DataTable();
+            DataTable dt = new DataTable();
 
             Berechnungen.SepIntervals(dataset, "OBD_Vehicle_Speed_(PID_13)");
             Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
@@ -87,23 +88,30 @@ namespace DriversGuide
             Berechnungen.SortData(ref rural, "Time");
             Berechnungen.SortData(ref motorway, "Time");
 
+            double time;
+
             for (int i = 0; i < urban.Rows.Count; i++)
             {
                 points.Add(new PointLatLng(Convert.ToDouble(urban.Rows[i][column_latitude]), Convert.ToDouble(urban.Rows[i][column_longitude])));
 
                 if (i >= 1 && (Convert.ToDouble(urban.Rows[i]["Time"]) - (Convert.ToDouble(urban.Rows[(i - 1)]["Time"])) > 1000))
                 {
+                    dt = rural.Select("Time = " + (Convert.ToInt32(urban.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();                                                  
+
                     points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+                
                     GMapRoute route = new GMapRoute(points, "Urban");
-                    route.Stroke = new Pen(Color.DarkRed, 3);
+                    route.Stroke = new Pen(Color.IndianRed, 4);
                     routes.Routes.Add(route);
 
                     points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(urban.Rows[i][column_latitude]), Convert.ToDouble(urban.Rows[i][column_longitude])));
                 }
             }
 
             GMapRoute routeA = new GMapRoute(points, "Urban");
-            routeA.Stroke = new Pen(Color.DarkRed, 3);
+            routeA.Stroke = new Pen(Color.IndianRed, 4);
             routes.Routes.Add(routeA);
 
             points.Clear();
@@ -114,17 +122,25 @@ namespace DriversGuide
 
                 if (i >= 1 && (Convert.ToDouble(rural.Rows[i]["Time"]) - (Convert.ToDouble(rural.Rows[(i - 1)]["Time"])) > 1000))
                 {
+                    if (Convert.ToDouble(rural.Rows[i - 1]["ai"]) < 0)
+                        dt = urban.Select("Time = " + (Convert.ToInt32(rural.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+                    else
+                        dt = motorway.Select("Time = " + (Convert.ToInt32(rural.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+
                     points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
                     GMapRoute route = new GMapRoute(points, "Rural");
-                    route.Stroke = new Pen(Color.Green, 3);
+                    route.Stroke = new Pen(Color.MediumSeaGreen, 4);
                     routes.Routes.Add(route);
 
                     points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
                 }
             }
 
             GMapRoute routeB = new GMapRoute(points, "Rural");
-            routeB.Stroke = new Pen(Color.Green, 3);
+            routeB.Stroke = new Pen(Color.MediumSeaGreen, 4);
             routes.Routes.Add(routeB);
 
             points.Clear();
@@ -135,30 +151,42 @@ namespace DriversGuide
 
                 if (i >= 1 && (Convert.ToDouble(motorway.Rows[i]["Time"]) - (Convert.ToDouble(motorway.Rows[(i - 1)]["Time"])) > 1000))
                 {
+                    dt = rural.Select("Time = " + (Convert.ToInt32(motorway.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+
                     points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
                     GMapRoute route = new GMapRoute(points, "motorway");
-                    route.Stroke = new Pen(Color.Black, 3);
+                    route.Stroke = new Pen(Color.LightSkyBlue, 4);
                     routes.Routes.Add(route);
 
                     points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
                 }
             }
 
             GMapRoute routeC = new GMapRoute(points, "Motorway");
-            routeC.Stroke = new Pen(Color.Black, 3);
+            routeC.Stroke = new Pen(Color.LightSkyBlue, 4);
             routes.Routes.Add(routeC);
             gMap.Overlays.Add(routes);
 
-            points.Clear();
-            for (int i = 0; i < dataset.Rows.Count; i++)
-            {
-                points.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
-            }
+            GMapOverlay markers = new GMapOverlay("markers");
+            GMapMarker marker = new GMarkerGoogle(
+                new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
+                GMarkerGoogleType.blue_pushpin);
+            markers.Markers.Add(marker);
+            gMap.Overlays.Add(markers);
 
-            GMapRoute routee = new GMapRoute(points, "Color Coded Trip");
-            routee.Stroke = new Pen(Color.Blue, 1);
-            routes.Routes.Add(routee);
-            gMap.Overlays.Add(routes);
+            //points.Clear();
+            //for (int i = 0; i < dataset.Rows.Count; i++)
+            //{
+            //    points.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
+            //}
+
+            //GMapRoute routee = new GMapRoute(points, "Color Coded Trip");
+            //routee.Stroke = new Pen(Color.Blue, 1);
+            //routes.Routes.Add(routee);
+            //gMap.Overlays.Add(routes);
 
             //MainForm.Controls["txtMeasurement"].Text = "//Gemessene Distanz anhand GPS Datenauswertung:\n" + route.Distance.ToString();
         }
