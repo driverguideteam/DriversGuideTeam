@@ -20,6 +20,8 @@ namespace DriversGuide
         DataTable dataset = new DataTable();
         string lat = "GPS_Latitude";
         string lon = "GPS_Longitude";
+        string speed = "OBD_Vehicle_Speed_(PID_13)";
+        string time = "Time";
         GMapProvider provHyb, provMap, provSat;
         Calculations Berechnungen = new Calculations();
 
@@ -31,14 +33,14 @@ namespace DriversGuide
             InitializeComponent();
             InitMap();
             CenterMap(lat, lon);
-            AddRoute(lat, lon);
+            AddRoute(lat, lon, speed, time);
             gMap.ContextMenuStrip = conMenMap;
         }
 
         private void InitMap()
         {
             gMap.Width = this.ClientSize.Width;
-            gMap.Height = this.ClientSize.Height;
+            gMap.Height = this.ClientSize.Height;            
 
             provMap = GoogleMapProvider.Instance;
             provHyb = GoogleHybridMapProvider.Instance;
@@ -68,7 +70,7 @@ namespace DriversGuide
             gMap.Position = new PointLatLng(centerLat, centerLon);
         }
 
-        private void AddRoute(string column_latitude, string column_longitude)
+        private void AddRoute(string column_latitude, string column_longitude, string column_speed, string column_time)
         {
             GMapOverlay routes = new GMapOverlay("routes");
             List<PointLatLng> points = new List<PointLatLng>();
@@ -81,22 +83,20 @@ namespace DriversGuide
             DataTable motorway = new DataTable();
             DataTable dt = new DataTable();
 
-            Berechnungen.SepIntervals(dataset, "OBD_Vehicle_Speed_(PID_13)");
+            Berechnungen.SepIntervals(dataset, column_speed);
             Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
 
-            Berechnungen.SortData(ref urban, "Time");
-            Berechnungen.SortData(ref rural, "Time");
-            Berechnungen.SortData(ref motorway, "Time");
-
-            double time;
+            Berechnungen.SortData(ref urban, column_time);
+            Berechnungen.SortData(ref rural, column_time);
+            Berechnungen.SortData(ref motorway, column_time);            
 
             for (int i = 0; i < urban.Rows.Count; i++)
             {
                 points.Add(new PointLatLng(Convert.ToDouble(urban.Rows[i][column_latitude]), Convert.ToDouble(urban.Rows[i][column_longitude])));
 
-                if (i >= 1 && (Convert.ToDouble(urban.Rows[i]["Time"]) - (Convert.ToDouble(urban.Rows[(i - 1)]["Time"])) > 1000))
+                if (i >= 1 && (Convert.ToDouble(urban.Rows[i][column_time]) - (Convert.ToDouble(urban.Rows[(i - 1)][column_time])) > 1000))
                 {
-                    dt = rural.Select("Time = " + (Convert.ToInt32(urban.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();                                                  
+                    dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(urban.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();                                                  
 
                     points.RemoveAt(points.Count - 1);
                     points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
@@ -120,12 +120,12 @@ namespace DriversGuide
             {
                 points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
 
-                if (i >= 1 && (Convert.ToDouble(rural.Rows[i]["Time"]) - (Convert.ToDouble(rural.Rows[(i - 1)]["Time"])) > 1000))
+                if (i >= 1 && (Convert.ToDouble(rural.Rows[i][column_time]) - (Convert.ToDouble(rural.Rows[(i - 1)][column_time])) > 1000))
                 {
                     if (Convert.ToDouble(rural.Rows[i - 1]["ai"]) < 0)
-                        dt = urban.Select("Time = " + (Convert.ToInt32(rural.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+                        dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
                     else
-                        dt = motorway.Select("Time = " + (Convert.ToInt32(rural.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+                        dt = motorway.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
 
                     points.RemoveAt(points.Count - 1);
                     points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
@@ -138,6 +138,8 @@ namespace DriversGuide
                     points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
                 }
             }
+            dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[rural.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
 
             GMapRoute routeB = new GMapRoute(points, "Rural");
             routeB.Stroke = new Pen(Color.MediumSeaGreen, 4);
@@ -149,9 +151,9 @@ namespace DriversGuide
             {
                 points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
 
-                if (i >= 1 && (Convert.ToDouble(motorway.Rows[i]["Time"]) - (Convert.ToDouble(motorway.Rows[(i - 1)]["Time"])) > 1000))
+                if (i >= 1 && (Convert.ToDouble(motorway.Rows[i][column_time]) - (Convert.ToDouble(motorway.Rows[(i - 1)][column_time])) > 1000))
                 {
-                    dt = rural.Select("Time = " + (Convert.ToInt32(motorway.Rows[i - 1]["Time"]) + 1000)).CopyToDataTable();
+                    dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
 
                     points.RemoveAt(points.Count - 1);
                     points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
@@ -164,18 +166,20 @@ namespace DriversGuide
                     points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
                 }
             }
+            dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[motorway.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
 
             GMapRoute routeC = new GMapRoute(points, "Motorway");
             routeC.Stroke = new Pen(Color.LightSkyBlue, 4);
             routes.Routes.Add(routeC);
             gMap.Overlays.Add(routes);
-
-            GMapOverlay markers = new GMapOverlay("markers");
-            GMapMarker marker = new GMarkerGoogle(
-                new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
-                GMarkerGoogleType.blue_pushpin);
-            markers.Markers.Add(marker);
-            gMap.Overlays.Add(markers);
+            
+            //GMapOverlay markers = new GMapOverlay("markers");
+            //GMapMarker marker = new GMarkerGoogle(
+            //    new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
+            //    GMarkerGoogleType.blue_pushpin);
+            //markers.Markers.Add(marker);
+            //gMap.Overlays.Add(markers);
 
             //points.Clear();
             //for (int i = 0; i < dataset.Rows.Count; i++)
