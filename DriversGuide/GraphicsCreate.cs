@@ -36,51 +36,50 @@ namespace DriversGuide
 
         public void Drawchart(ref Chart chartname)
         {
-            string GewDaten = PlotCopy.GiveChosenData();
+            string GewDaten = PlotCopy.GiveChosenData();   //gibt gewählte Datenreihe zurück
 
-            chartname.Show();
+            chartname.Show();   //Anzeigen der Grafik
 
-            chartname.Series.Clear();
-            chartname.ChartAreas.Clear();
+            chartname.Series.Clear();       //Löschen evtl. bestehender Datenpunktreihe
+            chartname.ChartAreas.Clear();   //Löschen evtl. bestehender Grafikoberflächen
 
-            chartname.Series.Add(GewDaten);
-            chartname.ChartAreas.Add(GewDaten);
+            chartname.Series.Add(GewDaten);       //Hinzufügen einer neuen Datenpunktreihe
+            chartname.ChartAreas.Add(GewDaten);   //Hinzufügen einer neuen Grafikoberfläche
 
-            var Chart1 = chartname.ChartAreas[GewDaten];
-
-            chartname.Series[GewDaten].ChartType = SeriesChartType.Spline;
+            chartname.Series[GewDaten].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line)
 
             chartname.Invalidate();
 
-            //Chart1.CursorX.IsUserEnabled = true;                 //aktiviert Cursor (roter Strich)
+            var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
+
+            //Chart1.CursorX.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
             Chart1.CursorX.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
             Chart1.CursorX.Interval = 0;                         //Intervall des Cursors
             Chart1.AxisX.ScaleView.Zoomable = true;
             Chart1.CursorX.LineColor = Color.Red;                //Linienfarbe Cursor
             Chart1.CursorX.LineWidth = 1;                        //Liniendicke Cursor
-            Chart1.CursorX.LineDashStyle = ChartDashStyle.Solid;   //Linienart Cursor
+            Chart1.CursorX.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
-            //Chart1.CursorY.IsUserEnabled = true;                 //aktiviert Cursor (roter Strich)
+            //Chart1.CursorY.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
             Chart1.CursorY.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
             Chart1.CursorY.Interval = 0;                         //Intervall des Cursors
             Chart1.AxisY.ScaleView.Zoomable = true;
             Chart1.CursorY.LineColor = Color.Red;                //Linienfarbe Cursor
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
-            Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid;   //Linienart Cursor
+            Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
-            Chart1.AxisX.LabelStyle.Format = "";
-            Chart1.AxisY.LabelStyle.Format = "";
+            Chart1.AxisX.LabelStyle.Format = "";   //Achsenbeschriftungsformat
+            Chart1.AxisY.LabelStyle.Format = "";   //Achsenbeschriftungsformat
             Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;   //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
 
             Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0]["Time"]);                 //Festlegung x-Achsen-Minimum
-            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]);   //Festlegung x-Achsen-Maximum
+            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]); //Festlegung x-Achsen-Maximum
             //Chart1.AxisX.Interval = 300;                                              //Festlegung x-Achsen-Intervall
 
             //wird ohne Einstellung vom Programm selbst besser eingestellt:
             //Chart1.AxisY.Minimum = Convert.ToInt64(tt.Rows[0][GewDaten]);     //Festlegung y-Achsen-Minimum
             //Chart1.AxisY.Maximum = Convert.ToInt64(tt.Rows[xxx][GewDaten]);   //Festlegung y-Achsen-Maximum
             //Chart1.AxisY.Interval = 300;                                      //Festlegung y-Achsen-Intervall
-
 
             //evtl. später benötigte Funktionen:
 
@@ -97,24 +96,27 @@ namespace DriversGuide
 
         public double[] ActualPosition(ref Chart chartname, MouseEventArgs e)
         {
-            string GewDaten = PlotCopy.GiveChosenData();
-            var Chart1 = chartname.ChartAreas[GewDaten];
-            if (Chart1.AxisX.PixelPositionToValue(e.X) >= 0)
+            //gibt die x- u. y-Werte der aktuellen Mausposition zurück
+
+            string GewDaten = PlotCopy.GiveChosenData();   //gibt gewählte Datenreihe zurück
+            var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
+            if (Chart1.AxisX.PixelPositionToValue(e.X) >= 0)   //iefert nur Werte, wenn Maus innerhalb des Charts
             {
-                var xv = Chart1.AxisX.PixelPositionToValue(e.X);
+                var xv = Chart1.AxisX.PixelPositionToValue(e.X);   //liefert aktuelle Mausposition
                 Series S = chartname.Series[GewDaten];
                 DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xv).DefaultIfEmpty(S.Points.Last()).Last();
+                //liefert nächstgelegenen Datenpunkt zu aktueller Mausposition
 
-                xp = pNext.XValue.ToString();
-                yp = Math.Round(pNext.YValues[0], 2).ToString();
+                xp = pNext.XValue.ToString();                      //liefert aktuellen x-Wert
+                yp = Math.Round(pNext.YValues[0], 2).ToString();   //liefert aktuellen y-Wert gerundet
             }
 
-            double Xpos = Convert.ToDouble(xp);
-            double Ypos = Convert.ToDouble(yp);
+            double Xpos = Convert.ToDouble(xp);   //Konvertierung x-Wert in Double
+            double Ypos = Convert.ToDouble(yp);   //Konvertierung y-Wert in Double
 
-            double[] Cpos = new double[] { Xpos, Ypos };
+            double[] Cpos = new double[] { Xpos, Ypos };   //erstellt DoubleArray mit x- u. y-Wert
 
-            return Cpos;
+            return Cpos;   //liefert DoubleArray zurück
         }
     }
 }

@@ -67,7 +67,6 @@
             this.chart1.Size = new System.Drawing.Size(977, 531);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            this.chart1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseClick_1);
             this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove);
             // 
             // lblPos
