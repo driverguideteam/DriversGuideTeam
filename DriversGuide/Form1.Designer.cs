@@ -1,6 +1,6 @@
 ﻿namespace DriversGuide
 {
-    partial class Form1
+    partial class DriversGuideMain
     {
         /// <summary>
         /// Required designer variable.
@@ -122,7 +122,7 @@
             this.gPSSpielwieseToolStripMenuItem.Text = "GPS Spielwiese";
             this.gPSSpielwieseToolStripMenuItem.Click += new System.EventHandler(this.btnGPS_Click);
             // 
-            // Form1
+            // DriversGuideMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -130,7 +130,7 @@
             this.Controls.Add(this.txtMeasurement);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "DriversGuideMain";
             this.Text = "Drivers Guide";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

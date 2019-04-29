@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace DriversGuide
 {
-    public partial class Form1 : Form
+    public partial class DriversGuideMain : Form
     {
         MeasurementFile Datei;
         Calculations Berechnung;
@@ -20,7 +20,7 @@ namespace DriversGuide
         public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
         //DataSet dx = new DataSet();
 
-        public Form1()
+        public DriversGuideMain()
         {
             InitializeComponent();
         }
@@ -104,7 +104,7 @@ namespace DriversGuide
 
             //Stopwatch watch = new Stopwatch();
             //watch.Start();
-
+            
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 

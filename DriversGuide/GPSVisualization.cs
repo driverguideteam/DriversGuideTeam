@@ -16,15 +16,16 @@ namespace DriversGuide
 {
     public partial class GPSVisualization : Form
     {
-        private Form1 MainForm;
+        private DriversGuideMain MainForm;
         DataTable dataset = new DataTable();
         string lat = "GPS_Latitude";
         string lon = "GPS_Longitude";
-        GMap.NET.WindowsForms.GMapControl tempMap = new GMap.NET.WindowsForms.GMapControl();
-        GMap.NET.WindowsForms.GMapControl tempHyb = new GMap.NET.WindowsForms.GMapControl();
-        GMap.NET.WindowsForms.GMapControl tempSat = new GMap.NET.WindowsForms.GMapControl();
+        string speed = "OBD_Vehicle_Speed_(PID_13)";
+        string time = "Time";
+        GMapProvider provHyb, provMap, provSat;
+        Calculations Berechnungen = new Calculations();
 
-        public GPSVisualization(Form1 caller)
+        public GPSVisualization(DriversGuideMain caller)
         {
             MainForm = caller;
             MainForm.Hide();
@@ -32,21 +33,21 @@ namespace DriversGuide
             InitializeComponent();
             InitMap();
             CenterMap(lat, lon);
-            AddRoute(lat, lon);
+            AddRoute(lat, lon, speed, time);
             gMap.ContextMenuStrip = conMenMap;
         }
 
         private void InitMap()
         {
             gMap.Width = this.ClientSize.Width;
-            gMap.Height = this.ClientSize.Height;
+            gMap.Height = this.ClientSize.Height;            
 
-            tempMap.MapProvider = GoogleMapProvider.Instance;
-            tempHyb.MapProvider = GoogleHybridMapProvider.Instance;
-            tempSat.MapProvider = GoogleSatelliteMapProvider.Instance;
+            provMap = GoogleMapProvider.Instance;
+            provHyb = GoogleHybridMapProvider.Instance;
+            provSat = GoogleSatelliteMapProvider.Instance;
             googleToolStripMenuItem.Checked = true;
 
-            gMap.MapProvider = tempMap.MapProvider;
+            gMap.MapProvider = provMap;
             GMaps.Instance.Mode = AccessMode.ServerOnly;        
             gMap.ShowCenter = false;
             gMap.DragButton = MouseButtons.Left;
@@ -66,23 +67,130 @@ namespace DriversGuide
             centerLat = (maxLat - minLat) / 2 + minLat;
             centerLon = (maxLon - minLon) / 2 + minLon;
 
-            gMap.Position = new GMap.NET.PointLatLng(centerLat, centerLon);
+            gMap.Position = new PointLatLng(centerLat, centerLon);
         }
 
-        private void AddRoute(string column_latitude, string column_longitude)
+        private void AddRoute(string column_latitude, string column_longitude, string column_speed, string column_time)
         {
             GMapOverlay routes = new GMapOverlay("routes");
-            List<PointLatLng> points = new List<PointLatLng>();            
+            List<PointLatLng> points = new List<PointLatLng>();
+            List<PointLatLng> pointsUrban = new List<PointLatLng>();
+            List<PointLatLng> pointsRural = new List<PointLatLng>();
+            List<PointLatLng> pointsMotorway = new List<PointLatLng>();
 
-            for (int i = 0; i < dataset.Rows.Count; i++)
+            DataTable urban = new DataTable();
+            DataTable rural = new DataTable();
+            DataTable motorway = new DataTable();
+            DataTable dt = new DataTable();
+
+            Berechnungen.SepIntervals(dataset, column_speed);
+            Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
+
+            Berechnungen.SortData(ref urban, column_time);
+            Berechnungen.SortData(ref rural, column_time);
+            Berechnungen.SortData(ref motorway, column_time);            
+
+            for (int i = 0; i < urban.Rows.Count; i++)
             {
-                points.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
+                points.Add(new PointLatLng(Convert.ToDouble(urban.Rows[i][column_latitude]), Convert.ToDouble(urban.Rows[i][column_longitude])));
+
+                if (i >= 1 && (Convert.ToDouble(urban.Rows[i][column_time]) - (Convert.ToDouble(urban.Rows[(i - 1)][column_time])) > 1000))
+                {
+                    dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(urban.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();                                                  
+
+                    points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+                
+                    GMapRoute route = new GMapRoute(points, "Urban");
+                    route.Stroke = new Pen(Color.IndianRed, 4);
+                    routes.Routes.Add(route);
+
+                    points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(urban.Rows[i][column_latitude]), Convert.ToDouble(urban.Rows[i][column_longitude])));
+                }
             }
-            
-            GMapRoute route = new GMapRoute(points, "Testdrive");
-            route.Stroke = new Pen(Color.DarkRed, 3);
-            routes.Routes.Add(route);
+
+            GMapRoute routeA = new GMapRoute(points, "Urban");
+            routeA.Stroke = new Pen(Color.IndianRed, 4);
+            routes.Routes.Add(routeA);
+
+            points.Clear();
+
+            for (int i = 0; i < rural.Rows.Count; i++)
+            {
+                points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
+
+                if (i >= 1 && (Convert.ToDouble(rural.Rows[i][column_time]) - (Convert.ToDouble(rural.Rows[(i - 1)][column_time])) > 1000))
+                {
+                    if (Convert.ToDouble(rural.Rows[i - 1]["ai"]) < 0)
+                        dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
+                    else
+                        dt = motorway.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
+
+                    points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
+                    GMapRoute route = new GMapRoute(points, "Rural");
+                    route.Stroke = new Pen(Color.MediumSeaGreen, 4);
+                    routes.Routes.Add(route);
+
+                    points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
+                }
+            }
+            dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[rural.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
+            GMapRoute routeB = new GMapRoute(points, "Rural");
+            routeB.Stroke = new Pen(Color.MediumSeaGreen, 4);
+            routes.Routes.Add(routeB);
+
+            points.Clear();
+
+            for (int i = 0; i < motorway.Rows.Count; i++)
+            {
+                points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
+
+                if (i >= 1 && (Convert.ToDouble(motorway.Rows[i][column_time]) - (Convert.ToDouble(motorway.Rows[(i - 1)][column_time])) > 1000))
+                {
+                    dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[i - 1][column_time]) + 1000)).CopyToDataTable();
+
+                    points.RemoveAt(points.Count - 1);
+                    points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
+                    GMapRoute route = new GMapRoute(points, "motorway");
+                    route.Stroke = new Pen(Color.LightSkyBlue, 4);
+                    routes.Routes.Add(route);
+
+                    points.Clear();
+                    points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
+                }
+            }
+            dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[motorway.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+
+            GMapRoute routeC = new GMapRoute(points, "Motorway");
+            routeC.Stroke = new Pen(Color.LightSkyBlue, 4);
+            routes.Routes.Add(routeC);
             gMap.Overlays.Add(routes);
+            
+            //GMapOverlay markers = new GMapOverlay("markers");
+            //GMapMarker marker = new GMarkerGoogle(
+            //    new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
+            //    GMarkerGoogleType.blue_pushpin);
+            //markers.Markers.Add(marker);
+            //gMap.Overlays.Add(markers);
+
+            //points.Clear();
+            //for (int i = 0; i < dataset.Rows.Count; i++)
+            //{
+            //    points.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[i][column_latitude]), Convert.ToDouble(dataset.Rows[i][column_longitude])));
+            //}
+
+            //GMapRoute routee = new GMapRoute(points, "Color Coded Trip");
+            //routee.Stroke = new Pen(Color.Blue, 1);
+            //routes.Routes.Add(routee);
+            //gMap.Overlays.Add(routes);
 
             //MainForm.Controls["txtMeasurement"].Text = "//Gemessene Distanz anhand GPS Datenauswertung:\n" + route.Distance.ToString();
         }
@@ -94,7 +202,7 @@ namespace DriversGuide
 
         private void karteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempMap.MapProvider;
+            gMap.MapProvider = provMap;
             karteToolStripMenuItem.Checked = true;
             satelitToolStripMenuItem.Checked = false;
             hybridToolStripMenuItem.Checked = false;
@@ -102,7 +210,7 @@ namespace DriversGuide
 
         private void satelitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempSat.MapProvider;
+            gMap.MapProvider = provSat;
             satelitToolStripMenuItem.Checked = true;
             karteToolStripMenuItem.Checked = false;
             hybridToolStripMenuItem.Checked = false;
@@ -120,23 +228,23 @@ namespace DriversGuide
 
         private void googleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempMap.MapProvider = GoogleMapProvider.Instance;
-            tempHyb.MapProvider = GoogleHybridMapProvider.Instance;
-            tempSat.MapProvider = GoogleSatelliteMapProvider.Instance;
+            provMap = GoogleMapProvider.Instance;
+            provHyb = GoogleHybridMapProvider.Instance;
+            provSat = GoogleSatelliteMapProvider.Instance;
             googleToolStripMenuItem.Checked = true;
             bingToolStripMenuItem.Checked = false;
             
             if (satelitToolStripMenuItem.Checked)
-                gMap.MapProvider = tempSat.MapProvider;
+                gMap.MapProvider = provSat;
             else if (karteToolStripMenuItem.Checked)
-                gMap.MapProvider = tempMap.MapProvider;
+                gMap.MapProvider = provMap;
             else if (hybridToolStripMenuItem.Checked)
-                gMap.MapProvider = tempHyb.MapProvider;            
+                gMap.MapProvider = provHyb;            
         }
 
         private void hybridToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = tempHyb.MapProvider;
+            gMap.MapProvider = provHyb;
             hybridToolStripMenuItem.Checked = true;
             satelitToolStripMenuItem.Checked = false;
             karteToolStripMenuItem.Checked = false;
@@ -144,18 +252,18 @@ namespace DriversGuide
 
         private void bingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempMap.MapProvider = BingMapProvider.Instance;
-            tempHyb.MapProvider = BingHybridMapProvider.Instance;
-            tempSat.MapProvider = BingSatelliteMapProvider.Instance;
+            provMap = BingMapProvider.Instance;
+            provHyb = BingHybridMapProvider.Instance;
+            provSat = BingSatelliteMapProvider.Instance;
             bingToolStripMenuItem.Checked = true;
-            googleToolStripMenuItem.Checked = false;         
-            
+            googleToolStripMenuItem.Checked = false;
+
             if (satelitToolStripMenuItem.Checked)
-                gMap.MapProvider = tempSat.MapProvider;
+                gMap.MapProvider = provSat;
             else if (karteToolStripMenuItem.Checked)
-                gMap.MapProvider = tempMap.MapProvider;
+                gMap.MapProvider = provMap;
             else if (hybridToolStripMenuItem.Checked)
-                gMap.MapProvider = tempHyb.MapProvider;            
+                gMap.MapProvider = provHyb;
         }
 
     }
