@@ -13,16 +13,17 @@ namespace DriversGuide
 {
     class GraphicsCreate
     {
-        DriversGuideMain Form1Copy;
-        PlotGraphic PlotCopy;
-        DataTable tt = new DataTable();
+        DriversGuideMain Form1Copy;          //Zugriff auf Hauptform
+        PlotGraphic PlotCopy;                //Zugriff auf PlotCopy
+        DataTable tt = new DataTable();      //Erstellung neues Datatable
         public string xp;
         public string yp;
 
         public void ConnectToForm1(DriversGuideMain CreateForm)
         {
-            Form1Copy = CreateForm;   //Zugriff auf Hauptform
-            tt = Form1Copy.test.Copy();
+            Form1Copy = CreateForm;       //Zugriff auf Hauptform
+            tt = Form1Copy.test.Copy();   //Kopie des Datatables
+
             for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
             {
                 tt.Rows[i]["Time"] = Convert.ToInt64((tt.Rows[i]["Time"])) / 1000;
@@ -68,13 +69,26 @@ namespace DriversGuide
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
-            Chart1.AxisX.LabelStyle.Format = "";   //Achsenbeschriftungsformat
-            Chart1.AxisY.LabelStyle.Format = "";   //Achsenbeschriftungsformat
-            Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;   //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
-
             Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0]["Time"]);                 //Festlegung x-Achsen-Minimum
             Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]); //Festlegung x-Achsen-Maximum
             //Chart1.AxisX.Interval = 300;                                              //Festlegung x-Achsen-Intervall
+
+            string xUnit = PlotCopy.GetUnits()[0];   //liefert Einheit der x-Achse
+            string yUnit = PlotCopy.GetUnits()[1];   //liefert Einheit der y-Achse
+
+            //chartname.Titles.Add("Test").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
+            Chart1.AxisX.Title = "Time" + " in " + xUnit;                     //Beschriftung der x-Achse
+            Chart1.AxisX.TitleAlignment = StringAlignment.Center;             //Ausrichtung der x-Achsen-Beschriftung
+            Chart1.AxisX.TextOrientation = TextOrientation.Horizontal;        //Orientierung der x-Achsen-Beschriftung
+            Chart1.AxisX.TitleFont = new Font("Arial", 10, FontStyle.Bold);   //Schriftart der x-Achsen-Beschriftung
+            Chart1.AxisX.LabelStyle.Format = "";                              //Achsenbeschriftungsformat
+
+            Chart1.AxisY.Title = GewDaten + " in " + yUnit;                   //Beschriftung der y-Achse
+            Chart1.AxisY.TitleAlignment = StringAlignment.Center;             //Ausrichtung der y-Achsen-Beschriftung
+            Chart1.AxisY.TextOrientation = TextOrientation.Rotated270;        //Orientierung der y-Achsen-Beschriftung
+            Chart1.AxisY.TitleFont = new Font("Arial", 10, FontStyle.Bold);   //Schriftart der y-Achsen-Beschriftung
+            Chart1.AxisY.LabelStyle.Format = "";                              //Achsenbeschriftungsformat
+            Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;                 //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
 
             //wird ohne Einstellung vom Programm selbst besser eingestellt:
             //Chart1.AxisY.Minimum = Convert.ToInt64(tt.Rows[0][GewDaten]);     //Festlegung y-Achsen-Minimum

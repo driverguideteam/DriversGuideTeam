@@ -17,6 +17,7 @@ namespace DriversGuide
         Calculations Berechnung;
         Validation Gueltigkeit;
         public DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
+        public DataTable units = new DataTable();  //öffentl. Datatable für Einheiten erstellen (für Grafik)
         public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
         //DataSet dx = new DataSet();
 
@@ -45,7 +46,8 @@ namespace DriversGuide
                 Datei = new MeasurementFile(ofd.FileName);
                 //DataTable test = new DataTable();
                 test = Datei.ConvertCSVtoDataTable();
-                ColumnHeaders = Datei.Titles();   //Ausgabe Spaltenüberschriften
+                ColumnHeaders = Datei.Titles();       //Ausgabe der Spaltenüberschriften
+                units = Datei.GetMeasurementUnits();  //Ausgabe der Einheiten 
                 // var listofData = Datei.ReadMeasurementFile();
 
                 //txtMeasurement.Text = listofData[1][1].ToString();

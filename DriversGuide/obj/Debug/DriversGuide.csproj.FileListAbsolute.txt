@@ -101,7 +101,6 @@ C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\bin\Debug\Newtonso
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.xml
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.dll.config
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.ChartSpielwiese.resources
-C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Form1.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.GPSVisualization.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.PlotGraphic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Properties.Resources.resources
@@ -115,3 +114,4 @@ C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversG
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csprojAssemblyReference.cache
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Datenauswahl.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources

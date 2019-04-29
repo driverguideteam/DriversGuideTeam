@@ -17,6 +17,7 @@ namespace DriversGuide
         DriversGuideMain Form1Copy;                   //Verbindung zu Hauptform
         Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
         DataTable tt = new DataTable();    //Erstellung neues Datatable
+        DataTable units = new DataTable(); //Erstellung neues Datatable für Einheiten
         GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
         int i = 0;
         public bool ChartReady = false;   //bool-Wert für Timer
@@ -39,7 +40,20 @@ namespace DriversGuide
             return GewDaten;   //gibt den Namen der Datenreihe zurück, welche für die Grafik ausgewählt wurde
         }
 
-        public void PlotGraphic_Load(object sender, EventArgs e)
+        public string[] GetUnits()   //liefert StringArray mit x- u. y-Einheiten
+        {
+            units = Form1Copy.units.Copy();   //Kopie des Einheiten-Datatables
+
+            //string xUnit = Convert.ToString((units.Rows[0]["Time"]));
+            string xUnit = "sec";
+            string yUnit = Convert.ToString((units.Rows[0][GiveChosenData()]));
+
+            string[] xyUnits = new string[] { xUnit, yUnit };   //erstellt StringArray mit x- u. y-Einheiten
+
+            return xyUnits;   //liefert StingArray zurück
+        }
+
+            public void PlotGraphic_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;   //Fenster maximieren
             //this.MinimumSize = this.Size;
@@ -102,9 +116,14 @@ namespace DriversGuide
                 chart1.ChartAreas[GewDaten].CursorX.Position = AP[0];
                 chart1.ChartAreas[GewDaten].CursorY.Position = AP[1];
 
+                string xUnit = GetUnits()[0];
+                string yUnit = GetUnits()[1];
+
                 lblPos.Visible = true;
-                lblPos.Text = "x = " + AP[0].ToString() + "\n" +
-                              "y = " + AP[1].ToString();
+                lblPos.Text = "x = " + AP[0].ToString() + " " + xUnit + "\n" +
+                              "y = " + AP[1].ToString() + " " + yUnit;
+
+                //lblPos.BackColor = Color.White;
             }
         }
 

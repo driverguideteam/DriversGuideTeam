@@ -74,8 +74,9 @@
             this.lblPos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPos.AutoSize = true;
+            this.lblPos.BackColor = System.Drawing.Color.White;
             this.lblPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPos.Location = new System.Drawing.Point(865, 266);
+            this.lblPos.Location = new System.Drawing.Point(798, 281);
             this.lblPos.Name = "lblPos";
             this.lblPos.Size = new System.Drawing.Size(60, 24);
             this.lblPos.TabIndex = 2;
