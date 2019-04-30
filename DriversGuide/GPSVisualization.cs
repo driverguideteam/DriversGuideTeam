@@ -29,7 +29,7 @@ namespace DriversGuide
         {
             MainForm = caller;
             MainForm.Hide();
-            dataset = MainForm.GetDataTable();
+            dataset = MainForm.GetCompleteDataTable();
             InitializeComponent();
             InitMap();
             CenterMap(lat, lon);

@@ -18,6 +18,9 @@ namespace DriversGuide
         Validation Gueltigkeit;
         public DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
         public DataTable units = new DataTable();  //öffentl. Datatable für Einheiten erstellen (für Grafik)
+        private DataTable urban = new DataTable();
+        private DataTable rural = new DataTable();
+        private DataTable motorway = new DataTable();
         public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
         //DataSet dx = new DataSet();
 
@@ -26,9 +29,29 @@ namespace DriversGuide
             InitializeComponent();
         }
 
-        public DataTable GetDataTable()
+        public DataTable GetCompleteDataTable()
         {
             return test;
+        }
+
+        public DataTable GetUrbanDataTable()
+        {
+            return urban;
+        }
+
+        public DataTable GetRuralDataTable()
+        {
+            return rural;
+        }
+
+        public DataTable GetMotorwayDataTable()
+        {
+            return motorway;
+        }
+
+        public DataTable GetUnitsDataTable()
+        {
+            return units;
         }
 
         private void btnReadMeasuremntfile_Click(object sender, EventArgs e)
@@ -52,12 +75,32 @@ namespace DriversGuide
 
                 //txtMeasurement.Text = listofData[1][1].ToString();
                 berechnungDurchführenToolStripMenuItem.Enabled = true;
-                txtMeasurement.Text = "Berechnung durchführen bevor Grafik - Zeichnen möglich ist!";
+                //txtMeasurement.Text = "Berechnung durchführen bevor Grafik - Zeichnen möglich ist!";
             }
             else
             {
                 txtMeasurement.Text = "Fail";
             }
+
+            /*--------------------------------------------------------------------------------------------
+             * Code für Testzwecke! Zur Ferstigstellung zu entfernen!!*/
+            Berechnung = new Calculations();
+            Gueltigkeit = new Validation();
+            bool test1, testdur;
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
+            string column_distance = "di";
+            string column_time = "Time";
+            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+
+            test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+            testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+
+            grafikToolStripMenuItem.Enabled = true;
+            txtMeasurement.Text = "Berechnung durchgeführt!";
+            /*--------------------------------------------------------------------------------------------*/
         }              
 
         private void btnGraphic_Click(object sender, EventArgs e)
@@ -100,15 +143,16 @@ namespace DriversGuide
             string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
             string erg;
 
-            DataTable city = new DataTable();
-            DataTable land = new DataTable();
-            DataTable autobahn = new DataTable();
+            //DataTable city = new DataTable();
+            //DataTable land = new DataTable();
+            //DataTable autobahn = new DataTable();
 
             //Stopwatch watch = new Stopwatch();
             //watch.Start();
             
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
 
             if (test1 && testdur)
                 erg = "gültig";
