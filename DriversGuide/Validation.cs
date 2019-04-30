@@ -16,6 +16,28 @@ namespace DriversGuide
         //needed for various methods in it
         Calculations Berechnungen = new Calculations();
 
+        DataTable values = new DataTable();
+
+
+        //Initualize the values DataTable
+        //********************************************************************************************        
+        private void InitValueData()
+        {
+            values.Columns.Add("Klasse", typeof(String));
+            values.Columns.Add("Verteilung");
+            values.Columns.Add("Strecke");
+            values.Columns.Add("Dauer");
+
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows[0]["Klasse"] = "Gesamt";
+            values.Rows[1]["Klasse"] = "Stadt";
+            values.Rows[2]["Klasse"] = "Land";
+            values.Rows[3]["Klasse"] = "Autobahn";
+        }
+
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
         /*Parameters:
@@ -31,6 +53,10 @@ namespace DriversGuide
             distances[0] = (double)urban.Compute("SUM([" + column_distance + "])", "") / 1000;           
             distances[1] = (double)rural.Compute("SUM([" + column_distance + "])", "") / 1000;
             distances[2] = (double)motorway.Compute("SUM([" + column_distance + "])", "") / 1000;
+
+            values.Rows[1]["Strecke"] = distances[0];
+            values.Rows[2]["Strecke"] = distances[1];
+            values.Rows[3]["Strecke"] = distances[2];
         }
 
         //Check if urban criteria are matched
@@ -114,7 +140,7 @@ namespace DriversGuide
                 duration = (double)(dt_motorway.Rows.Count - 1) / 60;
                 tooFast = (double)(fasterHFF.Rows.Count - 1) / 60;
                 tooFast *= 100 / duration;
-            }
+            }            
 
             //if criteria are matched return true
             if (min > 90 && max >= 110 && max <= 145 && fasterOnehundred >= 5)
@@ -123,6 +149,17 @@ namespace DriversGuide
                 return true;
             else
                 return false;
+        }
+
+        //Return all calculated parameters
+        //********************************************************************************************
+        /*Parameters:
+         *      - values:           DataTable with the calculated values
+        */
+        //********************************************************************************************
+        public DataTable GetValues()
+        {
+            return values;
         }
 
         //Check the percentage of the distances per interval compared to complete trip
@@ -153,13 +190,21 @@ namespace DriversGuide
             //Calculate distance of complete trip
             trip = (double)dt.Compute("SUM([" + column_distance + "])", "") / 1000;
 
+            //Add complete trip length to values DataTable
+            values.Rows[0]["Strecke"] = trip;
+
             //Calculate percentage per interval compared to complete trip
             distances[0] *= 100 / trip;
             distances[1] *= 100 / trip;
             distances[2] *= 100 / trip;
 
+            //Add distibution data to DataTable values
+            values.Rows[1]["Verteilung"] = distances[0];
+            values.Rows[2]["Verteilung"] = distances[1];
+            values.Rows[3]["Verteilung"] = distances[2];
+
             //if criteria are matched, return true
-            if (distances[0] >= 29 && distances[1] <= 44 && distances[1] >= 23 && distances[1] <= 43 && distances[2] >= 23 && distances[2] <= 43)
+            if (distances[0] >= 29 && distances[0] <= 44 && distances[1] >= 23 && distances[1] <= 43 && distances[2] >= 23 && distances[2] <= 43)
                 return true;
             else
                 return false;
@@ -186,17 +231,26 @@ namespace DriversGuide
             //Calculate distance of complete trip
             trip = distances[0] + distances[1] + distances[2];
 
+            //Add complete trip length to values DataTable
+            values.Rows[0]["Strecke"] = trip;
+
             //Calculate percentage per interval compared to complete trip
             distances[0] *= 100 / trip;
             distances[1] *= 100 / trip;
             distances[2] *= 100 / trip;
 
+            //Add distibution data to DataTable values
+            values.Rows[1]["Verteilung"] = distances[0];
+            values.Rows[2]["Verteilung"] = distances[1];
+            values.Rows[3]["Verteilung"] = distances[2];
+
             //if criteria are matched, return true
-            if (distances[0] >= 29 && distances[1] <= 44 && distances[1] >= 23 && distances[1] <= 43 && distances[2] >= 23 && distances[2] <= 43)
+            if (distances[0] >= 29 && distances[0] <= 44 && distances[1] >= 23 && distances[1] <= 43 && distances[2] >= 23 && distances[2] <= 43)
                 return true;
             else
                 return false;
         }
+
 
         //Check if speed criteria are matched
         //********************************************************************************************
@@ -233,6 +287,9 @@ namespace DriversGuide
 
             //Calculate the complete trip's duration in minutes
             duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column_time]) / 60000;
+
+            //Add duration to values DataTable
+            values.Rows[0]["Dauer"] = duration;
 
             //if critera are matched return true
             if (duration >= 90 && duration <= 120)
@@ -372,6 +429,9 @@ namespace DriversGuide
             rural = dt.Clone();
             motorway = dt.Clone();
 
+            //Init the value DataTable
+            InitValueData();                      
+
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals
             Berechnungen.SepIntervals(dt, column_speed);
@@ -379,7 +439,7 @@ namespace DriversGuide
 
             //Call all methods for checking every criteria
             //if all of them return true, all criteria are matched and this
-            //mthode returns true
+            //methode returns true
             if (CheckDistanceComplete(dt, column_speed, column_distance) &&
                 CheckDistributionComplete(dt, column_speed, column_distance) &&
                 CheckDuration(dt, column_time) &&

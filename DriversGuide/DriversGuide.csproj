@@ -108,6 +108,12 @@
     </Compile>
     <Compile Include="GraphicsCreate.cs" />
     <Compile Include="MeasurementFile.cs" />
+    <Compile Include="Overview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Overview.Designer.cs">
+      <DependentUpon>Overview.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlotGraphic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GPSVisualization.resx">
       <DependentUpon>GPSVisualization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Overview.resx">
+      <DependentUpon>Overview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlotGraphic.resx">
       <DependentUpon>PlotGraphic.cs</DependentUpon>

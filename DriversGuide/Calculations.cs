@@ -110,14 +110,9 @@ namespace DriversGuide
             double strecke, beschl, dynamik;
 
             //Add the new columns 
-            dt.Columns.Add(("di"), typeof(System.Double));
-            dt.Columns.Add(("ai"), typeof(System.Double));
-            dt.Columns.Add(("a*v"), typeof(System.Double));
-
-            //Add the associated unit to the first row
-            //dt.Rows[0]["di"] = "m";
-            //dt.Rows[0]["ai"] = "m/s^2";
-            //dt.Rows[0]["a*v"] = "m^2/s^3";
+            dt.Columns.Add("di", typeof(Double));
+            dt.Columns.Add("ai", typeof(Double));
+            dt.Columns.Add("a*v", typeof(Double));            
 
             //Calculation of distance, acceleration and dynamic
             for (int i = firstRow; i < lastRow; i++)
@@ -206,6 +201,27 @@ namespace DriversGuide
                 return true;
             else
                 return false;
+        }
+
+        //Add Units to unit DataTable
+        //********************************************************************************************
+        /*Parameters:
+         *      - units:       DataTable which contains the units
+        */
+        //********************************************************************************************
+        public void AddUnits (DataTable units)
+        {
+            //Add the new columns            
+            units.Columns.Add("di");
+            units.Columns.Add("ai");
+            units.Columns.Add("a*v");
+            units.Columns.Add("Perzentil");
+
+            //Add the associated unit to the first row
+            units.Rows[0]["di"] = "m";
+            units.Rows[0]["ai"] = "m/s^2";
+            units.Rows[0]["a*v"] = "m^2/s^3";
+            units.Rows[0]["Perzentil"] = "%";
         }
 
         //Calculate the average speed in every interval

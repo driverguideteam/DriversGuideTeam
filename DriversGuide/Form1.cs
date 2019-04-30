@@ -21,6 +21,7 @@ namespace DriversGuide
         private DataTable urban = new DataTable();
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
+        private DataTable values = new DataTable();
         public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
         //DataSet dx = new DataSet();
 
@@ -52,6 +53,11 @@ namespace DriversGuide
         public DataTable GetUnitsDataTable()
         {
             return units;
+        }
+
+        public DataTable GetValuesDataTable()
+        {
+            return values;
         }
 
         private void btnReadMeasuremntfile_Click(object sender, EventArgs e)
@@ -97,6 +103,8 @@ namespace DriversGuide
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
             Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.AddUnits(units);
+            values = Gueltigkeit.GetValues();
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";
@@ -153,6 +161,8 @@ namespace DriversGuide
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
             Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.AddUnits(units);
+            values = Gueltigkeit.GetValues();
 
             if (test1 && testdur)
                 erg = "gültig";
@@ -186,5 +196,10 @@ namespace DriversGuide
             grafikToolStripMenuItem.Enabled = true;
         }
 
+        private void überblickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Overview FormOverview = new Overview(this);
+            FormOverview.ShowDialog();
+        }
     }
 }

@@ -38,6 +38,8 @@
             this.showGraphicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grafikSpielwieseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gPSSpielwieseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.auswertungToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.überblickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +61,8 @@
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dateiToolStripMenuItem,
-            this.grafikToolStripMenuItem});
+            this.grafikToolStripMenuItem,
+            this.auswertungToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -78,7 +81,7 @@
             // fileEinlesenToolStripMenuItem
             // 
             this.fileEinlesenToolStripMenuItem.Name = "fileEinlesenToolStripMenuItem";
-            this.fileEinlesenToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.fileEinlesenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fileEinlesenToolStripMenuItem.Text = "File einlesen...";
             this.fileEinlesenToolStripMenuItem.Click += new System.EventHandler(this.btnReadMeasuremntfile_Click);
             // 
@@ -86,7 +89,7 @@
             // 
             this.berechnungDurchführenToolStripMenuItem.Enabled = false;
             this.berechnungDurchführenToolStripMenuItem.Name = "berechnungDurchführenToolStripMenuItem";
-            this.berechnungDurchführenToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.berechnungDurchführenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.berechnungDurchführenToolStripMenuItem.Text = "Berechnen...";
             this.berechnungDurchführenToolStripMenuItem.Click += new System.EventHandler(this.btnBerechnen_Click);
             // 
@@ -104,23 +107,38 @@
             // showGraphicToolStripMenuItem
             // 
             this.showGraphicToolStripMenuItem.Name = "showGraphicToolStripMenuItem";
-            this.showGraphicToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.showGraphicToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showGraphicToolStripMenuItem.Text = "Show Graphic";
             this.showGraphicToolStripMenuItem.Click += new System.EventHandler(this.btnGraphic_Click);
             // 
             // grafikSpielwieseToolStripMenuItem
             // 
             this.grafikSpielwieseToolStripMenuItem.Name = "grafikSpielwieseToolStripMenuItem";
-            this.grafikSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.grafikSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.grafikSpielwieseToolStripMenuItem.Text = "Grafik Spielwiese";
             this.grafikSpielwieseToolStripMenuItem.Click += new System.EventHandler(this.btnSpielwiese_Click);
             // 
             // gPSSpielwieseToolStripMenuItem
             // 
             this.gPSSpielwieseToolStripMenuItem.Name = "gPSSpielwieseToolStripMenuItem";
-            this.gPSSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.gPSSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gPSSpielwieseToolStripMenuItem.Text = "GPS Spielwiese";
             this.gPSSpielwieseToolStripMenuItem.Click += new System.EventHandler(this.btnGPS_Click);
+            // 
+            // auswertungToolStripMenuItem
+            // 
+            this.auswertungToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.überblickToolStripMenuItem});
+            this.auswertungToolStripMenuItem.Name = "auswertungToolStripMenuItem";
+            this.auswertungToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.auswertungToolStripMenuItem.Text = "Auswertung";
+            // 
+            // überblickToolStripMenuItem
+            // 
+            this.überblickToolStripMenuItem.Name = "überblickToolStripMenuItem";
+            this.überblickToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.überblickToolStripMenuItem.Text = "Überblick";
+            this.überblickToolStripMenuItem.Click += new System.EventHandler(this.überblickToolStripMenuItem_Click);
             // 
             // DriversGuideMain
             // 
@@ -150,6 +168,8 @@
         private System.Windows.Forms.ToolStripMenuItem grafikSpielwieseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gPSSpielwieseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem berechnungDurchführenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem auswertungToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem überblickToolStripMenuItem;
     }
 }
 
