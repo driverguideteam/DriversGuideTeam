@@ -173,7 +173,7 @@ namespace DriversGuide
             routeC.Stroke = new Pen(Color.LightSkyBlue, 4);
             routes.Routes.Add(routeC);
             gMap.Overlays.Add(routes);
-            
+
             //GMapOverlay markers = new GMapOverlay("markers");
             //GMapMarker marker = new GMarkerGoogle(
             //    new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
@@ -192,7 +192,7 @@ namespace DriversGuide
             //routes.Routes.Add(routee);
             //gMap.Overlays.Add(routes);
 
-            //MainForm.Controls["txtMeasurement"].Text = "//Gemessene Distanz anhand GPS Datenauswertung:\n" + route.Distance.ToString();
+            //MainForm.Controls["txtMeasurement"].Text = "//Gemessene Distanz anhand GPS Datenauswertung:\n" + routee.Distance.ToString();
         }
 
         private void GPSVisualization_FormClosed(object sender, FormClosedEventArgs e)

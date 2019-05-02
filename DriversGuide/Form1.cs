@@ -60,6 +60,27 @@ namespace DriversGuide
             return values;
         }
 
+        //Initualize the values DataTable
+        //********************************************************************************************        
+        private void InitValueData()
+        {
+            values.Columns.Add("Klasse", typeof(String));
+            values.Columns.Add("Verteilung");
+            values.Columns.Add("Geschwindigkeit");
+            values.Columns.Add("Strecke");
+            values.Columns.Add("Dauer");
+            values.Columns.Add("Haltezeit");
+
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows[0]["Klasse"] = "Gesamt";
+            values.Rows[1]["Klasse"] = "Stadt";
+            values.Rows[2]["Klasse"] = "Land";
+            values.Rows[3]["Klasse"] = "Autobahn";
+        }
+
         private void btnReadMeasuremntfile_Click(object sender, EventArgs e)
         {
             ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
@@ -90,6 +111,9 @@ namespace DriversGuide
 
             /*--------------------------------------------------------------------------------------------
              * Code für Testzwecke! Zur Ferstigstellung zu entfernen!!*/
+
+            //Init the value DataTable
+            InitValueData();
             Berechnung = new Calculations();
             Gueltigkeit = new Validation();
             bool test1, testdur;
@@ -99,12 +123,39 @@ namespace DriversGuide
             string column_distance = "di";
             string column_time = "Time";
             string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+            double holdTime = 0;
 
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+            Berechnung.SepIntervals(test, column_speed);
             Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
             Berechnung.AddUnits(units);
-            values = Gueltigkeit.GetValues();
+
+            Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+            Gueltigkeit.GetHoldDurtation(ref holdTime);
+
+            values.Rows[1]["Geschwindigkeit"] = avgUrban;
+            values.Rows[2]["Geschwindigkeit"] = avgRural;
+            values.Rows[3]["Geschwindigkeit"] = avgMotorway;
+
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            values.Rows[0]["Strecke"] = (double)test.Compute("SUM([" + column_distance + "])", "") / 1000;
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+
+            values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
+            values.Rows[0]["Haltezeit"] = holdTime;
+
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";
@@ -150,6 +201,10 @@ namespace DriversGuide
             string column_time = "Time";
             string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
             string erg;
+            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
+
+            //Init the value DataTable
+            InitValueData();
 
             //DataTable city = new DataTable();
             //DataTable land = new DataTable();
@@ -157,12 +212,19 @@ namespace DriversGuide
 
             //Stopwatch watch = new Stopwatch();
             //watch.Start();
-            
+
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+          
+            Berechnung.SepIntervals(test, column_speed);
             Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
             Berechnung.AddUnits(units);
-            values = Gueltigkeit.GetValues();
+            Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
+
+            values.Rows[1]["Geschwindigket"] = avgUrban;
+            values.Rows[2]["Geschwindigket"] = avgRural;
+            values.Rows[3]["Geschwindigket"] = avgMotorway;
+
 
             if (test1 && testdur)
                 erg = "gültig";

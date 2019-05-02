@@ -20,7 +20,7 @@ namespace DriversGuide
         private double distUrban, distRural, distMotorway;
         private DataTable urban;
         private DataTable rural;
-        private DataTable motorway;
+        private DataTable motorway;        
 
         //Delete every entry in DataTable < 0.1 and return number of remaining entries
         //********************************************************************************************
@@ -252,6 +252,21 @@ namespace DriversGuide
             avgMotorway = avgSpeed_motorway;
         }
 
+        //Return the trip distance of each interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - urban:            variable to store urban average interval speed
+         *      - rural:            variable to store rural average interval speed
+         *      - motorway:         variable to store motorway average interval speed
+        */
+        //********************************************************************************************
+        public void GetTripInt (ref double urban, ref double rural, ref double motorway)
+        {
+            urban = distUrban / 1000;
+            rural = distRural / 1000;
+            motorway = distMotorway / 1000;
+        }
+
         //Return the interval DataTables
         //********************************************************************************************
         /*Parameters:
@@ -366,8 +381,8 @@ namespace DriversGuide
         //********************************************************************************************
         public bool CalcAll (DataTable dt, string column_speed, string column_acc, string column_dynamic, string column_distance)
         {
-            bool oHdrd, critMatch;
-            
+            bool oHdrd, critMatch;       
+
             CalcReq(ref dt, column_speed);
             SortData(ref dt, column_speed);
             SepIntervals(dt, column_speed);
