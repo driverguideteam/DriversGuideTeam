@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.gBUrban = new System.Windows.Forms.GroupBox();
             this.tripUrban = new System.Windows.Forms.TextBox();
             this.avgVUrban = new System.Windows.Forms.TextBox();
@@ -49,6 +50,15 @@
             this.lblDurationVal = new System.Windows.Forms.Label();
             this.lblTimeHold = new System.Windows.Forms.Label();
             this.lblTimeHoldVal = new System.Windows.Forms.Label();
+            this.tTDistrUrb = new System.Windows.Forms.ToolTip(this.components);
+            this.tTDistrRur = new System.Windows.Forms.ToolTip(this.components);
+            this.tTDistrMot = new System.Windows.Forms.ToolTip(this.components);
+            this.lblMaxSpeed = new System.Windows.Forms.Label();
+            this.lblMaxSpeedVal = new System.Windows.Forms.Label();
+            this.lblMaxSpCold = new System.Windows.Forms.Label();
+            this.lblMaxSpColdVal = new System.Windows.Forms.Label();
+            this.lblAvgSpCold = new System.Windows.Forms.Label();
+            this.lblAvgSpColdVal = new System.Windows.Forms.Label();
             this.gBUrban.SuspendLayout();
             this.gBRural.SuspendLayout();
             this.gBMotorway.SuspendLayout();
@@ -90,6 +100,8 @@
             this.distUrban.ReadOnly = true;
             this.distUrban.Size = new System.Drawing.Size(78, 20);
             this.distUrban.TabIndex = 1;
+            this.distUrban.MouseLeave += new System.EventHandler(this.distUrban_MouseLeave);
+            this.distUrban.MouseHover += new System.EventHandler(this.distUrban_MouseHover);
             // 
             // gBRural
             // 
@@ -126,6 +138,8 @@
             this.distRural.ReadOnly = true;
             this.distRural.Size = new System.Drawing.Size(78, 20);
             this.distRural.TabIndex = 1;
+            this.distRural.MouseLeave += new System.EventHandler(this.distRural_MouseLeave);
+            this.distRural.MouseHover += new System.EventHandler(this.distRural_MouseHover);
             // 
             // gBMotorway
             // 
@@ -162,6 +176,8 @@
             this.distMotorway.ReadOnly = true;
             this.distMotorway.Size = new System.Drawing.Size(78, 20);
             this.distMotorway.TabIndex = 1;
+            this.distMotorway.MouseLeave += new System.EventHandler(this.distMotorway_MouseLeave);
+            this.distMotorway.MouseHover += new System.EventHandler(this.distMotorway_MouseHover);
             // 
             // lblDistr
             // 
@@ -241,11 +257,68 @@
             this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
             this.lblTimeHoldVal.TabIndex = 14;
             // 
+            // lblMaxSpeed
+            // 
+            this.lblMaxSpeed.AutoSize = true;
+            this.lblMaxSpeed.Location = new System.Drawing.Point(12, 240);
+            this.lblMaxSpeed.Name = "lblMaxSpeed";
+            this.lblMaxSpeed.Size = new System.Drawing.Size(126, 13);
+            this.lblMaxSpeed.TabIndex = 15;
+            this.lblMaxSpeed.Text = "Hoechstgeschwindigkeit:";
+            // 
+            // lblMaxSpeedVal
+            // 
+            this.lblMaxSpeedVal.AutoSize = true;
+            this.lblMaxSpeedVal.Location = new System.Drawing.Point(144, 240);
+            this.lblMaxSpeedVal.Name = "lblMaxSpeedVal";
+            this.lblMaxSpeedVal.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxSpeedVal.TabIndex = 16;
+            // 
+            // lblMaxSpCold
+            // 
+            this.lblMaxSpCold.AutoSize = true;
+            this.lblMaxSpCold.Location = new System.Drawing.Point(275, 167);
+            this.lblMaxSpCold.Name = "lblMaxSpCold";
+            this.lblMaxSpCold.Size = new System.Drawing.Size(167, 13);
+            this.lblMaxSpCold.TabIndex = 17;
+            this.lblMaxSpCold.Text = "Hoechstgeschwindigkeit Kaltstart:";
+            // 
+            // lblMaxSpColdVal
+            // 
+            this.lblMaxSpColdVal.AutoSize = true;
+            this.lblMaxSpColdVal.Location = new System.Drawing.Point(448, 167);
+            this.lblMaxSpColdVal.Name = "lblMaxSpColdVal";
+            this.lblMaxSpColdVal.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxSpColdVal.TabIndex = 18;
+            // 
+            // lblAvgSpCold
+            // 
+            this.lblAvgSpCold.AutoSize = true;
+            this.lblAvgSpCold.Location = new System.Drawing.Point(275, 189);
+            this.lblAvgSpCold.Name = "lblAvgSpCold";
+            this.lblAvgSpCold.Size = new System.Drawing.Size(192, 13);
+            this.lblAvgSpCold.TabIndex = 19;
+            this.lblAvgSpCold.Text = "Durchschnittsgeschwindigkeit Kaltstart:";
+            // 
+            // lblAvgSpColdVal
+            // 
+            this.lblAvgSpColdVal.AutoSize = true;
+            this.lblAvgSpColdVal.Location = new System.Drawing.Point(473, 189);
+            this.lblAvgSpColdVal.Name = "lblAvgSpColdVal";
+            this.lblAvgSpColdVal.Size = new System.Drawing.Size(0, 13);
+            this.lblAvgSpColdVal.TabIndex = 20;
+            // 
             // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 450);
+            this.Controls.Add(this.lblAvgSpColdVal);
+            this.Controls.Add(this.lblAvgSpCold);
+            this.Controls.Add(this.lblMaxSpColdVal);
+            this.Controls.Add(this.lblMaxSpCold);
+            this.Controls.Add(this.lblMaxSpeedVal);
+            this.Controls.Add(this.lblMaxSpeed);
             this.Controls.Add(this.lblTimeHoldVal);
             this.Controls.Add(this.lblTimeHold);
             this.Controls.Add(this.lblDurationVal);
@@ -294,5 +367,14 @@
         private System.Windows.Forms.Label lblDurationVal;
         private System.Windows.Forms.Label lblTimeHold;
         private System.Windows.Forms.Label lblTimeHoldVal;
+        private System.Windows.Forms.ToolTip tTDistrUrb;
+        private System.Windows.Forms.ToolTip tTDistrRur;
+        private System.Windows.Forms.ToolTip tTDistrMot;
+        private System.Windows.Forms.Label lblMaxSpeed;
+        private System.Windows.Forms.Label lblMaxSpeedVal;
+        private System.Windows.Forms.Label lblMaxSpCold;
+        private System.Windows.Forms.Label lblMaxSpColdVal;
+        private System.Windows.Forms.Label lblAvgSpCold;
+        private System.Windows.Forms.Label lblAvgSpColdVal;
     }
 }
