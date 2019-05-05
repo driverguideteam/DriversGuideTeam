@@ -162,34 +162,35 @@ namespace DriversGuide
             lblAvgSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"]).ToString("#.00") + " km/h";
         }
 
-        private void distUrban_MouseHover(object sender, EventArgs e)
-        {
-            tTDistrUrb.Show("Muss zwischen 29 und 44 % sein", distUrban);
-        }
+        //private void distUrban_MouseHover(object sender, EventArgs e)
+        //{
+        //    tTDistrUrb.Show("Muss zwischen 29 und 44 % sein", distUrban);
+        //}
 
-        private void distUrban_MouseLeave(object sender, EventArgs e)
-        {
-            tTDistrUrb.Hide(distUrban);
-        }
+        //private void distUrban_MouseLeave(object sender, EventArgs e)
+        //{
+        //    tTDistrUrb.Hide(distUrban);
+        //}
 
-        private void distRural_MouseHover(object sender, EventArgs e)
-        {
-            tTDistrRur.Show("Muss zwischen 23 und 43 % sein", distRural);
-        }
+        //private void distRural_MouseHover(object sender, EventArgs e)
+        //{
+        //    tTDistrRur.Show("Muss zwischen 23 und 43 % sein", distRural);
+        //}
 
-        private void distRural_MouseLeave(object sender, EventArgs e)
-        {
-            tTDistrRur.Hide(distRural);
-        }
+        //private void distRural_MouseLeave(object sender, EventArgs e)
+        //{
+        //    tTDistrRur.Hide(distRural);
+        //}
 
-        private void distMotorway_MouseHover(object sender, EventArgs e)
-        {
-            tTDistrMot.Show("Muss zwischen 23 und 43 % sein", distMotorway);
-        }
+        //private void distMotorway_MouseHover(object sender, EventArgs e)
+        //{
+        //    tTDistrMot.Show("Muss zwischen 23 und 43 % sein", distMotorway);
+        //}
 
-        private void distMotorway_MouseLeave(object sender, EventArgs e)
-        {
-            tTDistrMot.Hide(distMotorway);
-        }
+        //private void distMotorway_MouseLeave(object sender, EventArgs e)
+        //{
+        //    tTDistrMot.Hide(distMotorway);
+        //}
+
     }
 }
