@@ -70,6 +70,10 @@ namespace DriversGuide
             values.Columns.Add("Strecke");
             values.Columns.Add("Dauer");
             values.Columns.Add("Haltezeit");
+            values.Columns.Add("Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Durchschnittsgeschwindigkeit");
+            values.Columns.Add("Kaltstart Haltezeit");
 
             values.Rows.Add();
             values.Rows.Add();
@@ -125,7 +129,6 @@ namespace DriversGuide
             double avgUrban = 0, avgRural = 0, avgMotorway = 0;
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
             double tripUrban = 0, tripRural = 0, tripMotorway = 0;
-            double holdTime = 0;
 
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
@@ -137,7 +140,6 @@ namespace DriversGuide
             Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
             Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-            Gueltigkeit.GetHoldDurtation(ref holdTime);
 
             values.Rows[1]["Geschwindigkeit"] = avgUrban;
             values.Rows[2]["Geschwindigkeit"] = avgRural;
@@ -153,8 +155,11 @@ namespace DriversGuide
             values.Rows[3]["Strecke"] = tripMotorway;
 
             values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
-            values.Rows[0]["Haltezeit"] = holdTime;
-
+            values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
+            values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
+            values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
+            values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
+            values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";
