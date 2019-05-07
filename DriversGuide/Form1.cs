@@ -73,6 +73,7 @@ namespace DriversGuide
             values.Columns.Add("Hoechstgeschwindigkeit");
             values.Columns.Add("Kaltstart Hoechstgeschwindigkeit");
             values.Columns.Add("Kaltstart Durchschnittsgeschwindigkeit");
+            values.Columns.Add("Kaltstart Haltezeit");
 
             values.Rows.Add();
             values.Rows.Add();
@@ -159,6 +160,7 @@ namespace DriversGuide
             values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
             values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
             values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
+            values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";

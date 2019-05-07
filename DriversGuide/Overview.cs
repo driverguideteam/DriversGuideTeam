@@ -24,6 +24,8 @@ namespace DriversGuide
 
         private void ColorTextBoxTrip(TextBox txtbx, DataTable data, int index)
         {
+            txtbx.TextAlign = HorizontalAlignment.Center;
+
             if (Convert.ToDouble(data.Rows[index]["Strecke"]) < 16)
             {
                 txtbx.BackColor = Color.Red;
@@ -41,71 +43,40 @@ namespace DriversGuide
             }
         }
 
+        private void ColorTextBox (TextBox txtbx, DataTable data, int index, string column, double lowRed, double highRed, double lowYellow, double highYellow)
+        {
+            txtbx.TextAlign = HorizontalAlignment.Center;
+
+            if (Convert.ToDouble(data.Rows[index][column]) < lowRed || Convert.ToDouble(data.Rows[index][column]) > highRed)
+            {
+                txtbx.BackColor = Color.Red;
+                txtbx.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(data.Rows[index][column]) <= lowYellow || Convert.ToDouble(data.Rows[index][column]) >= highYellow)
+            {
+                txtbx.BackColor = Color.Yellow;
+                txtbx.ForeColor = Color.Black;
+            }
+            else
+            {
+                txtbx.BackColor = Color.Green;
+                txtbx.ForeColor = Color.White;
+            }
+        }
+
         private void ShowData()
         {
             DataTable values = new DataTable();
 
             values = MainForm.GetValuesDataTable();
 
-            distUrban.TextAlign = HorizontalAlignment.Center;
-            distRural.TextAlign = HorizontalAlignment.Center;
-            distMotorway.TextAlign = HorizontalAlignment.Center;
-
             distUrban.Text = Convert.ToDouble(values.Rows[1]["Verteilung"]).ToString("#.00") + "%";
             distRural.Text = Convert.ToDouble(values.Rows[2]["Verteilung"]).ToString("#.00") + "%";
             distMotorway.Text = Convert.ToDouble(values.Rows[3]["Verteilung"]).ToString("#.00") + "%";
 
-            if (Convert.ToDouble(values.Rows[1]["Verteilung"]) > 44 || Convert.ToDouble(values.Rows[1]["Verteilung"]) < 29)
-            {
-                distUrban.BackColor = Color.Red;
-                distUrban.ForeColor = Color.White;
-            }
-            else if (Convert.ToDouble(values.Rows[1]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[1]["Verteilung"]) <= 31.5d)
-            {
-                distUrban.BackColor = Color.Yellow;
-                distUrban.ForeColor = Color.Black;
-            }
-            else
-            {
-                distUrban.BackColor = Color.Green;
-                distUrban.ForeColor = Color.White;
-            }
-
-            if (Convert.ToDouble(values.Rows[2]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[2]["Verteilung"]) < 23)
-            {
-                distRural.BackColor = Color.Red;
-                distRural.ForeColor = Color.White;
-            }
-            else if (Convert.ToDouble(values.Rows[2]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[2]["Verteilung"]) <= 31.5d)
-            {
-                distRural.BackColor = Color.Yellow;
-                distRural.ForeColor = Color.Black;
-            }
-            else
-            {
-                distRural.BackColor = Color.Green;
-                distRural.ForeColor = Color.White;
-            }
-
-            if (Convert.ToDouble(values.Rows[3]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[3]["Verteilung"]) < 23)
-            {
-                distMotorway.BackColor = Color.Red;
-                distMotorway.ForeColor = Color.White;
-            }
-            else if (Convert.ToDouble(values.Rows[3]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[3]["Verteilung"]) <= 31.5d)
-            {
-                distMotorway.BackColor = Color.Yellow;
-                distMotorway.ForeColor = Color.Black;
-            }
-            else
-            {
-                distMotorway.BackColor = Color.Green;
-                distMotorway.ForeColor = Color.White;
-            }
-                
-            tripUrban.TextAlign = HorizontalAlignment.Center;
-            tripRural.TextAlign = HorizontalAlignment.Center;
-            tripMotorway.TextAlign = HorizontalAlignment.Center;
+            ColorTextBox(distUrban, values, 1, "Verteilung", 29, 44, 31.5, 41.5);
+            ColorTextBox(distRural, values, 2, "Verteilung", 23, 43, 31.5, 41.5);
+            ColorTextBox(distMotorway, values, 3, "Verteilung", 23, 43, 31.5, 41.5);
 
             tripUrban.Text = Convert.ToDouble(values.Rows[1]["Strecke"]).ToString("#.00") + " km";
             tripRural.Text = Convert.ToDouble(values.Rows[2]["Strecke"]).ToString("#.00") + " km";
@@ -115,7 +86,6 @@ namespace DriversGuide
             ColorTextBoxTrip(tripRural, values, 2);
             ColorTextBoxTrip(tripMotorway, values, 3);
 
-            avgVUrban.TextAlign = HorizontalAlignment.Center;
             avgVRural.TextAlign = HorizontalAlignment.Center;
             avgVMotorway.TextAlign = HorizontalAlignment.Center;
 
@@ -123,43 +93,25 @@ namespace DriversGuide
             avgVRural.Text = Convert.ToDouble(values.Rows[2]["Geschwindigkeit"]).ToString("#.00") + " km/h";
             avgVMotorway.Text = Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]).ToString("#.00") + " km/h";
 
-            if (Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) > 40 || Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) < 15)
-            {
-                avgVUrban.BackColor = Color.Red;
-                avgVUrban.ForeColor = Color.White;
-            }
-            else if (Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) >= 34 || Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) <= 21)
-            {
-                avgVUrban.BackColor = Color.Yellow;
-                avgVUrban.ForeColor = Color.Black;
-            }
-            else
-            {
-                avgVUrban.BackColor = Color.Green;
-                avgVUrban.ForeColor = Color.White;
-            }
+            ColorTextBox(avgVUrban, values, 1, "Geschwindigkeit", 15, 40, 21, 34);
 
-            //if (Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) > 40 && Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) < 15)
-            //    avgVMotorway.BackColor = Color.Red;
-            //else if (Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) >= 34 && Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) <= 21)
-            //    avgVMotorway.BackColor = Color.Yellow;
-            //else
-            //    avgVMotorway.BackColor = Color.Green;
+            tBTrip.TextAlign = HorizontalAlignment.Center; 
 
-            lblTripVal.Text = Convert.ToDouble(values.Rows[0]["Strecke"]).ToString("#.00") + " km";
-            lblDurationVal.Text = Convert.ToDouble(values.Rows[0]["Dauer"]).ToString("#.00") + " min";
+            tBTrip.Text = Convert.ToDouble(values.Rows[0]["Strecke"]).ToString("#.00") + " km";
+            tBDuration.Text = Convert.ToDouble(values.Rows[0]["Dauer"]).ToString("#.00") + " min";
+            ColorTextBox(tBDuration, values, 0, "Dauer", 90, 120, 97.5, 112.5);      
 
-            if (Convert.ToDouble(values.Rows[0]["Dauer"]) < 90 || Convert.ToDouble(values.Rows[0]["Dauer"]) > 120)
-                lblDurationVal.BackColor = Color.Red;
-            else if (Convert.ToDouble(values.Rows[0]["Dauer"]) <= 97.5d || Convert.ToDouble(values.Rows[0]["Dauer"]) > 112.5d)
-                lblDurationVal.BackColor = Color.Yellow;
-            else
-                lblDurationVal.BackColor = Color.Green;
+            tBTimeHold.TextAlign = HorizontalAlignment.Center;
+            tBMaxSpeed.TextAlign = HorizontalAlignment.Center;
+            tBMaxSpColdVal.TextAlign = HorizontalAlignment.Center;
+            tBAvgSpColdVal.TextAlign = HorizontalAlignment.Center;
+            tBTimeHoldCold.TextAlign = HorizontalAlignment.Center;
 
-            lblTimeHoldVal.Text = Convert.ToDouble(values.Rows[0]["Haltezeit"]).ToString("#.00") + " min";
-            lblMaxSpeedVal.Text = Convert.ToDouble(values.Rows[0]["Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
-            lblMaxSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
-            lblAvgSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"]).ToString("#.00") + " km/h";
+            tBTimeHold.Text = Convert.ToDouble(values.Rows[0]["Haltezeit"]).ToString("#.00") + " min";
+            tBMaxSpeed.Text = Convert.ToDouble(values.Rows[0]["Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
+            tBMaxSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
+            tBAvgSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"]).ToString("#.00") + " km/h";
+            tBTimeHoldCold.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Haltezeit"]).ToString("#.00") + " sec";
         }
 
         //private void distUrban_MouseHover(object sender, EventArgs e)

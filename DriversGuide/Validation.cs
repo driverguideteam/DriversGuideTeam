@@ -21,6 +21,7 @@ namespace DriversGuide
         double maxSpeed = 0;
         double maxSpeedCold = 0;
         double avgSpeedCold = 0;
+        double holdTimeCold = 0;
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -252,7 +253,7 @@ namespace DriversGuide
             return maxSpeedCold;
         }
 
-        //Get the maximum speed value
+        //Get the average speed value in cold start phase
         //********************************************************************************************
         /*Parameters:
          *      - avgSpeedCold:      Average speed in cold start phase measured
@@ -261,6 +262,17 @@ namespace DriversGuide
         public double GetAvgSpeedCold()
         {
             return avgSpeedCold;
+        }
+
+        //Get the hold time during cold start phase
+        //********************************************************************************************
+        /*Parameters:
+         *      - holdTimeCold:     Hold time duration
+        */
+        //********************************************************************************************
+        public double GetTimeHoldCold()
+        {
+            return holdTimeCold;
         }
 
         //Check if speed criteria are matched
@@ -376,7 +388,7 @@ namespace DriversGuide
             temp = dt.Clone();            
 
             int i = 0;
-            double time_hold = 0, time_start = 0;
+            double time_start = 0;
 
             //Sort DataTable by time
             //Copy only entires of first 5 minutes of trip to DataTable temp
@@ -408,10 +420,10 @@ namespace DriversGuide
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
 
             //Calculate hold time in seconds
-            time_hold = (double)(temp.Rows.Count - 1);      
+            holdTimeCold = (double)(temp.Rows.Count - 1);      
 
             //if criteria are matched, return true
-            if (time_start <= 15 && time_hold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+            if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
                 return true;
             else
                 return false;

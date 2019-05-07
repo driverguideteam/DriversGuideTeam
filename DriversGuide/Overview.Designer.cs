@@ -63,23 +63,39 @@
             this.lblMeanV = new System.Windows.Forms.Label();
             this.lblTrip = new System.Windows.Forms.Label();
             this.lblTripComplete = new System.Windows.Forms.Label();
-            this.lblTripVal = new System.Windows.Forms.Label();
             this.lblDuration = new System.Windows.Forms.Label();
-            this.lblDurationVal = new System.Windows.Forms.Label();
             this.lblTimeHold = new System.Windows.Forms.Label();
-            this.lblTimeHoldVal = new System.Windows.Forms.Label();
             this.tTDistrUrb = new System.Windows.Forms.ToolTip(this.components);
             this.tTDistrRur = new System.Windows.Forms.ToolTip(this.components);
             this.tTDistrMot = new System.Windows.Forms.ToolTip(this.components);
             this.lblMaxSpeed = new System.Windows.Forms.Label();
-            this.lblMaxSpeedVal = new System.Windows.Forms.Label();
             this.lblMaxSpCold = new System.Windows.Forms.Label();
-            this.lblMaxSpColdVal = new System.Windows.Forms.Label();
             this.lblAvgSpCold = new System.Windows.Forms.Label();
-            this.lblAvgSpColdVal = new System.Windows.Forms.Label();
+            this.gBColdStart = new System.Windows.Forms.GroupBox();
+            this.lbl23 = new System.Windows.Forms.Label();
+            this.lbl21 = new System.Windows.Forms.Label();
+            this.lbl22 = new System.Windows.Forms.Label();
+            this.lbl20 = new System.Windows.Forms.Label();
+            this.lbl19 = new System.Windows.Forms.Label();
+            this.tBTimeHoldCold = new System.Windows.Forms.TextBox();
+            this.tBAvgSpColdVal = new System.Windows.Forms.TextBox();
+            this.tBMaxSpColdVal = new System.Windows.Forms.TextBox();
+            this.gBGeneral = new System.Windows.Forms.GroupBox();
+            this.lbl27 = new System.Windows.Forms.Label();
+            this.lbl25 = new System.Windows.Forms.Label();
+            this.lbl26 = new System.Windows.Forms.Label();
+            this.lbl24 = new System.Windows.Forms.Label();
+            this.tBTimeHold = new System.Windows.Forms.TextBox();
+            this.tBDuration = new System.Windows.Forms.TextBox();
+            this.tBTrip = new System.Windows.Forms.TextBox();
+            this.tBMaxSpeed = new System.Windows.Forms.TextBox();
+            this.lblTimeHoldCold = new System.Windows.Forms.Label();
+            this.lbl28 = new System.Windows.Forms.Label();
             this.gBUrban.SuspendLayout();
             this.gBRural.SuspendLayout();
             this.gBMotorway.SuspendLayout();
+            this.gBColdStart.SuspendLayout();
+            this.gBGeneral.SuspendLayout();
             this.SuspendLayout();
             // 
             // gBUrban
@@ -401,121 +417,263 @@
             // lblTripComplete
             // 
             this.lblTripComplete.AutoSize = true;
-            this.lblTripComplete.Location = new System.Drawing.Point(12, 148);
+            this.lblTripComplete.Location = new System.Drawing.Point(6, 335);
             this.lblTripComplete.Name = "lblTripComplete";
             this.lblTripComplete.Size = new System.Drawing.Size(84, 13);
             this.lblTripComplete.TabIndex = 9;
             this.lblTripComplete.Text = "Strecke gesamt:";
             // 
-            // lblTripVal
-            // 
-            this.lblTripVal.AutoSize = true;
-            this.lblTripVal.Location = new System.Drawing.Point(138, 148);
-            this.lblTripVal.Name = "lblTripVal";
-            this.lblTripVal.Size = new System.Drawing.Size(0, 13);
-            this.lblTripVal.TabIndex = 10;
-            // 
             // lblDuration
             // 
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(12, 170);
+            this.lblDuration.Location = new System.Drawing.Point(6, 361);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(87, 13);
             this.lblDuration.TabIndex = 11;
             this.lblDuration.Text = "Dauer der Fahrt: ";
             // 
-            // lblDurationVal
-            // 
-            this.lblDurationVal.AutoSize = true;
-            this.lblDurationVal.Location = new System.Drawing.Point(138, 170);
-            this.lblDurationVal.Name = "lblDurationVal";
-            this.lblDurationVal.Size = new System.Drawing.Size(0, 13);
-            this.lblDurationVal.TabIndex = 12;
-            // 
             // lblTimeHold
             // 
             this.lblTimeHold.AutoSize = true;
-            this.lblTimeHold.Location = new System.Drawing.Point(12, 197);
+            this.lblTimeHold.Location = new System.Drawing.Point(6, 387);
             this.lblTimeHold.Name = "lblTimeHold";
             this.lblTimeHold.Size = new System.Drawing.Size(54, 13);
             this.lblTimeHold.TabIndex = 13;
             this.lblTimeHold.Text = "Haltezeit: ";
             // 
-            // lblTimeHoldVal
-            // 
-            this.lblTimeHoldVal.AutoSize = true;
-            this.lblTimeHoldVal.Location = new System.Drawing.Point(144, 197);
-            this.lblTimeHoldVal.Name = "lblTimeHoldVal";
-            this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
-            this.lblTimeHoldVal.TabIndex = 14;
-            // 
             // lblMaxSpeed
             // 
             this.lblMaxSpeed.AutoSize = true;
-            this.lblMaxSpeed.Location = new System.Drawing.Point(12, 221);
+            this.lblMaxSpeed.Location = new System.Drawing.Point(6, 413);
             this.lblMaxSpeed.Name = "lblMaxSpeed";
             this.lblMaxSpeed.Size = new System.Drawing.Size(126, 13);
             this.lblMaxSpeed.TabIndex = 15;
             this.lblMaxSpeed.Text = "Hoechstgeschwindigkeit:";
             // 
-            // lblMaxSpeedVal
-            // 
-            this.lblMaxSpeedVal.AutoSize = true;
-            this.lblMaxSpeedVal.Location = new System.Drawing.Point(144, 221);
-            this.lblMaxSpeedVal.Name = "lblMaxSpeedVal";
-            this.lblMaxSpeedVal.Size = new System.Drawing.Size(0, 13);
-            this.lblMaxSpeedVal.TabIndex = 16;
-            // 
             // lblMaxSpCold
             // 
             this.lblMaxSpCold.AutoSize = true;
-            this.lblMaxSpCold.Location = new System.Drawing.Point(275, 148);
+            this.lblMaxSpCold.Location = new System.Drawing.Point(6, 187);
             this.lblMaxSpCold.Name = "lblMaxSpCold";
-            this.lblMaxSpCold.Size = new System.Drawing.Size(167, 13);
+            this.lblMaxSpCold.Size = new System.Drawing.Size(126, 13);
             this.lblMaxSpCold.TabIndex = 17;
-            this.lblMaxSpCold.Text = "Hoechstgeschwindigkeit Kaltstart:";
-            // 
-            // lblMaxSpColdVal
-            // 
-            this.lblMaxSpColdVal.AutoSize = true;
-            this.lblMaxSpColdVal.Location = new System.Drawing.Point(473, 148);
-            this.lblMaxSpColdVal.Name = "lblMaxSpColdVal";
-            this.lblMaxSpColdVal.Size = new System.Drawing.Size(0, 13);
-            this.lblMaxSpColdVal.TabIndex = 18;
+            this.lblMaxSpCold.Text = "Hoechstgeschwindigkeit:";
             // 
             // lblAvgSpCold
             // 
             this.lblAvgSpCold.AutoSize = true;
-            this.lblAvgSpCold.Location = new System.Drawing.Point(275, 170);
+            this.lblAvgSpCold.Location = new System.Drawing.Point(6, 213);
             this.lblAvgSpCold.Name = "lblAvgSpCold";
-            this.lblAvgSpCold.Size = new System.Drawing.Size(192, 13);
+            this.lblAvgSpCold.Size = new System.Drawing.Size(151, 13);
             this.lblAvgSpCold.TabIndex = 19;
-            this.lblAvgSpCold.Text = "Durchschnittsgeschwindigkeit Kaltstart:";
+            this.lblAvgSpCold.Text = "Durchschnittsgeschwindigkeit:";
             // 
-            // lblAvgSpColdVal
+            // gBColdStart
             // 
-            this.lblAvgSpColdVal.AutoSize = true;
-            this.lblAvgSpColdVal.Location = new System.Drawing.Point(473, 170);
-            this.lblAvgSpColdVal.Name = "lblAvgSpColdVal";
-            this.lblAvgSpColdVal.Size = new System.Drawing.Size(0, 13);
-            this.lblAvgSpColdVal.TabIndex = 20;
+            this.gBColdStart.Controls.Add(this.lbl28);
+            this.gBColdStart.Controls.Add(this.lbl23);
+            this.gBColdStart.Controls.Add(this.lbl21);
+            this.gBColdStart.Controls.Add(this.lbl22);
+            this.gBColdStart.Controls.Add(this.lbl20);
+            this.gBColdStart.Controls.Add(this.lbl19);
+            this.gBColdStart.Controls.Add(this.tBTimeHoldCold);
+            this.gBColdStart.Controls.Add(this.tBAvgSpColdVal);
+            this.gBColdStart.Controls.Add(this.tBMaxSpColdVal);
+            this.gBColdStart.Location = new System.Drawing.Point(163, 155);
+            this.gBColdStart.Name = "gBColdStart";
+            this.gBColdStart.Size = new System.Drawing.Size(173, 111);
+            this.gBColdStart.TabIndex = 27;
+            this.gBColdStart.TabStop = false;
+            this.gBColdStart.Text = "Kaltstart";
+            // 
+            // lbl23
+            // 
+            this.lbl23.AutoSize = true;
+            this.lbl23.Location = new System.Drawing.Point(134, 84);
+            this.lbl23.Name = "lbl23";
+            this.lbl23.Size = new System.Drawing.Size(31, 13);
+            this.lbl23.TabIndex = 26;
+            this.lbl23.Text = "< 91 ";
+            // 
+            // lbl21
+            // 
+            this.lbl21.AutoSize = true;
+            this.lbl21.Location = new System.Drawing.Point(134, 58);
+            this.lbl21.Name = "lbl21";
+            this.lbl21.Size = new System.Drawing.Size(31, 13);
+            this.lbl21.TabIndex = 25;
+            this.lbl21.Text = "< 41 ";
+            // 
+            // lbl22
+            // 
+            this.lbl22.AutoSize = true;
+            this.lbl22.Location = new System.Drawing.Point(19, 84);
+            this.lbl22.Name = "lbl22";
+            this.lbl22.Size = new System.Drawing.Size(25, 13);
+            this.lbl22.TabIndex = 24;
+            this.lbl22.Text = "0 < ";
+            // 
+            // lbl20
+            // 
+            this.lbl20.AutoSize = true;
+            this.lbl20.Location = new System.Drawing.Point(13, 58);
+            this.lbl20.Name = "lbl20";
+            this.lbl20.Size = new System.Drawing.Size(31, 13);
+            this.lbl20.TabIndex = 23;
+            this.lbl20.Text = "14 < ";
+            // 
+            // lbl19
+            // 
+            this.lbl19.AutoSize = true;
+            this.lbl19.Location = new System.Drawing.Point(134, 32);
+            this.lbl19.Name = "lbl19";
+            this.lbl19.Size = new System.Drawing.Size(31, 13);
+            this.lbl19.TabIndex = 22;
+            this.lbl19.Text = "< 61 ";
+            // 
+            // tBTimeHoldCold
+            // 
+            this.tBTimeHoldCold.Location = new System.Drawing.Point(50, 81);
+            this.tBTimeHoldCold.Name = "tBTimeHoldCold";
+            this.tBTimeHoldCold.ReadOnly = true;
+            this.tBTimeHoldCold.Size = new System.Drawing.Size(78, 20);
+            this.tBTimeHoldCold.TabIndex = 3;
+            // 
+            // tBAvgSpColdVal
+            // 
+            this.tBAvgSpColdVal.Location = new System.Drawing.Point(50, 55);
+            this.tBAvgSpColdVal.Name = "tBAvgSpColdVal";
+            this.tBAvgSpColdVal.ReadOnly = true;
+            this.tBAvgSpColdVal.Size = new System.Drawing.Size(78, 20);
+            this.tBAvgSpColdVal.TabIndex = 2;
+            // 
+            // tBMaxSpColdVal
+            // 
+            this.tBMaxSpColdVal.BackColor = System.Drawing.SystemColors.Control;
+            this.tBMaxSpColdVal.Location = new System.Drawing.Point(50, 29);
+            this.tBMaxSpColdVal.Name = "tBMaxSpColdVal";
+            this.tBMaxSpColdVal.ReadOnly = true;
+            this.tBMaxSpColdVal.Size = new System.Drawing.Size(78, 20);
+            this.tBMaxSpColdVal.TabIndex = 1;
+            // 
+            // gBGeneral
+            // 
+            this.gBGeneral.Controls.Add(this.tBMaxSpeed);
+            this.gBGeneral.Controls.Add(this.lbl27);
+            this.gBGeneral.Controls.Add(this.lbl25);
+            this.gBGeneral.Controls.Add(this.lbl26);
+            this.gBGeneral.Controls.Add(this.lbl24);
+            this.gBGeneral.Controls.Add(this.tBTimeHold);
+            this.gBGeneral.Controls.Add(this.tBDuration);
+            this.gBGeneral.Controls.Add(this.tBTrip);
+            this.gBGeneral.Location = new System.Drawing.Point(163, 303);
+            this.gBGeneral.Name = "gBGeneral";
+            this.gBGeneral.Size = new System.Drawing.Size(173, 138);
+            this.gBGeneral.TabIndex = 28;
+            this.gBGeneral.TabStop = false;
+            this.gBGeneral.Text = "Allgemein";
+            // 
+            // lbl27
+            // 
+            this.lbl27.AutoSize = true;
+            this.lbl27.Location = new System.Drawing.Point(134, 84);
+            this.lbl27.Name = "lbl27";
+            this.lbl27.Size = new System.Drawing.Size(24, 13);
+            this.lbl27.TabIndex = 26;
+            this.lbl27.Text = "< z ";
+            // 
+            // lbl25
+            // 
+            this.lbl25.AutoSize = true;
+            this.lbl25.Location = new System.Drawing.Point(134, 58);
+            this.lbl25.Name = "lbl25";
+            this.lbl25.Size = new System.Drawing.Size(37, 13);
+            this.lbl25.TabIndex = 25;
+            this.lbl25.Text = "< 121 ";
+            // 
+            // lbl26
+            // 
+            this.lbl26.AutoSize = true;
+            this.lbl26.Location = new System.Drawing.Point(13, 84);
+            this.lbl26.Name = "lbl26";
+            this.lbl26.Size = new System.Drawing.Size(31, 13);
+            this.lbl26.TabIndex = 24;
+            this.lbl26.Text = "15 < ";
+            // 
+            // lbl24
+            // 
+            this.lbl24.AutoSize = true;
+            this.lbl24.Location = new System.Drawing.Point(13, 58);
+            this.lbl24.Name = "lbl24";
+            this.lbl24.Size = new System.Drawing.Size(31, 13);
+            this.lbl24.TabIndex = 23;
+            this.lbl24.Text = "89 < ";
+            // 
+            // tBTimeHold
+            // 
+            this.tBTimeHold.Location = new System.Drawing.Point(50, 81);
+            this.tBTimeHold.Name = "tBTimeHold";
+            this.tBTimeHold.ReadOnly = true;
+            this.tBTimeHold.Size = new System.Drawing.Size(78, 20);
+            this.tBTimeHold.TabIndex = 3;
+            // 
+            // tBDuration
+            // 
+            this.tBDuration.Location = new System.Drawing.Point(50, 55);
+            this.tBDuration.Name = "tBDuration";
+            this.tBDuration.ReadOnly = true;
+            this.tBDuration.Size = new System.Drawing.Size(78, 20);
+            this.tBDuration.TabIndex = 2;
+            // 
+            // tBTrip
+            // 
+            this.tBTrip.BackColor = System.Drawing.SystemColors.Control;
+            this.tBTrip.Location = new System.Drawing.Point(50, 29);
+            this.tBTrip.Name = "tBTrip";
+            this.tBTrip.ReadOnly = true;
+            this.tBTrip.Size = new System.Drawing.Size(78, 20);
+            this.tBTrip.TabIndex = 1;
+            // 
+            // tBMaxSpeed
+            // 
+            this.tBMaxSpeed.Location = new System.Drawing.Point(50, 107);
+            this.tBMaxSpeed.Name = "tBMaxSpeed";
+            this.tBMaxSpeed.ReadOnly = true;
+            this.tBMaxSpeed.Size = new System.Drawing.Size(78, 20);
+            this.tBMaxSpeed.TabIndex = 27;
+            // 
+            // lblTimeHoldCold
+            // 
+            this.lblTimeHoldCold.AutoSize = true;
+            this.lblTimeHoldCold.Location = new System.Drawing.Point(6, 239);
+            this.lblTimeHoldCold.Name = "lblTimeHoldCold";
+            this.lblTimeHoldCold.Size = new System.Drawing.Size(54, 13);
+            this.lblTimeHoldCold.TabIndex = 29;
+            this.lblTimeHoldCold.Text = "Haltezeit: ";
+            // 
+            // lbl28
+            // 
+            this.lbl28.AutoSize = true;
+            this.lbl28.Location = new System.Drawing.Point(19, 32);
+            this.lbl28.Name = "lbl28";
+            this.lbl28.Size = new System.Drawing.Size(25, 13);
+            this.lbl28.TabIndex = 27;
+            this.lbl28.Text = "0 < ";
             // 
             // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(770, 304);
-            this.Controls.Add(this.lblAvgSpColdVal);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(787, 477);
+            this.Controls.Add(this.lblTimeHoldCold);
+            this.Controls.Add(this.gBGeneral);
+            this.Controls.Add(this.gBColdStart);
             this.Controls.Add(this.lblAvgSpCold);
-            this.Controls.Add(this.lblMaxSpColdVal);
             this.Controls.Add(this.lblMaxSpCold);
-            this.Controls.Add(this.lblMaxSpeedVal);
             this.Controls.Add(this.lblMaxSpeed);
-            this.Controls.Add(this.lblTimeHoldVal);
             this.Controls.Add(this.lblTimeHold);
-            this.Controls.Add(this.lblDurationVal);
             this.Controls.Add(this.lblDuration);
-            this.Controls.Add(this.lblTripVal);
             this.Controls.Add(this.lblTripComplete);
             this.Controls.Add(this.lblTrip);
             this.Controls.Add(this.lblMeanV);
@@ -531,6 +689,10 @@
             this.gBRural.PerformLayout();
             this.gBMotorway.ResumeLayout(false);
             this.gBMotorway.PerformLayout();
+            this.gBColdStart.ResumeLayout(false);
+            this.gBColdStart.PerformLayout();
+            this.gBGeneral.ResumeLayout(false);
+            this.gBGeneral.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,20 +716,14 @@
         private System.Windows.Forms.Label lblMeanV;
         private System.Windows.Forms.Label lblTrip;
         private System.Windows.Forms.Label lblTripComplete;
-        private System.Windows.Forms.Label lblTripVal;
         private System.Windows.Forms.Label lblDuration;
-        private System.Windows.Forms.Label lblDurationVal;
         private System.Windows.Forms.Label lblTimeHold;
-        private System.Windows.Forms.Label lblTimeHoldVal;
         private System.Windows.Forms.ToolTip tTDistrUrb;
         private System.Windows.Forms.ToolTip tTDistrRur;
         private System.Windows.Forms.ToolTip tTDistrMot;
         private System.Windows.Forms.Label lblMaxSpeed;
-        private System.Windows.Forms.Label lblMaxSpeedVal;
         private System.Windows.Forms.Label lblMaxSpCold;
-        private System.Windows.Forms.Label lblMaxSpColdVal;
         private System.Windows.Forms.Label lblAvgSpCold;
-        private System.Windows.Forms.Label lblAvgSpColdVal;
         private System.Windows.Forms.Label lbl1;
         private System.Windows.Forms.Label lbl2;
         private System.Windows.Forms.Label lbl6;
@@ -586,5 +742,25 @@
         private System.Windows.Forms.Label lbl17;
         private System.Windows.Forms.Label lbl15;
         private System.Windows.Forms.Label lbl13;
+        private System.Windows.Forms.GroupBox gBColdStart;
+        private System.Windows.Forms.Label lbl23;
+        private System.Windows.Forms.Label lbl21;
+        private System.Windows.Forms.Label lbl22;
+        private System.Windows.Forms.Label lbl20;
+        private System.Windows.Forms.Label lbl19;
+        private System.Windows.Forms.TextBox tBTimeHoldCold;
+        private System.Windows.Forms.TextBox tBAvgSpColdVal;
+        private System.Windows.Forms.TextBox tBMaxSpColdVal;
+        private System.Windows.Forms.GroupBox gBGeneral;
+        private System.Windows.Forms.Label lbl27;
+        private System.Windows.Forms.Label lbl25;
+        private System.Windows.Forms.Label lbl26;
+        private System.Windows.Forms.Label lbl24;
+        private System.Windows.Forms.TextBox tBTimeHold;
+        private System.Windows.Forms.TextBox tBDuration;
+        private System.Windows.Forms.TextBox tBTrip;
+        private System.Windows.Forms.TextBox tBMaxSpeed;
+        private System.Windows.Forms.Label lblTimeHoldCold;
+        private System.Windows.Forms.Label lbl28;
     }
 }
