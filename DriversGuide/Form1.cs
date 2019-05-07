@@ -22,7 +22,7 @@ namespace DriversGuide
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
         private DataTable values = new DataTable();
-        public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
+        public DataTable ColumnHeaders;   //Datatable für Spaltenüberschriften
         //DataSet dx = new DataSet();
 
         public DriversGuideMain()
@@ -96,7 +96,6 @@ namespace DriversGuide
                 Datei = new MeasurementFile(ofd.FileName);
                 //DataTable test = new DataTable();
                 test = Datei.ConvertCSVtoDataTable();
-                ColumnHeaders = Datei.Titles();       //Ausgabe der Spaltenüberschriften
                 units = Datei.GetMeasurementUnits();  //Ausgabe der Einheiten 
                 // var listofData = Datei.ReadMeasurementFile();
 
