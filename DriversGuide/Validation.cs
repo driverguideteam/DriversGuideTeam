@@ -18,12 +18,10 @@ namespace DriversGuide
 
         double distrUrban, distrRural, distrMotorway;
         double duration_hold = 0;
-<<<<<<< HEAD
-=======
         double maxSpeed = 0;
         double maxSpeedCold = 0;
         double avgSpeedCold = 0;
->>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+        double holdTimeCold = 0;
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -35,9 +33,9 @@ namespace DriversGuide
          *      - distances:        double array for storing and handing back distance values
         */
         //********************************************************************************************
-        private void CalcDistances (DataTable urban, DataTable rural, DataTable motorway, string column_distance, ref double[] distances)
+        private void CalcDistances(DataTable urban, DataTable rural, DataTable motorway, string column_distance, ref double[] distances)
         {
-            distances[0] = (double)urban.Compute("SUM([" + column_distance + "])", "") / 1000;           
+            distances[0] = (double)urban.Compute("SUM([" + column_distance + "])", "") / 1000;
             distances[1] = (double)rural.Compute("SUM([" + column_distance + "])", "") / 1000;
             distances[2] = (double)motorway.Compute("SUM([" + column_distance + "])", "") / 1000;
         }
@@ -50,14 +48,14 @@ namespace DriversGuide
          *      - column_time:      string with the name of the time column
         */
         //********************************************************************************************
-        private bool CheckUrban (DataTable dt_urban, string column_speed, string column_time)
+        private bool CheckUrban(DataTable dt_urban, string column_speed, string column_time)
         {
             double avgSpeed = 0;
             double duration_interval = 0;
             duration_hold = 0;
             double duration_ratio = 0;
             int countTime = 1;
-            
+
             //Calculate the average speed in the interval and the duration of the trip in minutes
             avgSpeed = (double)dt_urban.Compute("SUM([" + column_speed + "])", "") / dt_urban.Rows.Count;
             duration_interval = (double)(dt_urban.Rows.Count - 1) / 60;
@@ -78,7 +76,7 @@ namespace DriversGuide
 
             //Calculate value of longest hold time 
             //and the ratio of the longest hold time to the duration of trip
-            duration_hold = (double)(dt_urban.Rows.Count - 1) / 60;        
+            duration_hold = (double)(dt_urban.Rows.Count - 1) / 60;
             duration_ratio = duration_hold * 100 / duration_interval;
 
             //if urban criteria matched return true
@@ -95,25 +93,25 @@ namespace DriversGuide
          *      - column_speed:     string with the name of the speed column
         */
         //********************************************************************************************
-        private bool CheckMotorway (DataTable dt_motorway, string column_speed)
+        private bool CheckMotorway(DataTable dt_motorway, string column_speed)
         {
             DataTable fasterOH = new DataTable();
             DataTable fasterHFF = new DataTable();
             fasterOH = dt_motorway.Clone();
             fasterHFF = dt_motorway.Clone();
-            double max, min, duration, fasterOnehundred, tooFast = 0;
+            double min, duration, fasterOnehundred, tooFast = 0;
 
             //Get maximum and minimum speed in interval
-            max = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
+            maxSpeed = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
             min = (double)dt_motorway.Compute("MIN([" + column_speed + "])", "");
 
             //Copy only entries with a speed value greater than 100 km/h to DataTable fasterOH
             //and calculate time driven with a speed greater 100 km/h
-            fasterOH = dt_motorway.Select("[" + column_speed + "]" + " > 100").CopyToDataTable();       
-            fasterOnehundred = (double)(fasterOH.Rows.Count - 1) / 60;         
-            
+            fasterOH = dt_motorway.Select("[" + column_speed + "]" + " > 100").CopyToDataTable();
+            fasterOnehundred = (double)(fasterOH.Rows.Count - 1) / 60;
+
             //if the maximum speed is greater 145 km/h and lower 160 km/h .. 
-            if (max >= 145 && max <= 160)
+            if (maxSpeed >= 145 && maxSpeed <= 160)
             {
                 // .. Copy only entries with a speed value greater than 145 km/h to DataTable fasterHFF
                 //Calculate duration of motorway trip
@@ -123,12 +121,12 @@ namespace DriversGuide
                 duration = (double)(dt_motorway.Rows.Count - 1) / 60;
                 tooFast = (double)(fasterHFF.Rows.Count - 1) / 60;
                 tooFast *= 100 / duration;
-            }            
+            }
 
             //if criteria are matched return true
-            if (min > 90 && max >= 110 && max <= 145 && fasterOnehundred >= 5)
+            if (min > 90 && maxSpeed >= 110 && maxSpeed <= 145 && fasterOnehundred >= 5)
                 return true;
-            else if (min > 90 && max >= 145 && max <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
+            else if (min > 90 && maxSpeed >= 145 && maxSpeed <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
                 return true;
             else
                 return false;
@@ -143,7 +141,7 @@ namespace DriversGuide
          *      - column_distance:  string with the name of the distance column
         */
         //********************************************************************************************
-        public bool CheckDistributionComplete (DataTable dt, string column_speed, string column_distance)
+        public bool CheckDistributionComplete(DataTable dt, string column_speed, string column_distance)
         {
             DataTable urban = new DataTable();
             DataTable rural = new DataTable();
@@ -215,7 +213,7 @@ namespace DriversGuide
          *      - motorway:         Distribution in percent for the motorway interval
         */
         //********************************************************************************************
-        public void GetDistribution (ref double urban, ref double rural, ref double motorway)
+        public void GetDistribution(ref double urban, ref double rural, ref double motorway)
         {
             urban = distrUrban;
             rural = distrRural;
@@ -225,16 +223,13 @@ namespace DriversGuide
         //Get the hold time duration of the trip
         //********************************************************************************************
         /*Parameters:
-         *      - timeHold:         Variable to store hold time to
+         *      - duration_hold:     Hold time duration
         */
         //********************************************************************************************
-        public void GetHoldDurtation(ref double timeHold)
+        public double GetHoldDurtation()
         {
-            timeHold = duration_hold;
+            return duration_hold;
         }
-<<<<<<< HEAD
-                
-=======
 
         //Get the maximum speed value
         //********************************************************************************************
@@ -258,7 +253,7 @@ namespace DriversGuide
             return maxSpeedCold;
         }
 
-        //Get the maximum speed value
+        //Get the average speed value in cold start phase
         //********************************************************************************************
         /*Parameters:
          *      - avgSpeedCold:      Average speed in cold start phase measured
@@ -269,7 +264,17 @@ namespace DriversGuide
             return avgSpeedCold;
         }
 
->>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+        //Get the hold time during cold start phase
+        //********************************************************************************************
+        /*Parameters:
+         *      - holdTimeCold:     Hold time duration
+        */
+        //********************************************************************************************
+        public double GetTimeHoldCold()
+        {
+            return holdTimeCold;
+        }
+
         //Check if speed criteria are matched
         //********************************************************************************************
         /*Parameters:
@@ -322,7 +327,7 @@ namespace DriversGuide
          *      - column_distance:  string with the name of the distance column
         */
         //********************************************************************************************
-        public bool CheckDistanceComplete(DataTable dt, string column_speed, string column_distance)  
+        public bool CheckDistanceComplete(DataTable dt, string column_speed, string column_distance)
         {
             DataTable urban = new DataTable();
             DataTable rural = new DataTable();
@@ -380,14 +385,10 @@ namespace DriversGuide
         public bool CheckColdStart(DataTable dt, string column_speed, string column_time, string column_coolant)
         {
             DataTable temp = new DataTable();
-            temp = dt.Clone();            
+            temp = dt.Clone();
 
             int i = 0;
-<<<<<<< HEAD
-            double max = 0, avg = 0, time_hold = 0, time_start = 0;
-=======
-            double time_hold = 0, time_start = 0;
->>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+            double time_start = 0;
 
             //Sort DataTable by time
             //Copy only entires of first 5 minutes of trip to DataTable temp
@@ -396,15 +397,15 @@ namespace DriversGuide
 
             //Check how much entries are in DataTable before coolant reaches 
             //70°C for the first time
-            while (Convert.ToDouble(temp.Rows[i][column_coolant]) < 70)
+            while (i < temp.Rows.Count - 1 && Convert.ToDouble(temp.Rows[i][column_coolant]) < 70)
                 i++;
 
             //Copy only entries that were made before coolant reached 70°C
             temp = temp.Select("[" + column_time + "] <= " + temp.Rows[i][column_time]).CopyToDataTable();
 
             //Get maximum and minimum speed in cold start phase
-            max = (double)temp.Compute("MAX([" + column_speed + "])", "");
-            avg = (double)temp.Compute("AVG([" + column_speed + "])", "");
+            maxSpeedCold = (double)temp.Compute("MAX([" + column_speed + "])", "");
+            avgSpeedCold = (double)temp.Compute("AVG([" + column_speed + "])", "");
 
             i = 0;
 
@@ -413,20 +414,16 @@ namespace DriversGuide
                 i++;
 
             //start time in seconds after start
-            time_start = Convert.ToDouble(temp.Rows[i][column_time]) / 1000;        
+            time_start = Convert.ToDouble(temp.Rows[i][column_time]) / 1000;
 
             //Copy only entries with a speed value lower 1 km/h
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
 
             //Calculate hold time in seconds
-            time_hold = (double)(temp.Rows.Count - 1);      
+            holdTimeCold = (double)(temp.Rows.Count - 1);
 
             //if criteria are matched, return true
-<<<<<<< HEAD
-            if (time_start <= 15 && time_hold <= 90 && avg >= 15 && avg <= 40 && max <= 60)
-=======
-            if (time_start <= 15 && time_hold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
->>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+            if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
                 return true;
             else
                 return false;
@@ -450,7 +447,7 @@ namespace DriversGuide
 
             urban = dt.Clone();
             rural = dt.Clone();
-            motorway = dt.Clone();                     
+            motorway = dt.Clone();
 
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals
@@ -475,3 +472,4 @@ namespace DriversGuide
         //public void CheckAltitude()
     }
 }
+
