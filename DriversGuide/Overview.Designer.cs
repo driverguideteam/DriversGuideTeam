@@ -102,6 +102,8 @@
             this.distUrban.ReadOnly = true;
             this.distUrban.Size = new System.Drawing.Size(78, 20);
             this.distUrban.TabIndex = 1;
+            this.distUrban.MouseLeave += new System.EventHandler(this.distUrban_MouseLeave);
+            this.distUrban.MouseHover += new System.EventHandler(this.distUrban_MouseHover);
             // 
             // gBRural
             // 
@@ -138,6 +140,8 @@
             this.distRural.ReadOnly = true;
             this.distRural.Size = new System.Drawing.Size(78, 20);
             this.distRural.TabIndex = 1;
+            this.distRural.MouseLeave += new System.EventHandler(this.distRural_MouseLeave);
+            this.distRural.MouseHover += new System.EventHandler(this.distRural_MouseHover);
             // 
             // gBMotorway
             // 
@@ -174,6 +178,8 @@
             this.distMotorway.ReadOnly = true;
             this.distMotorway.Size = new System.Drawing.Size(78, 20);
             this.distMotorway.TabIndex = 1;
+            this.distMotorway.MouseLeave += new System.EventHandler(this.distMotorway_MouseLeave);
+            this.distMotorway.MouseHover += new System.EventHandler(this.distMotorway_MouseHover);
             // 
             // lblDistr
             // 
@@ -206,10 +212,14 @@
             // 
             this.lblTripComplete.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblTripComplete.Location = new System.Drawing.Point(12, 167);
 =======
             this.lblTripComplete.Location = new System.Drawing.Point(12, 148);
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+            this.lblTripComplete.Location = new System.Drawing.Point(12, 167);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblTripComplete.Name = "lblTripComplete";
             this.lblTripComplete.Size = new System.Drawing.Size(84, 13);
             this.lblTripComplete.TabIndex = 9;
@@ -219,10 +229,14 @@
             // 
             this.lblTripVal.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblTripVal.Location = new System.Drawing.Point(93, 167);
 =======
             this.lblTripVal.Location = new System.Drawing.Point(138, 148);
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+            this.lblTripVal.Location = new System.Drawing.Point(93, 167);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblTripVal.Name = "lblTripVal";
             this.lblTripVal.Size = new System.Drawing.Size(0, 13);
             this.lblTripVal.TabIndex = 10;
@@ -231,10 +245,14 @@
             // 
             this.lblDuration.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblDuration.Location = new System.Drawing.Point(12, 189);
 =======
             this.lblDuration.Location = new System.Drawing.Point(12, 170);
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+            this.lblDuration.Location = new System.Drawing.Point(12, 189);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(87, 13);
             this.lblDuration.TabIndex = 11;
@@ -244,10 +262,14 @@
             // 
             this.lblDurationVal.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblDurationVal.Location = new System.Drawing.Point(93, 189);
 =======
             this.lblDurationVal.Location = new System.Drawing.Point(138, 170);
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+            this.lblDurationVal.Location = new System.Drawing.Point(93, 189);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblDurationVal.Name = "lblDurationVal";
             this.lblDurationVal.Size = new System.Drawing.Size(0, 13);
             this.lblDurationVal.TabIndex = 12;
@@ -256,10 +278,14 @@
             // 
             this.lblTimeHold.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblTimeHold.Location = new System.Drawing.Point(12, 216);
 =======
             this.lblTimeHold.Location = new System.Drawing.Point(12, 197);
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+            this.lblTimeHold.Location = new System.Drawing.Point(12, 216);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblTimeHold.Name = "lblTimeHold";
             this.lblTimeHold.Size = new System.Drawing.Size(54, 13);
             this.lblTimeHold.TabIndex = 13;
@@ -269,12 +295,16 @@
             // 
             this.lblTimeHoldVal.AutoSize = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.lblTimeHoldVal.Location = new System.Drawing.Point(93, 216);
             this.lblTimeHoldVal.Name = "lblTimeHoldVal";
             this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
             this.lblTimeHoldVal.TabIndex = 14;
 =======
             this.lblTimeHoldVal.Location = new System.Drawing.Point(144, 197);
+=======
+            this.lblTimeHoldVal.Location = new System.Drawing.Point(93, 216);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.lblTimeHoldVal.Name = "lblTimeHoldVal";
             this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
             this.lblTimeHoldVal.TabIndex = 14;
@@ -282,7 +312,7 @@
             // lblMaxSpeed
             // 
             this.lblMaxSpeed.AutoSize = true;
-            this.lblMaxSpeed.Location = new System.Drawing.Point(12, 221);
+            this.lblMaxSpeed.Location = new System.Drawing.Point(12, 240);
             this.lblMaxSpeed.Name = "lblMaxSpeed";
             this.lblMaxSpeed.Size = new System.Drawing.Size(126, 13);
             this.lblMaxSpeed.TabIndex = 15;
@@ -291,7 +321,7 @@
             // lblMaxSpeedVal
             // 
             this.lblMaxSpeedVal.AutoSize = true;
-            this.lblMaxSpeedVal.Location = new System.Drawing.Point(144, 221);
+            this.lblMaxSpeedVal.Location = new System.Drawing.Point(144, 240);
             this.lblMaxSpeedVal.Name = "lblMaxSpeedVal";
             this.lblMaxSpeedVal.Size = new System.Drawing.Size(0, 13);
             this.lblMaxSpeedVal.TabIndex = 16;
@@ -299,7 +329,7 @@
             // lblMaxSpCold
             // 
             this.lblMaxSpCold.AutoSize = true;
-            this.lblMaxSpCold.Location = new System.Drawing.Point(275, 148);
+            this.lblMaxSpCold.Location = new System.Drawing.Point(275, 167);
             this.lblMaxSpCold.Name = "lblMaxSpCold";
             this.lblMaxSpCold.Size = new System.Drawing.Size(167, 13);
             this.lblMaxSpCold.TabIndex = 17;
@@ -308,7 +338,7 @@
             // lblMaxSpColdVal
             // 
             this.lblMaxSpColdVal.AutoSize = true;
-            this.lblMaxSpColdVal.Location = new System.Drawing.Point(473, 148);
+            this.lblMaxSpColdVal.Location = new System.Drawing.Point(448, 167);
             this.lblMaxSpColdVal.Name = "lblMaxSpColdVal";
             this.lblMaxSpColdVal.Size = new System.Drawing.Size(0, 13);
             this.lblMaxSpColdVal.TabIndex = 18;
@@ -316,7 +346,7 @@
             // lblAvgSpCold
             // 
             this.lblAvgSpCold.AutoSize = true;
-            this.lblAvgSpCold.Location = new System.Drawing.Point(275, 170);
+            this.lblAvgSpCold.Location = new System.Drawing.Point(275, 189);
             this.lblAvgSpCold.Name = "lblAvgSpCold";
             this.lblAvgSpCold.Size = new System.Drawing.Size(192, 13);
             this.lblAvgSpCold.TabIndex = 19;
@@ -325,7 +355,7 @@
             // lblAvgSpColdVal
             // 
             this.lblAvgSpColdVal.AutoSize = true;
-            this.lblAvgSpColdVal.Location = new System.Drawing.Point(473, 170);
+            this.lblAvgSpColdVal.Location = new System.Drawing.Point(473, 189);
             this.lblAvgSpColdVal.Name = "lblAvgSpColdVal";
             this.lblAvgSpColdVal.Size = new System.Drawing.Size(0, 13);
             this.lblAvgSpColdVal.TabIndex = 20;
@@ -336,9 +366,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(543, 450);
 =======
             this.ClientSize = new System.Drawing.Size(770, 304);
+=======
+            this.ClientSize = new System.Drawing.Size(543, 450);
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
             this.Controls.Add(this.lblAvgSpColdVal);
             this.Controls.Add(this.lblAvgSpCold);
             this.Controls.Add(this.lblMaxSpColdVal);
@@ -405,6 +439,7 @@
         private System.Windows.Forms.Label lblMaxSpColdVal;
         private System.Windows.Forms.Label lblAvgSpCold;
         private System.Windows.Forms.Label lblAvgSpColdVal;
+<<<<<<< HEAD
         private System.Windows.Forms.Label lbl1;
         private System.Windows.Forms.Label lbl2;
         private System.Windows.Forms.Label lbl6;
@@ -424,5 +459,7 @@
         private System.Windows.Forms.Label lbl15;
         private System.Windows.Forms.Label lbl13;
 >>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
+=======
+>>>>>>> parent of 1572168... Kogler 05.04 15:00
     }
 }
