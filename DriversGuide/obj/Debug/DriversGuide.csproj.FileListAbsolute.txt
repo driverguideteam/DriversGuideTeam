@@ -72,7 +72,6 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.pdb
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csprojAssemblyReference.cache
-C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Form1.resources
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.PlotGraphic.resources
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Properties.Resources.resources
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.GenerateResource.cache
@@ -116,3 +115,14 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.xml
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.SqlServer.xml
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\Newtonsoft.Json.xml
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.xml
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.dll.config
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Datenauswahl.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.GPSVisualization.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.Fody.CopyLocal.cache
+C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CopyComplete
