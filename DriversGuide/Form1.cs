@@ -22,7 +22,7 @@ namespace DriversGuide
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
         private DataTable values = new DataTable();
-        public DataTable ColumnHeaders;   //Datatable für Spaltenüberschriften
+        public string[] ColumnHeaders;   //Array für Spaltenüberschrifte
         //DataSet dx = new DataSet();
 
         public DriversGuideMain()
@@ -70,10 +70,12 @@ namespace DriversGuide
             values.Columns.Add("Strecke");
             values.Columns.Add("Dauer");
             values.Columns.Add("Haltezeit");
+<<<<<<< HEAD
+=======
             values.Columns.Add("Hoechstgeschwindigkeit");
             values.Columns.Add("Kaltstart Hoechstgeschwindigkeit");
             values.Columns.Add("Kaltstart Durchschnittsgeschwindigkeit");
-            values.Columns.Add("Kaltstart Haltezeit");
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             values.Rows.Add();
             values.Rows.Add();
@@ -100,6 +102,7 @@ namespace DriversGuide
                 Datei = new MeasurementFile(ofd.FileName);
                 //DataTable test = new DataTable();
                 test = Datei.ConvertCSVtoDataTable();
+                ColumnHeaders = Datei.Titles();       //Ausgabe der Spaltenüberschriften
                 units = Datei.GetMeasurementUnits();  //Ausgabe der Einheiten 
                 // var listofData = Datei.ReadMeasurementFile();
 
@@ -129,6 +132,7 @@ namespace DriversGuide
             double avgUrban = 0, avgRural = 0, avgMotorway = 0;
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
             double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+            double holdTime = 0;
 
             test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
             testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
@@ -140,6 +144,7 @@ namespace DriversGuide
             Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
             Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+            Gueltigkeit.GetHoldDurtation(ref holdTime);
 
             values.Rows[1]["Geschwindigkeit"] = avgUrban;
             values.Rows[2]["Geschwindigkeit"] = avgRural;
@@ -155,11 +160,15 @@ namespace DriversGuide
             values.Rows[3]["Strecke"] = tripMotorway;
 
             values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
+<<<<<<< HEAD
+            values.Rows[0]["Haltezeit"] = holdTime;
+
+=======
             values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
             values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
             values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
             values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
-            values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";

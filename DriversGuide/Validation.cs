@@ -18,10 +18,12 @@ namespace DriversGuide
 
         double distrUrban, distrRural, distrMotorway;
         double duration_hold = 0;
+<<<<<<< HEAD
+=======
         double maxSpeed = 0;
         double maxSpeedCold = 0;
         double avgSpeedCold = 0;
-        double holdTimeCold = 0;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -99,10 +101,10 @@ namespace DriversGuide
             DataTable fasterHFF = new DataTable();
             fasterOH = dt_motorway.Clone();
             fasterHFF = dt_motorway.Clone();
-            double min, duration, fasterOnehundred, tooFast = 0;
+            double max, min, duration, fasterOnehundred, tooFast = 0;
 
             //Get maximum and minimum speed in interval
-            maxSpeed = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
+            max = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
             min = (double)dt_motorway.Compute("MIN([" + column_speed + "])", "");
 
             //Copy only entries with a speed value greater than 100 km/h to DataTable fasterOH
@@ -111,7 +113,7 @@ namespace DriversGuide
             fasterOnehundred = (double)(fasterOH.Rows.Count - 1) / 60;         
             
             //if the maximum speed is greater 145 km/h and lower 160 km/h .. 
-            if (maxSpeed >= 145 && maxSpeed <= 160)
+            if (max >= 145 && max <= 160)
             {
                 // .. Copy only entries with a speed value greater than 145 km/h to DataTable fasterHFF
                 //Calculate duration of motorway trip
@@ -124,9 +126,9 @@ namespace DriversGuide
             }            
 
             //if criteria are matched return true
-            if (min > 90 && maxSpeed >= 110 && maxSpeed <= 145 && fasterOnehundred >= 5)
+            if (min > 90 && max >= 110 && max <= 145 && fasterOnehundred >= 5)
                 return true;
-            else if (min > 90 && maxSpeed >= 145 && maxSpeed <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
+            else if (min > 90 && max >= 145 && max <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
                 return true;
             else
                 return false;
@@ -223,13 +225,16 @@ namespace DriversGuide
         //Get the hold time duration of the trip
         //********************************************************************************************
         /*Parameters:
-         *      - duration_hold:     Hold time duration
+         *      - timeHold:         Variable to store hold time to
         */
         //********************************************************************************************
-        public double GetHoldDurtation()
+        public void GetHoldDurtation(ref double timeHold)
         {
-            return duration_hold;
+            timeHold = duration_hold;
         }
+<<<<<<< HEAD
+                
+=======
 
         //Get the maximum speed value
         //********************************************************************************************
@@ -253,7 +258,7 @@ namespace DriversGuide
             return maxSpeedCold;
         }
 
-        //Get the average speed value in cold start phase
+        //Get the maximum speed value
         //********************************************************************************************
         /*Parameters:
          *      - avgSpeedCold:      Average speed in cold start phase measured
@@ -264,17 +269,7 @@ namespace DriversGuide
             return avgSpeedCold;
         }
 
-        //Get the hold time during cold start phase
-        //********************************************************************************************
-        /*Parameters:
-         *      - holdTimeCold:     Hold time duration
-        */
-        //********************************************************************************************
-        public double GetTimeHoldCold()
-        {
-            return holdTimeCold;
-        }
-
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
         //Check if speed criteria are matched
         //********************************************************************************************
         /*Parameters:
@@ -388,7 +383,11 @@ namespace DriversGuide
             temp = dt.Clone();            
 
             int i = 0;
-            double time_start = 0;
+<<<<<<< HEAD
+            double max = 0, avg = 0, time_hold = 0, time_start = 0;
+=======
+            double time_hold = 0, time_start = 0;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             //Sort DataTable by time
             //Copy only entires of first 5 minutes of trip to DataTable temp
@@ -397,15 +396,15 @@ namespace DriversGuide
 
             //Check how much entries are in DataTable before coolant reaches 
             //70°C for the first time
-            while (i < temp.Rows.Count - 1 && Convert.ToDouble(temp.Rows[i][column_coolant]) < 70)
+            while (Convert.ToDouble(temp.Rows[i][column_coolant]) < 70)
                 i++;
 
             //Copy only entries that were made before coolant reached 70°C
             temp = temp.Select("[" + column_time + "] <= " + temp.Rows[i][column_time]).CopyToDataTable();
 
             //Get maximum and minimum speed in cold start phase
-            maxSpeedCold = (double)temp.Compute("MAX([" + column_speed + "])", "");
-            avgSpeedCold = (double)temp.Compute("AVG([" + column_speed + "])", "");
+            max = (double)temp.Compute("MAX([" + column_speed + "])", "");
+            avg = (double)temp.Compute("AVG([" + column_speed + "])", "");
 
             i = 0;
 
@@ -420,10 +419,14 @@ namespace DriversGuide
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
 
             //Calculate hold time in seconds
-            holdTimeCold = (double)(temp.Rows.Count - 1);      
+            time_hold = (double)(temp.Rows.Count - 1);      
 
             //if criteria are matched, return true
-            if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+<<<<<<< HEAD
+            if (time_start <= 15 && time_hold <= 90 && avg >= 15 && avg <= 40 && max <= 60)
+=======
+            if (time_start <= 15 && time_hold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
                 return true;
             else
                 return false;

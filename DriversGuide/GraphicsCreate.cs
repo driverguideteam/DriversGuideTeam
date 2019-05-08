@@ -22,8 +22,7 @@ namespace DriversGuide
         public void ConnectToForm1(DriversGuideMain CreateForm)
         {
             Form1Copy = CreateForm;       //Zugriff auf Hauptform
-            tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
-            tt = tt.Copy();
+            tt = Form1Copy.test.Copy();   //Kopie des Datatables
 
             for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
             {
@@ -36,8 +35,10 @@ namespace DriversGuide
             PlotCopy = ConnectForm;   //Zugriff auf Datenauswahlform
         }
 
-        public void SetChartProperties(ref Chart chartname, string GewDaten)
+        public void Drawchart(ref Chart chartname)
         {
+            string GewDaten = PlotCopy.GiveChosenData();   //gibt gewählte Datenreihe zurück
+
             chartname.Show();   //Anzeigen der Grafik
 
             chartname.Series.Clear();       //Löschen evtl. bestehender Datenpunktreihe
@@ -45,12 +46,6 @@ namespace DriversGuide
 
             chartname.Series.Add(GewDaten);       //Hinzufügen einer neuen Datenpunktreihe
             chartname.ChartAreas.Add(GewDaten);   //Hinzufügen einer neuen Grafikoberfläche
-            
-            for (int i = 0; i < tt.Rows.Count; i++)   //füllen Datenpunke-Serie
-            {
-                chartname.Series[GewDaten].Points.AddXY(Convert.ToInt64(tt.Rows[i]["Time"]), Convert.ToDouble(tt.Rows[i][GewDaten]));
-                //erzeugt Serie von Punkten mit denen gezeichnet wird
-            }
 
             chartname.Series[GewDaten].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line)
 
@@ -78,8 +73,8 @@ namespace DriversGuide
             Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]); //Festlegung x-Achsen-Maximum
             //Chart1.AxisX.Interval = 300;                                              //Festlegung x-Achsen-Intervall
 
-            string xUnit = PlotCopy.GetUnits(GewDaten)[0];   //liefert Einheit der x-Achse
-            string yUnit = PlotCopy.GetUnits(GewDaten)[1];   //liefert Einheit der y-Achse
+            string xUnit = PlotCopy.GetUnits()[0];   //liefert Einheit der x-Achse
+            string yUnit = PlotCopy.GetUnits()[1];   //liefert Einheit der y-Achse
 
             //chartname.Titles.Add("Test").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
             Chart1.AxisX.Title = "Time" + " in " + xUnit;                     //Beschriftung der x-Achse
@@ -113,10 +108,11 @@ namespace DriversGuide
             //Chart1.RecalculateAxesScale();
         }
 
-        public double ActualXPosition(ref Chart chartname, MouseEventArgs e, string GewDaten)
+        public double[] ActualPosition(ref Chart chartname, MouseEventArgs e)
         {
             //gibt die x- u. y-Werte der aktuellen Mausposition zurück
 
+            string GewDaten = PlotCopy.GiveChosenData();   //gibt gewählte Datenreihe zurück
             var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
             if (Chart1.AxisX.PixelPositionToValue(e.X) >= 0)   //iefert nur Werte, wenn Maus innerhalb des Charts
             {
@@ -130,22 +126,11 @@ namespace DriversGuide
             }
 
             double Xpos = Convert.ToDouble(xp);   //Konvertierung x-Wert in Double
-            //double Ypos = Convert.ToDouble(yp);   //Konvertierung y-Wert in Double
+            double Ypos = Convert.ToDouble(yp);   //Konvertierung y-Wert in Double
 
-            //double[] Cpos = new double[] { Xpos, Ypos };   //erstellt DoubleArray mit x- u. y-Wert
+            double[] Cpos = new double[] { Xpos, Ypos };   //erstellt DoubleArray mit x- u. y-Wert
 
-            return Xpos;   //liefert DoubleArray zurück
-        }
-
-        public double FindYValue(Chart chartname, double xp, string GewDaten)
-        {
-            //gibt y-Wert zu gegebeneb x-Wert einer gesuchten Datenreihe zurück
-            Series S = chartname.Series[GewDaten];
-            DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xp).DefaultIfEmpty(S.Points.Last()).Last();
-
-            yp = Math.Round(pNext.YValues[0], 2).ToString();   //liefert aktuellen y-Wert gerundet
-            double YNpos = Convert.ToDouble(yp);   //Konvertierung y-Wert in Double
-            return YNpos;   //liefert Double-Wert zurück
+            return Cpos;   //liefert DoubleArray zurück
         }
     }
 }
