@@ -12,11 +12,11 @@ namespace DriversGuide
 {
     public partial class Datenauswahl : Form
     {
-        DriversGuideMain Form1Copy;                  //Verbindung zu Hauptform
+        DriversGuideApp Form1Copy;                  //Verbindung zu Hauptform
         DataTable tt = new DataTable();              //Erstellung neues Datatable
         int AnzGewDaten = 0;
 
-        public Datenauswahl(DriversGuideMain CreateForm)
+        public Datenauswahl(DriversGuideApp CreateForm)
         {
             Form1Copy = CreateForm;   //Zugriff auf Hauptform
             InitializeComponent();

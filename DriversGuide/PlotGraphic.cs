@@ -14,7 +14,7 @@ namespace DriversGuide
 {
     public partial class PlotGraphic : Form
     {
-        DriversGuideMain Form1Copy;                   //Verbindung zu Hauptform
+        DriversGuideApp Form1Copy;                   //Verbindung zu Hauptform
         Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
         DataTable tt = new DataTable();    //Erstellung neues Datatable
         DataTable units = new DataTable(); //Erstellung neues Datatable für Einheiten
@@ -22,7 +22,7 @@ namespace DriversGuide
         int i = 0;
         public bool ChartReady = false;   //bool-Wert für Timer
 
-        public PlotGraphic(DriversGuideMain CreateForm)
+        public PlotGraphic(DriversGuideApp CreateForm)
         {
             Form1Copy = CreateForm;   //Zugriff auf Hauptform
             InitializeComponent();

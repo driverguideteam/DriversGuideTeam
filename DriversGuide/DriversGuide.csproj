@@ -94,11 +94,29 @@
     <Compile Include="Datenauswahl.Designer.cs">
       <DependentUpon>Datenauswahl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DriversGuideApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DriversGuideApp.designer.cs">
+      <DependentUpon>DriversGuideApp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="General.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="General.designer.cs">
+      <DependentUpon>General.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GPS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GPS.designer.cs">
+      <DependentUpon>GPS.cs</DependentUpon>
     </Compile>
     <Compile Include="GPSVisualization.cs">
       <SubType>Form</SubType>
@@ -129,8 +147,17 @@
     <EmbeddedResource Include="Datenauswahl.resx">
       <DependentUpon>Datenauswahl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DriversGuideApp.resx">
+      <DependentUpon>DriversGuideApp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General.resx">
+      <DependentUpon>General.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GPS.resx">
+      <DependentUpon>GPS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GPSVisualization.resx">
       <DependentUpon>GPSVisualization.cs</DependentUpon>

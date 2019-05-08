@@ -16,7 +16,7 @@ namespace DriversGuide
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DriversGuideMain());
+            Application.Run(new DriversGuideApp());
         }
     }
 }

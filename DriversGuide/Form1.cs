@@ -176,8 +176,8 @@ namespace DriversGuide
             //Öffnen des Diagramm-Forms, falls Datatable gefüllt
             else
             {
-                Datenauswahl DataDiagram = new Datenauswahl(this);
-                DataDiagram.Show();
+                //Datenauswahl DataDiagram = new Datenauswahl(this);
+                //DataDiagram.Show();
             }
         }
 
@@ -264,8 +264,8 @@ namespace DriversGuide
 
         private void überblickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Overview FormOverview = new Overview(this);
-            FormOverview.ShowDialog();
+            //DriversGuideApp FormOverview = new DriversGuideApp(this);
+            //FormOverview.ShowDialog();
         }
     }
 }
