@@ -27,6 +27,7 @@ namespace DriversGuide
             if (Convert.ToDouble(data.Rows[index]["Strecke"]) < 16)
                 txtbx.BackColor = Color.Red;
             else if (Convert.ToDouble(data.Rows[index]["Strecke"]) <= 20)
+<<<<<<< HEAD
                 txtbx.BackColor = Color.Yellow;
             else
                 txtbx.BackColor = Color.Green;
@@ -48,6 +49,88 @@ namespace DriversGuide
                 distUrban.BackColor = Color.Yellow;            
             else
                 distUrban.BackColor = Color.Green;
+=======
+            {
+                txtbx.BackColor = Color.Yellow;
+                txtbx.ForeColor = Color.Black;
+            }
+            else
+            {
+                txtbx.BackColor = Color.Green;
+                txtbx.ForeColor = Color.White;
+            }
+        }
+
+        private void ShowData()
+        {
+            DataTable values = new DataTable();
+
+            values = MainForm.GetValuesDataTable();
+
+            distUrban.TextAlign = HorizontalAlignment.Center;
+            distRural.TextAlign = HorizontalAlignment.Center;
+            distMotorway.TextAlign = HorizontalAlignment.Center;
+
+            distUrban.Text = Convert.ToDouble(values.Rows[1]["Verteilung"]).ToString("#.00") + "%";
+            distRural.Text = Convert.ToDouble(values.Rows[2]["Verteilung"]).ToString("#.00") + "%";
+            distMotorway.Text = Convert.ToDouble(values.Rows[3]["Verteilung"]).ToString("#.00") + "%";
+
+            if (Convert.ToDouble(values.Rows[1]["Verteilung"]) > 44 || Convert.ToDouble(values.Rows[1]["Verteilung"]) < 29)
+            {
+                distUrban.BackColor = Color.Red;
+                distUrban.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(values.Rows[1]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[1]["Verteilung"]) <= 31.5d)
+            {
+                distUrban.BackColor = Color.Yellow;
+                distUrban.ForeColor = Color.Black;
+            }
+            else
+            {
+                distUrban.BackColor = Color.Green;
+                distUrban.ForeColor = Color.White;
+            }
+
+            if (Convert.ToDouble(values.Rows[2]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[2]["Verteilung"]) < 23)
+            {
+                distRural.BackColor = Color.Red;
+                distRural.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(values.Rows[2]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[2]["Verteilung"]) <= 31.5d)
+            {
+                distRural.BackColor = Color.Yellow;
+                distRural.ForeColor = Color.Black;
+            }
+            else
+            {
+                distRural.BackColor = Color.Green;
+                distRural.ForeColor = Color.White;
+            }
+
+            if (Convert.ToDouble(values.Rows[3]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[3]["Verteilung"]) < 23)
+            {
+                distMotorway.BackColor = Color.Red;
+                distMotorway.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(values.Rows[3]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[3]["Verteilung"]) <= 31.5d)
+            {
+                distMotorway.BackColor = Color.Yellow;
+                distMotorway.ForeColor = Color.Black;
+            }
+            else
+            {
+                distMotorway.BackColor = Color.Green;
+                distMotorway.ForeColor = Color.White;
+            }
+                
+            tripUrban.TextAlign = HorizontalAlignment.Center;
+            tripRural.TextAlign = HorizontalAlignment.Center;
+            tripMotorway.TextAlign = HorizontalAlignment.Center;
+
+            tripUrban.Text = Convert.ToDouble(values.Rows[1]["Strecke"]).ToString("#.00") + " km";
+            tripRural.Text = Convert.ToDouble(values.Rows[2]["Strecke"]).ToString("#.00") + " km";
+            tripMotorway.Text = Convert.ToDouble(values.Rows[3]["Strecke"]).ToString("#.00") + " km";
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             if (Convert.ToDouble(values.Rows[2]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[2]["Verteilung"]) < 23)
                 distRural.BackColor = Color.Red;
@@ -56,14 +139,21 @@ namespace DriversGuide
             else
                 distRural.BackColor = Color.Green;
 
+<<<<<<< HEAD
             if (Convert.ToDouble(values.Rows[3]["Verteilung"]) > 43 || Convert.ToDouble(values.Rows[3]["Verteilung"]) < 23)
                 distMotorway.BackColor = Color.Red;
             else if (Convert.ToDouble(values.Rows[3]["Verteilung"]) >= 41.5d || Convert.ToDouble(values.Rows[3]["Verteilung"]) <= 31.5d)
                 distMotorway.BackColor = Color.Yellow;
             else
                 distMotorway.BackColor = Color.Green;
+=======
+            avgVUrban.TextAlign = HorizontalAlignment.Center;
+            avgVRural.TextAlign = HorizontalAlignment.Center;
+            avgVMotorway.TextAlign = HorizontalAlignment.Center;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
 
+<<<<<<< HEAD
             tripUrban.Text = Convert.ToDouble(values.Rows[1]["Strecke"]).ToString("#.00");
             tripRural.Text = Convert.ToDouble(values.Rows[2]["Strecke"]).ToString("#.00");
             tripMotorway.Text = Convert.ToDouble(values.Rows[3]["Strecke"]).ToString("#.00");
@@ -93,6 +183,34 @@ namespace DriversGuide
             lblTripVal.Text = Convert.ToDouble(values.Rows[0]["Strecke"]).ToString("#.00") + " km";
             lblDurationVal.Text = Convert.ToDouble(values.Rows[0]["Dauer"]).ToString("#.00") + " min";
 
+=======
+            if (Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) > 40 || Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) < 15)
+            {
+                avgVUrban.BackColor = Color.Red;
+                avgVUrban.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) >= 34 || Convert.ToDouble(values.Rows[1]["Geschwindigkeit"]) <= 21)
+            {
+                avgVUrban.BackColor = Color.Yellow;
+                avgVUrban.ForeColor = Color.Black;
+            }
+            else
+            {
+                avgVUrban.BackColor = Color.Green;
+                avgVUrban.ForeColor = Color.White;
+            }
+
+            //if (Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) > 40 && Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) < 15)
+            //    avgVMotorway.BackColor = Color.Red;
+            //else if (Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) >= 34 && Convert.ToDouble(values.Rows[3]["Geschwindigkeit"]) <= 21)
+            //    avgVMotorway.BackColor = Color.Yellow;
+            //else
+            //    avgVMotorway.BackColor = Color.Green;
+
+            lblTripVal.Text = Convert.ToDouble(values.Rows[0]["Strecke"]).ToString("#.00") + " km";
+            lblDurationVal.Text = Convert.ToDouble(values.Rows[0]["Dauer"]).ToString("#.00") + " min";
+
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             if (Convert.ToDouble(values.Rows[0]["Dauer"]) < 90 || Convert.ToDouble(values.Rows[0]["Dauer"]) > 120)
                 lblDurationVal.BackColor = Color.Red;
             else if (Convert.ToDouble(values.Rows[0]["Dauer"]) <= 97.5d || Convert.ToDouble(values.Rows[0]["Dauer"]) > 112.5d)
@@ -101,6 +219,12 @@ namespace DriversGuide
                 lblDurationVal.BackColor = Color.Green;
 
             lblTimeHoldVal.Text = Convert.ToDouble(values.Rows[0]["Haltezeit"]).ToString("#.00") + " min";
+<<<<<<< HEAD
+=======
+            lblMaxSpeedVal.Text = Convert.ToDouble(values.Rows[0]["Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
+            lblMaxSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
+            lblAvgSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"]).ToString("#.00") + " km/h";
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
         }
     }
 }

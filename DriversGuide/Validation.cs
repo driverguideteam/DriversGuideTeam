@@ -18,6 +18,12 @@ namespace DriversGuide
 
         double distrUrban, distrRural, distrMotorway;
         double duration_hold = 0;
+<<<<<<< HEAD
+=======
+        double maxSpeed = 0;
+        double maxSpeedCold = 0;
+        double avgSpeedCold = 0;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -226,7 +232,44 @@ namespace DriversGuide
         {
             timeHold = duration_hold;
         }
+<<<<<<< HEAD
                 
+=======
+
+        //Get the maximum speed value
+        //********************************************************************************************
+        /*Parameters:
+         *      - maxSpeed:          Maximum speed measured
+        */
+        //********************************************************************************************
+        public double GetMaxSpeed()
+        {
+            return maxSpeed;
+        }
+
+        //Get the maximum speed value
+        //********************************************************************************************
+        /*Parameters:
+         *      - maxSpeedCold:      Maximum speed in cold start phase measured
+        */
+        //********************************************************************************************
+        public double GetMaxSpeedCold()
+        {
+            return maxSpeedCold;
+        }
+
+        //Get the maximum speed value
+        //********************************************************************************************
+        /*Parameters:
+         *      - avgSpeedCold:      Average speed in cold start phase measured
+        */
+        //********************************************************************************************
+        public double GetAvgSpeedCold()
+        {
+            return avgSpeedCold;
+        }
+
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
         //Check if speed criteria are matched
         //********************************************************************************************
         /*Parameters:
@@ -340,7 +383,11 @@ namespace DriversGuide
             temp = dt.Clone();            
 
             int i = 0;
+<<<<<<< HEAD
             double max = 0, avg = 0, time_hold = 0, time_start = 0;
+=======
+            double time_hold = 0, time_start = 0;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             //Sort DataTable by time
             //Copy only entires of first 5 minutes of trip to DataTable temp
@@ -375,7 +422,11 @@ namespace DriversGuide
             time_hold = (double)(temp.Rows.Count - 1);      
 
             //if criteria are matched, return true
+<<<<<<< HEAD
             if (time_start <= 15 && time_hold <= 90 && avg >= 15 && avg <= 40 && max <= 60)
+=======
+            if (time_start <= 15 && time_hold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
                 return true;
             else
                 return false;

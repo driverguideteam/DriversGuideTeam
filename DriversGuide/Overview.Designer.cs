@@ -49,6 +49,18 @@
             this.lblDurationVal = new System.Windows.Forms.Label();
             this.lblTimeHold = new System.Windows.Forms.Label();
             this.lblTimeHoldVal = new System.Windows.Forms.Label();
+<<<<<<< HEAD
+=======
+            this.tTDistrUrb = new System.Windows.Forms.ToolTip(this.components);
+            this.tTDistrRur = new System.Windows.Forms.ToolTip(this.components);
+            this.tTDistrMot = new System.Windows.Forms.ToolTip(this.components);
+            this.lblMaxSpeed = new System.Windows.Forms.Label();
+            this.lblMaxSpeedVal = new System.Windows.Forms.Label();
+            this.lblMaxSpCold = new System.Windows.Forms.Label();
+            this.lblMaxSpColdVal = new System.Windows.Forms.Label();
+            this.lblAvgSpCold = new System.Windows.Forms.Label();
+            this.lblAvgSpColdVal = new System.Windows.Forms.Label();
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.gBUrban.SuspendLayout();
             this.gBRural.SuspendLayout();
             this.gBMotorway.SuspendLayout();
@@ -193,7 +205,11 @@
             // lblTripComplete
             // 
             this.lblTripComplete.AutoSize = true;
+<<<<<<< HEAD
             this.lblTripComplete.Location = new System.Drawing.Point(12, 167);
+=======
+            this.lblTripComplete.Location = new System.Drawing.Point(12, 148);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.lblTripComplete.Name = "lblTripComplete";
             this.lblTripComplete.Size = new System.Drawing.Size(84, 13);
             this.lblTripComplete.TabIndex = 9;
@@ -202,7 +218,11 @@
             // lblTripVal
             // 
             this.lblTripVal.AutoSize = true;
+<<<<<<< HEAD
             this.lblTripVal.Location = new System.Drawing.Point(93, 167);
+=======
+            this.lblTripVal.Location = new System.Drawing.Point(138, 148);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.lblTripVal.Name = "lblTripVal";
             this.lblTripVal.Size = new System.Drawing.Size(0, 13);
             this.lblTripVal.TabIndex = 10;
@@ -210,7 +230,11 @@
             // lblDuration
             // 
             this.lblDuration.AutoSize = true;
+<<<<<<< HEAD
             this.lblDuration.Location = new System.Drawing.Point(12, 189);
+=======
+            this.lblDuration.Location = new System.Drawing.Point(12, 170);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(87, 13);
             this.lblDuration.TabIndex = 11;
@@ -219,7 +243,11 @@
             // lblDurationVal
             // 
             this.lblDurationVal.AutoSize = true;
+<<<<<<< HEAD
             this.lblDurationVal.Location = new System.Drawing.Point(93, 189);
+=======
+            this.lblDurationVal.Location = new System.Drawing.Point(138, 170);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.lblDurationVal.Name = "lblDurationVal";
             this.lblDurationVal.Size = new System.Drawing.Size(0, 13);
             this.lblDurationVal.TabIndex = 12;
@@ -227,7 +255,11 @@
             // lblTimeHold
             // 
             this.lblTimeHold.AutoSize = true;
+<<<<<<< HEAD
             this.lblTimeHold.Location = new System.Drawing.Point(12, 216);
+=======
+            this.lblTimeHold.Location = new System.Drawing.Point(12, 197);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.lblTimeHold.Name = "lblTimeHold";
             this.lblTimeHold.Size = new System.Drawing.Size(54, 13);
             this.lblTimeHold.TabIndex = 13;
@@ -236,16 +268,84 @@
             // lblTimeHoldVal
             // 
             this.lblTimeHoldVal.AutoSize = true;
+<<<<<<< HEAD
             this.lblTimeHoldVal.Location = new System.Drawing.Point(93, 216);
             this.lblTimeHoldVal.Name = "lblTimeHoldVal";
             this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
             this.lblTimeHoldVal.TabIndex = 14;
+=======
+            this.lblTimeHoldVal.Location = new System.Drawing.Point(144, 197);
+            this.lblTimeHoldVal.Name = "lblTimeHoldVal";
+            this.lblTimeHoldVal.Size = new System.Drawing.Size(0, 13);
+            this.lblTimeHoldVal.TabIndex = 14;
+            // 
+            // lblMaxSpeed
+            // 
+            this.lblMaxSpeed.AutoSize = true;
+            this.lblMaxSpeed.Location = new System.Drawing.Point(12, 221);
+            this.lblMaxSpeed.Name = "lblMaxSpeed";
+            this.lblMaxSpeed.Size = new System.Drawing.Size(126, 13);
+            this.lblMaxSpeed.TabIndex = 15;
+            this.lblMaxSpeed.Text = "Hoechstgeschwindigkeit:";
+            // 
+            // lblMaxSpeedVal
+            // 
+            this.lblMaxSpeedVal.AutoSize = true;
+            this.lblMaxSpeedVal.Location = new System.Drawing.Point(144, 221);
+            this.lblMaxSpeedVal.Name = "lblMaxSpeedVal";
+            this.lblMaxSpeedVal.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxSpeedVal.TabIndex = 16;
+            // 
+            // lblMaxSpCold
+            // 
+            this.lblMaxSpCold.AutoSize = true;
+            this.lblMaxSpCold.Location = new System.Drawing.Point(275, 148);
+            this.lblMaxSpCold.Name = "lblMaxSpCold";
+            this.lblMaxSpCold.Size = new System.Drawing.Size(167, 13);
+            this.lblMaxSpCold.TabIndex = 17;
+            this.lblMaxSpCold.Text = "Hoechstgeschwindigkeit Kaltstart:";
+            // 
+            // lblMaxSpColdVal
+            // 
+            this.lblMaxSpColdVal.AutoSize = true;
+            this.lblMaxSpColdVal.Location = new System.Drawing.Point(473, 148);
+            this.lblMaxSpColdVal.Name = "lblMaxSpColdVal";
+            this.lblMaxSpColdVal.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxSpColdVal.TabIndex = 18;
+            // 
+            // lblAvgSpCold
+            // 
+            this.lblAvgSpCold.AutoSize = true;
+            this.lblAvgSpCold.Location = new System.Drawing.Point(275, 170);
+            this.lblAvgSpCold.Name = "lblAvgSpCold";
+            this.lblAvgSpCold.Size = new System.Drawing.Size(192, 13);
+            this.lblAvgSpCold.TabIndex = 19;
+            this.lblAvgSpCold.Text = "Durchschnittsgeschwindigkeit Kaltstart:";
+            // 
+            // lblAvgSpColdVal
+            // 
+            this.lblAvgSpColdVal.AutoSize = true;
+            this.lblAvgSpColdVal.Location = new System.Drawing.Point(473, 170);
+            this.lblAvgSpColdVal.Name = "lblAvgSpColdVal";
+            this.lblAvgSpColdVal.Size = new System.Drawing.Size(0, 13);
+            this.lblAvgSpColdVal.TabIndex = 20;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             // 
             // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(543, 450);
+=======
+            this.ClientSize = new System.Drawing.Size(770, 304);
+            this.Controls.Add(this.lblAvgSpColdVal);
+            this.Controls.Add(this.lblAvgSpCold);
+            this.Controls.Add(this.lblMaxSpColdVal);
+            this.Controls.Add(this.lblMaxSpCold);
+            this.Controls.Add(this.lblMaxSpeedVal);
+            this.Controls.Add(this.lblMaxSpeed);
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
             this.Controls.Add(this.lblTimeHoldVal);
             this.Controls.Add(this.lblTimeHold);
             this.Controls.Add(this.lblDurationVal);
@@ -294,5 +394,35 @@
         private System.Windows.Forms.Label lblDurationVal;
         private System.Windows.Forms.Label lblTimeHold;
         private System.Windows.Forms.Label lblTimeHoldVal;
+<<<<<<< HEAD
+=======
+        private System.Windows.Forms.ToolTip tTDistrUrb;
+        private System.Windows.Forms.ToolTip tTDistrRur;
+        private System.Windows.Forms.ToolTip tTDistrMot;
+        private System.Windows.Forms.Label lblMaxSpeed;
+        private System.Windows.Forms.Label lblMaxSpeedVal;
+        private System.Windows.Forms.Label lblMaxSpCold;
+        private System.Windows.Forms.Label lblMaxSpColdVal;
+        private System.Windows.Forms.Label lblAvgSpCold;
+        private System.Windows.Forms.Label lblAvgSpColdVal;
+        private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.Label lbl6;
+        private System.Windows.Forms.Label lbl4;
+        private System.Windows.Forms.Label lbl5;
+        private System.Windows.Forms.Label lbl3;
+        private System.Windows.Forms.Label lbl12;
+        private System.Windows.Forms.Label lbl10;
+        private System.Windows.Forms.Label lbl8;
+        private System.Windows.Forms.Label lbl11;
+        private System.Windows.Forms.Label lbl9;
+        private System.Windows.Forms.Label lbl7;
+        private System.Windows.Forms.Label lbl18;
+        private System.Windows.Forms.Label lbl16;
+        private System.Windows.Forms.Label lbl14;
+        private System.Windows.Forms.Label lbl17;
+        private System.Windows.Forms.Label lbl15;
+        private System.Windows.Forms.Label lbl13;
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
     }
 }

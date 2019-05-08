@@ -70,6 +70,12 @@ namespace DriversGuide
             values.Columns.Add("Strecke");
             values.Columns.Add("Dauer");
             values.Columns.Add("Haltezeit");
+<<<<<<< HEAD
+=======
+            values.Columns.Add("Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Durchschnittsgeschwindigkeit");
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             values.Rows.Add();
             values.Rows.Add();
@@ -154,8 +160,15 @@ namespace DriversGuide
             values.Rows[3]["Strecke"] = tripMotorway;
 
             values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
+<<<<<<< HEAD
             values.Rows[0]["Haltezeit"] = holdTime;
 
+=======
+            values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
+            values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
+            values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
+            values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
+>>>>>>> parent of 9ca23f3... Kogler 07.05 19:45
 
             grafikToolStripMenuItem.Enabled = true;
             txtMeasurement.Text = "Berechnung durchgeführt!";
