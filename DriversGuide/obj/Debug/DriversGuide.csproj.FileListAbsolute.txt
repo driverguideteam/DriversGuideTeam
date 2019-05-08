@@ -115,6 +115,7 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
+<<<<<<< HEAD
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.xml
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.SqlServer.xml
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\bin\Debug\Newtonsoft.Json.xml
@@ -126,3 +127,5 @@ C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\Drivers
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.Fody.CopyLocal.cache
 C:\Repositories\DriversGuideTeam\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CopyComplete
+=======
+>>>>>>> parent of 88b90a9... Grafik erweitert
