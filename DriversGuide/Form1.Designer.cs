@@ -81,7 +81,7 @@
             // fileEinlesenToolStripMenuItem
             // 
             this.fileEinlesenToolStripMenuItem.Name = "fileEinlesenToolStripMenuItem";
-            this.fileEinlesenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fileEinlesenToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.fileEinlesenToolStripMenuItem.Text = "File einlesen...";
             this.fileEinlesenToolStripMenuItem.Click += new System.EventHandler(this.btnReadMeasuremntfile_Click);
             // 
@@ -89,7 +89,7 @@
             // 
             this.berechnungDurchführenToolStripMenuItem.Enabled = false;
             this.berechnungDurchführenToolStripMenuItem.Name = "berechnungDurchführenToolStripMenuItem";
-            this.berechnungDurchführenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.berechnungDurchführenToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.berechnungDurchführenToolStripMenuItem.Text = "Berechnen...";
             this.berechnungDurchführenToolStripMenuItem.Click += new System.EventHandler(this.btnBerechnen_Click);
             // 
@@ -107,21 +107,21 @@
             // showGraphicToolStripMenuItem
             // 
             this.showGraphicToolStripMenuItem.Name = "showGraphicToolStripMenuItem";
-            this.showGraphicToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showGraphicToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.showGraphicToolStripMenuItem.Text = "Show Graphic";
             this.showGraphicToolStripMenuItem.Click += new System.EventHandler(this.btnGraphic_Click);
             // 
             // grafikSpielwieseToolStripMenuItem
             // 
             this.grafikSpielwieseToolStripMenuItem.Name = "grafikSpielwieseToolStripMenuItem";
-            this.grafikSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grafikSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.grafikSpielwieseToolStripMenuItem.Text = "Grafik Spielwiese";
             this.grafikSpielwieseToolStripMenuItem.Click += new System.EventHandler(this.btnSpielwiese_Click);
             // 
             // gPSSpielwieseToolStripMenuItem
             // 
             this.gPSSpielwieseToolStripMenuItem.Name = "gPSSpielwieseToolStripMenuItem";
-            this.gPSSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gPSSpielwieseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.gPSSpielwieseToolStripMenuItem.Text = "GPS Spielwiese";
             this.gPSSpielwieseToolStripMenuItem.Click += new System.EventHandler(this.btnGPS_Click);
             // 
@@ -136,7 +136,7 @@
             // überblickToolStripMenuItem
             // 
             this.überblickToolStripMenuItem.Name = "überblickToolStripMenuItem";
-            this.überblickToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.überblickToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.überblickToolStripMenuItem.Text = "Überblick";
             this.überblickToolStripMenuItem.Click += new System.EventHandler(this.überblickToolStripMenuItem_Click);
             // 
