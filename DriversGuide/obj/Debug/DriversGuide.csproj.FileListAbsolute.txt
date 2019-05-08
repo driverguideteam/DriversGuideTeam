@@ -116,4 +116,3 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.DriversGuideMain.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
-C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources

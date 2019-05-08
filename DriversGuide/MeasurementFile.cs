@@ -15,7 +15,6 @@ namespace DriversGuide
 
         DataTable dt = new DataTable();
         DataTable units = new DataTable();
-        DataTable headers = new DataTable();
        
         /*
          Einlesen des Messfiles + Convertierung in 2 Datentables "dt" und "units"
@@ -110,6 +109,14 @@ namespace DriversGuide
         public MeasurementFile ()
         {
 
+        }
+
+        public string[] Titles()      //Ausgabe der Spaltenüberschriften
+        {
+            StreamReader sr = new StreamReader(Filename);
+            string[] headers = sr.ReadLine().Split('\t');
+
+            return headers;
         }
 
     }
