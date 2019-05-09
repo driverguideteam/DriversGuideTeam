@@ -56,6 +56,32 @@ namespace DriversGuide
             return xyUnits;   //liefert StingArray zurück
         }
 
+        public string TimeInHhmmss(int seconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+
+            string hhmmss = time.ToString(@"hh\ \h\ mm\ \m\ ss\ \s");
+
+            return hhmmss;
+        }
+
+        public DataTable AddTimeFormat(ref DataTable tt)
+        {
+            for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
+            {
+                tt.Rows[i]["Time"] = Convert.ToInt64((tt.Rows[i]["Time"])) / 1000;
+            }
+
+            tt.Columns.Add("TimeFormat", typeof(string));
+
+            for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeitformat
+            {
+               tt.Rows[i]["TimeFormat"] = TimeInHhmmss(Convert.ToInt32((tt.Rows[i]["Time"])));    
+            }
+
+            return tt;
+        }
+
         public void PlotGraphic_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;   //Fenster maximieren
@@ -65,10 +91,7 @@ namespace DriversGuide
             tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
             tt = tt.Copy();                          //Kopie des Datatables
 
-            for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
-            {
-                tt.Rows[i]["Time"] = Convert.ToInt64((tt.Rows[i]["Time"])) / 1000;
-            }
+            AddTimeFormat(ref tt);
 
             ClearChart(chart1);
             ClearChart(chart2);
@@ -85,6 +108,33 @@ namespace DriversGuide
             string GewDaten3 = GewDatenMZ[2];
             string GewDaten4 = GewDatenMZ[3];
 
+            LocateCharts(GewDaten1, GewDaten2, GewDaten3, GewDaten4);
+
+            //Chart CreateChart = new Chart();
+            //CreateChart.Show();
+        }
+
+        private void ClearChart(Chart chartname)
+        {
+            chartname.Series.Clear();       //Leeren der Daten für Diagramm
+            chartname.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
+        }
+
+        private void DrawChart(Chart chartname, string GewDat)
+        {
+            newchart.ConnectToForm1(Form1Copy);                     //Form1-Verlinkung zu GraphicsCreate
+            newchart.GetChosenData(this);                           //erstellt Zugriff auf Datenauswahl-Feld
+            newchart.SetChartProperties(ref chartname, GewDat);   //Festlegen der Chart-Eigenschaften
+        }
+
+        private void LocateLabel(Chart chartname, Label labelname)
+        {
+            labelname.Location = new Point(chartname.Location.X + chartname.Width - 150, chartname.Location.Y + 10);
+            labelname.Visible = false;
+        }
+
+        public void LocateCharts(string GewDaten1, string GewDaten2, string GewDaten3, string GewDaten4)
+        {
             if (GewDaten1 != "" && GewDaten2 == "" && GewDaten3 == "" && GewDaten4 == "")
             {
                 chart1.Height = pictureBox1.Height;
@@ -139,7 +189,7 @@ namespace DriversGuide
                 chart3.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y + pictureBox1.Height - chart3.Height);
                 DrawChart(chart3, GewDaten3);
-                LocateLabel(chart4, lblPos4);
+                LocateLabel(chart3, lblPos3);
 
                 chart4.Visible = false;
             }
@@ -173,30 +223,13 @@ namespace DriversGuide
                 DrawChart(chart4, GewDaten4);
                 LocateLabel(chart4, lblPos4);
             }
-
-            //Chart CreateChart = new Chart();
-            //CreateChart.Show();
-
             tmrTimeSpan.Enabled = true;   //aktiviert Timer, um verstrichene Zeit zu messen
         }
 
-        private void ClearChart(Chart chartname)
+        private void SetStartScale(Chart chartname, string GewDatenX)
         {
-            chartname.Series.Clear();       //Leeren der Daten für Diagramm
-            chartname.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
-        }
-
-        private void DrawChart(Chart chartname, string GewDat)
-        {
-            newchart.ConnectToForm1(Form1Copy);                     //Form1-Verlinkung zu GraphicsCreate
-            newchart.GetChosenData(this);                           //erstellt Zugriff auf Datenauswahl-Feld
-            newchart.SetChartProperties(ref chartname, GewDat);   //Festlegen der Chart-Eigenschaften
-        }
-
-        private void LocateLabel(Chart chartname, Label labelname)
-        {
-            labelname.Location = new Point(chartname.Location.X + chartname.Width - 100, chartname.Location.Y + chartname.Height / 2 - 20);
-            labelname.Visible = true;
+            chartname.ChartAreas[GewDatenX].AxisX.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisX.Minimum, chartname.ChartAreas[GewDatenX].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
+            chartname.ChartAreas[GewDatenX].AxisY.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisY.Minimum, chartname.ChartAreas[GewDatenX].AxisY.Maximum);   //Startskalierung der y-Achse
         }
 
         private void MoveCursor(Chart chartname, Label labelname, MouseEventArgs e, int x)
@@ -221,7 +254,7 @@ namespace DriversGuide
                 string yUnit = GetUnits(GewDaten)[1];
 
                 labelname.Visible = true;
-                labelname.Text = "x = " + xpos.ToString() + " " + xUnit + "\n" +
+                labelname.Text = "x = " + tt.Rows[Convert.ToInt32(xpos)]["TimeFormat"] + "\n" +
                               "y = " + ypos.ToString() + " " + yUnit;
 
                 //lblPos.BackColor = Color.White;
@@ -255,7 +288,7 @@ namespace DriversGuide
                     string yUnit = GetUnits(OtherGewDaten)[1];
 
                     labelname.Visible = true;
-                    labelname.Text = "x = " + xpos.ToString() + " " + xUnit + "\n" +
+                    labelname.Text = "x = " + tt.Rows[Convert.ToInt32(xpos)]["TimeFormat"] + "\n" +
                                   "y = " + ypos.ToString() + " " + yUnit;
                 }
 
@@ -267,36 +300,28 @@ namespace DriversGuide
         {
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten1 = GewDatenMZ[0];
-
-            chart1.ChartAreas[GewDaten1].AxisX.ScaleView.Zoom(chart1.ChartAreas[GewDaten1].AxisX.Minimum, chart1.ChartAreas[GewDaten1].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chart1.ChartAreas[GewDaten1].AxisY.ScaleView.Zoom(chart1.ChartAreas[GewDaten1].AxisY.Minimum, chart1.ChartAreas[GewDaten1].AxisY.Maximum);   //Startskalierung der y-Achse
+            SetStartScale(chart1, GewDaten1);
         }
 
         private void chart2_MouseWheel(object sender, MouseEventArgs e)
         {
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten2 = GewDatenMZ[1];
-
-            chart2.ChartAreas[GewDaten2].AxisX.ScaleView.Zoom(chart2.ChartAreas[GewDaten2].AxisX.Minimum, chart2.ChartAreas[GewDaten2].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chart2.ChartAreas[GewDaten2].AxisY.ScaleView.Zoom(chart2.ChartAreas[GewDaten2].AxisY.Minimum, chart2.ChartAreas[GewDaten2].AxisY.Maximum);   //Startskalierung der y-Achse
+            SetStartScale(chart2, GewDaten2);
         }
 
         private void chart3_MouseWheel(object sender, MouseEventArgs e)
         {
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten3 = GewDatenMZ[2];
-
-            chart3.ChartAreas[GewDaten3].AxisX.ScaleView.Zoom(chart3.ChartAreas[GewDaten3].AxisX.Minimum, chart3.ChartAreas[GewDaten3].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chart3.ChartAreas[GewDaten3].AxisY.ScaleView.Zoom(chart3.ChartAreas[GewDaten3].AxisY.Minimum, chart3.ChartAreas[GewDaten3].AxisY.Maximum);   //Startskalierung der y-Achse
+            SetStartScale(chart3, GewDaten3);
         }
 
         private void chart4_MouseWheel(object sender, MouseEventArgs e)
         {
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten4 = GewDatenMZ[3];
-
-            chart4.ChartAreas[GewDaten4].AxisX.ScaleView.Zoom(chart4.ChartAreas[GewDaten4].AxisX.Minimum, chart4.ChartAreas[GewDaten4].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chart4.ChartAreas[GewDaten4].AxisY.ScaleView.Zoom(chart4.ChartAreas[GewDaten4].AxisY.Minimum, chart4.ChartAreas[GewDaten4].AxisY.Maximum);   //Startskalierung der y-Achse
+            SetStartScale(chart4, GewDaten4);
         }
 
         private void tmrTimeSpan_Tick(object sender, EventArgs e)
@@ -342,6 +367,21 @@ namespace DriversGuide
             MoveOtherCursor(chart4, 3, chart1, 0, lblPos1, e);
             MoveOtherCursor(chart4, 3, chart2, 1, lblPos2, e);
             MoveOtherCursor(chart4, 3, chart3, 2, lblPos3, e);
+        }
+
+        private void PlotGraphic_Resize(object sender, EventArgs e)
+        {
+            if (ChartReady == true)
+            {
+                string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
+                string GewDaten1 = GewDatenMZ[0];
+                string GewDaten2 = GewDatenMZ[1];
+                string GewDaten3 = GewDatenMZ[2];
+                string GewDaten4 = GewDatenMZ[3];
+
+                LocateCharts(GewDaten1, GewDaten2, GewDaten3, GewDaten4);
+            }
+            ChartReady = false;
         }
     }
 }
