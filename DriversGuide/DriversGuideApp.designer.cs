@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlSideBar = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -39,6 +40,7 @@
             this.lblHide = new System.Windows.Forms.Label();
             this.lblShow = new System.Windows.Forms.Label();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.tmrFade = new System.Windows.Forms.Timer(this.components);
             this.pnlSideBar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlContent.SuspendLayout();
@@ -187,10 +189,16 @@
             // 
             this.ofd.FileName = "openFileDialog1";
             // 
+            // tmrFade
+            // 
+            this.tmrFade.Interval = 1;
+            this.tmrFade.Tick += new System.EventHandler(this.tmrFade_Tick);
+            // 
             // DriversGuideApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(994, 450);
             this.Controls.Add(this.pnlSideBar);
             this.Controls.Add(this.pnlContent);
@@ -218,5 +226,6 @@
         private System.Windows.Forms.Label lblHide;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer tmrFade;
     }
 }

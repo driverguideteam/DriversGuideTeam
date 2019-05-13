@@ -22,6 +22,7 @@ namespace DriversGuide
         double maxSpeedCold = 0;
         double avgSpeedCold = 0;
         double holdTimeCold = 0;
+        double fasterOnehundred = 0;
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -99,7 +100,7 @@ namespace DriversGuide
             DataTable fasterHFF = new DataTable();
             fasterOH = dt_motorway.Clone();
             fasterHFF = dt_motorway.Clone();
-            double min, duration, fasterOnehundred, tooFast = 0;
+            double min, duration, tooFast = 0;
 
             //Get maximum and minimum speed in interval
             maxSpeed = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
@@ -273,6 +274,17 @@ namespace DriversGuide
         public double GetTimeHoldCold()
         {
             return holdTimeCold;
+        }
+
+        //Get the time spent driving faster onehundred km/h
+        //********************************************************************************************
+        /*Parameters:
+         *      - fasterOnehundred: Time droven faster than 100 km/h
+        */
+        //********************************************************************************************
+        public double GetTimeFasterHundred()
+        {
+            return fasterOnehundred;
         }
 
         //Check if speed criteria are matched

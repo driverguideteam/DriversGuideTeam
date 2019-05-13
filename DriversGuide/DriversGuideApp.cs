@@ -15,16 +15,13 @@ namespace DriversGuide
     {
         GPS FormGPS;
         General FormGeneral;
-
-        int mov = 0;
-        int movX;
-        int movY;
+        bool inout = false;
 
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
-        public DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
-        public DataTable units = new DataTable();  //öffentl. Datatable für Einheiten erstellen (für Grafik)
+        private DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
+        private DataTable units = new DataTable();  //öffentl. Datatable für Einheiten erstellen (für Grafik)
         private DataTable urban = new DataTable();
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
@@ -102,6 +99,73 @@ namespace DriversGuide
             values.Rows[3]["Klasse"] = "Autobahn";
         }
 
+        private void DoCalculations()
+        {
+            InitValueData();
+            Berechnung = new Calculations();
+            Gueltigkeit = new Validation();
+            bool test1, testdur;
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
+            string column_distance = "di";
+            string column_time = "Time";
+            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+
+            test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+            testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+            Berechnung.SepIntervals(test, column_speed);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.AddUnits(units);
+
+            Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+
+            values.Rows[1]["Geschwindigkeit"] = avgUrban;
+            values.Rows[2]["Geschwindigkeit"] = avgRural;
+            values.Rows[3]["Geschwindigkeit"] = avgMotorway;
+
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            values.Rows[0]["Strecke"] = (double)test.Compute("SUM([" + column_distance + "])", "") / 1000;
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+
+            values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
+            values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
+            values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
+            values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
+            values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
+            values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
+
+            values.Rows[3]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetTimeFasterHundred();
+
+            //grafikToolStripMenuItem.Enabled = true;
+            //txtMeasurement.Text = "Berechnung durchgeführt!";
+            MessageBox.Show("Berechnung durchgeführt!");
+            pnlContent.Controls.Clear();
+            FormGeneral = new General(this);
+            //myForm.TopLevel = false;
+            FormGeneral.AutoScroll = true;
+            pnlContent.Controls.Add(FormGeneral);
+            //myForm.FormBorderStyle = FormBorderStyle.None;
+            FormGeneral.Show();
+            FormGeneral.Dock = DockStyle.Fill;            
+            btnGraphic.Enabled = true;
+            btnGPS.Enabled = true;
+            btnOverview.Enabled = true;
+            lblHide.BackColor = Color.White;
+            lblShow.BackColor = Color.White;
+        }
+
         private void btnOverview_Click(object sender, EventArgs e)
         {
             pnlContent.Controls.Clear();
@@ -155,75 +219,9 @@ namespace DriversGuide
             {
                 //txtMeasurement.Text = "Fail";
                 MessageBox.Show("Fail!");
-
             }
 
-            /*--------------------------------------------------------------------------------------------
-             * Code für Testzwecke! Zur Ferstigstellung zu entfernen!!*/
-
-            //Init the value DataTable
-            InitValueData();
-            Berechnung = new Calculations();
-            Gueltigkeit = new Validation();
-            bool test1, testdur;
-            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
-            string column_acc = "ai";
-            string column_dynamic = "a*v";
-            string column_distance = "di";
-            string column_time = "Time";
-            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
-            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
-            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
-            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
-
-            test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
-            testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
-
-            Berechnung.SepIntervals(test, column_speed);
-            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
-            Berechnung.AddUnits(units);
-
-            Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
-            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
-            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-
-            values.Rows[1]["Geschwindigkeit"] = avgUrban;
-            values.Rows[2]["Geschwindigkeit"] = avgRural;
-            values.Rows[3]["Geschwindigkeit"] = avgMotorway;
-
-            values.Rows[1]["Verteilung"] = distrUrban;
-            values.Rows[2]["Verteilung"] = distrRural;
-            values.Rows[3]["Verteilung"] = distrMotorway;
-
-            values.Rows[0]["Strecke"] = (double)test.Compute("SUM([" + column_distance + "])", "") / 1000;
-            values.Rows[1]["Strecke"] = tripUrban;
-            values.Rows[2]["Strecke"] = tripRural;
-            values.Rows[3]["Strecke"] = tripMotorway;
-
-            values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
-            values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
-            values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
-            values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
-            values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
-            values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
-
-            //grafikToolStripMenuItem.Enabled = true;
-            //txtMeasurement.Text = "Berechnung durchgeführt!";
-            MessageBox.Show("Berechnung durchgeführt!");
-            pnlContent.Controls.Clear();
-            FormGeneral = new General(this);
-            //myForm.TopLevel = false;
-            FormGeneral.AutoScroll = true;
-            pnlContent.Controls.Add(FormGeneral);
-            //myForm.FormBorderStyle = FormBorderStyle.None;
-            FormGeneral.Show();
-            FormGeneral.Dock = DockStyle.Fill;
-            /*--------------------------------------------------------------------------------------------*/
-            btnGraphic.Enabled = true;
-            btnGPS.Enabled = true;
-            btnOverview.Enabled = true;
-            lblHide.BackColor = Color.White;
-            lblShow.BackColor = Color.White;
+            DoCalculations();
         }
 
         private void btnGraphic_Click(object sender, EventArgs e)
@@ -243,22 +241,62 @@ namespace DriversGuide
 
         private void lblHide_Click(object sender, EventArgs e)
         {
-            pnlSideBar.Hide();
+            //pnlSideBar.Hide();
+            tmrFade.Enabled = true;
             lblHide.Hide();
             lblShow.Show();
             lblShow.Left = 3;
-            pnlContent.Left = 0;
-            pnlContent.Width = ClientSize.Width;
+            //pnlContent.Left = 0;
+            //pnlContent.Width = ClientSize.Width;
+            tmrFade.Enabled = true;
         }
 
         private void lblShow_Click(object sender, EventArgs e)
         {
+            tmrFade.Enabled = true;
             lblShow.Hide();
             lblHide.Show();
-            pnlSideBar.Show();
+            //pnlSideBar.Show();
             pnlContent.Left = pnlSideBar.Width;
             pnlContent.Width = ClientSize.Width - pnlSideBar.Width;
         }
 
+        private void tmrFade_Tick(object sender, EventArgs e)
+        {
+            if(inout)
+            {
+                if (pnlSideBar.Location.X < 0)
+                {
+                    pnlSideBar.Left += 10;
+                    //pnlContent.Left += 10;
+                    //pnlContent.Width -= 10;
+                }                        
+                else
+                {
+                    tmrFade.Enabled = false;
+                    inout = false;
+                    //pnlSideBar.Hide(); 
+                    //pnlContent.Left = pnlSideBar.Width;
+                    //pnlContent.Width = ClientSize.Width - pnlSideBar.Width;
+                }                    
+            }
+            else
+            {
+                if (pnlSideBar.Location.X > -pnlSideBar.Width)
+                {
+                    pnlSideBar.Left -= 10;
+                    //pnlContent.Left -= 10;
+                    //pnlContent.Width += 10;
+                }
+                else
+                {
+                    tmrFade.Enabled = false;
+                    inout = true;
+                    pnlContent.Left = 0;
+                    pnlContent.Width = ClientSize.Width;
+                }
+            }
+
+        }
     }
 }
