@@ -253,6 +253,7 @@
             this.Name = "PlotGraphic";
             this.Text = "PlotGraphic";
             this.Load += new System.EventHandler(this.PlotGraphic_Load);
+            this.Resize += new System.EventHandler(this.PlotGraphic_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();

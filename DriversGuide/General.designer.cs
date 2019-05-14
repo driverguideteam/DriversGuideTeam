@@ -58,7 +58,6 @@
             this.lblMeanV = new System.Windows.Forms.Label();
             this.lblDistr = new System.Windows.Forms.Label();
             this.gBMotorway = new System.Windows.Forms.GroupBox();
-            this.lbl18 = new System.Windows.Forms.Label();
             this.lbl16 = new System.Windows.Forms.Label();
             this.lbl14 = new System.Windows.Forms.Label();
             this.lbl17 = new System.Windows.Forms.Label();
@@ -68,7 +67,6 @@
             this.avgVMotorway = new System.Windows.Forms.TextBox();
             this.distMotorway = new System.Windows.Forms.TextBox();
             this.gBRural = new System.Windows.Forms.GroupBox();
-            this.lbl12 = new System.Windows.Forms.Label();
             this.lbl10 = new System.Windows.Forms.Label();
             this.lbl8 = new System.Windows.Forms.Label();
             this.lbl11 = new System.Windows.Forms.Label();
@@ -78,7 +76,6 @@
             this.avgVRural = new System.Windows.Forms.TextBox();
             this.distRural = new System.Windows.Forms.TextBox();
             this.gBUrban = new System.Windows.Forms.GroupBox();
-            this.lbl6 = new System.Windows.Forms.Label();
             this.lbl4 = new System.Windows.Forms.Label();
             this.lbl5 = new System.Windows.Forms.Label();
             this.lbl3 = new System.Windows.Forms.Label();
@@ -87,6 +84,10 @@
             this.tripUrban = new System.Windows.Forms.TextBox();
             this.avgVUrban = new System.Windows.Forms.TextBox();
             this.distUrban = new System.Windows.Forms.TextBox();
+            this.lbl29 = new System.Windows.Forms.Label();
+            this.tBFasterOH = new System.Windows.Forms.TextBox();
+            this.lblTimeFasterOH = new System.Windows.Forms.Label();
+            this.lbl30 = new System.Windows.Forms.Label();
             this.gBGeneral.SuspendLayout();
             this.gBColdStart.SuspendLayout();
             this.gBMotorway.SuspendLayout();
@@ -98,7 +99,7 @@
             // 
             this.lblTimeHoldCold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTimeHoldCold.AutoSize = true;
-            this.lblTimeHoldCold.Location = new System.Drawing.Point(20, 240);
+            this.lblTimeHoldCold.Location = new System.Drawing.Point(428, 239);
             this.lblTimeHoldCold.Name = "lblTimeHoldCold";
             this.lblTimeHoldCold.Size = new System.Drawing.Size(54, 13);
             this.lblTimeHoldCold.TabIndex = 44;
@@ -107,6 +108,9 @@
             // gBGeneral
             // 
             this.gBGeneral.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.gBGeneral.Controls.Add(this.lbl30);
+            this.gBGeneral.Controls.Add(this.tBFasterOH);
+            this.gBGeneral.Controls.Add(this.lbl29);
             this.gBGeneral.Controls.Add(this.tBMaxSpeed);
             this.gBGeneral.Controls.Add(this.lbl27);
             this.gBGeneral.Controls.Add(this.lbl25);
@@ -115,9 +119,9 @@
             this.gBGeneral.Controls.Add(this.tBTimeHold);
             this.gBGeneral.Controls.Add(this.tBDuration);
             this.gBGeneral.Controls.Add(this.tBTrip);
-            this.gBGeneral.Location = new System.Drawing.Point(177, 304);
+            this.gBGeneral.Location = new System.Drawing.Point(177, 155);
             this.gBGeneral.Name = "gBGeneral";
-            this.gBGeneral.Size = new System.Drawing.Size(173, 138);
+            this.gBGeneral.Size = new System.Drawing.Size(173, 167);
             this.gBGeneral.TabIndex = 43;
             this.gBGeneral.TabStop = false;
             this.gBGeneral.Text = "Allgemein";
@@ -203,7 +207,7 @@
             this.gBColdStart.Controls.Add(this.tBTimeHoldCold);
             this.gBColdStart.Controls.Add(this.tBAvgSpColdVal);
             this.gBColdStart.Controls.Add(this.tBMaxSpColdVal);
-            this.gBColdStart.Location = new System.Drawing.Point(177, 156);
+            this.gBColdStart.Location = new System.Drawing.Point(585, 155);
             this.gBColdStart.Name = "gBColdStart";
             this.gBColdStart.Size = new System.Drawing.Size(173, 111);
             this.gBColdStart.TabIndex = 42;
@@ -293,7 +297,7 @@
             // 
             this.lblAvgSpCold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAvgSpCold.AutoSize = true;
-            this.lblAvgSpCold.Location = new System.Drawing.Point(20, 214);
+            this.lblAvgSpCold.Location = new System.Drawing.Point(428, 213);
             this.lblAvgSpCold.Name = "lblAvgSpCold";
             this.lblAvgSpCold.Size = new System.Drawing.Size(151, 13);
             this.lblAvgSpCold.TabIndex = 41;
@@ -303,7 +307,7 @@
             // 
             this.lblMaxSpCold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMaxSpCold.AutoSize = true;
-            this.lblMaxSpCold.Location = new System.Drawing.Point(20, 188);
+            this.lblMaxSpCold.Location = new System.Drawing.Point(428, 187);
             this.lblMaxSpCold.Name = "lblMaxSpCold";
             this.lblMaxSpCold.Size = new System.Drawing.Size(126, 13);
             this.lblMaxSpCold.TabIndex = 40;
@@ -313,7 +317,7 @@
             // 
             this.lblMaxSpeed.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMaxSpeed.AutoSize = true;
-            this.lblMaxSpeed.Location = new System.Drawing.Point(20, 414);
+            this.lblMaxSpeed.Location = new System.Drawing.Point(20, 265);
             this.lblMaxSpeed.Name = "lblMaxSpeed";
             this.lblMaxSpeed.Size = new System.Drawing.Size(126, 13);
             this.lblMaxSpeed.TabIndex = 39;
@@ -323,7 +327,7 @@
             // 
             this.lblTimeHold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTimeHold.AutoSize = true;
-            this.lblTimeHold.Location = new System.Drawing.Point(20, 388);
+            this.lblTimeHold.Location = new System.Drawing.Point(20, 239);
             this.lblTimeHold.Name = "lblTimeHold";
             this.lblTimeHold.Size = new System.Drawing.Size(54, 13);
             this.lblTimeHold.TabIndex = 38;
@@ -333,7 +337,7 @@
             // 
             this.lblDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(20, 362);
+            this.lblDuration.Location = new System.Drawing.Point(20, 213);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(87, 13);
             this.lblDuration.TabIndex = 37;
@@ -343,7 +347,7 @@
             // 
             this.lblTripComplete.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTripComplete.AutoSize = true;
-            this.lblTripComplete.Location = new System.Drawing.Point(20, 336);
+            this.lblTripComplete.Location = new System.Drawing.Point(20, 187);
             this.lblTripComplete.Name = "lblTripComplete";
             this.lblTripComplete.Size = new System.Drawing.Size(84, 13);
             this.lblTripComplete.TabIndex = 36;
@@ -382,7 +386,6 @@
             // gBMotorway
             // 
             this.gBMotorway.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.gBMotorway.Controls.Add(this.lbl18);
             this.gBMotorway.Controls.Add(this.lbl16);
             this.gBMotorway.Controls.Add(this.lbl14);
             this.gBMotorway.Controls.Add(this.lbl17);
@@ -397,15 +400,6 @@
             this.gBMotorway.TabIndex = 32;
             this.gBMotorway.TabStop = false;
             this.gBMotorway.Text = "Autobahn";
-            // 
-            // lbl18
-            // 
-            this.lbl18.AutoSize = true;
-            this.lbl18.Location = new System.Drawing.Point(134, 84);
-            this.lbl18.Name = "lbl18";
-            this.lbl18.Size = new System.Drawing.Size(21, 13);
-            this.lbl18.TabIndex = 36;
-            this.lbl18.Text = "< z";
             // 
             // lbl16
             // 
@@ -479,7 +473,6 @@
             // gBRural
             // 
             this.gBRural.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.gBRural.Controls.Add(this.lbl12);
             this.gBRural.Controls.Add(this.lbl10);
             this.gBRural.Controls.Add(this.lbl8);
             this.gBRural.Controls.Add(this.lbl11);
@@ -494,15 +487,6 @@
             this.gBRural.TabIndex = 31;
             this.gBRural.TabStop = false;
             this.gBRural.Text = "Land";
-            // 
-            // lbl12
-            // 
-            this.lbl12.AutoSize = true;
-            this.lbl12.Location = new System.Drawing.Point(133, 84);
-            this.lbl12.Name = "lbl12";
-            this.lbl12.Size = new System.Drawing.Size(24, 13);
-            this.lbl12.TabIndex = 31;
-            this.lbl12.Text = "< z ";
             // 
             // lbl10
             // 
@@ -576,7 +560,6 @@
             // gBUrban
             // 
             this.gBUrban.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.gBUrban.Controls.Add(this.lbl6);
             this.gBUrban.Controls.Add(this.lbl4);
             this.gBUrban.Controls.Add(this.lbl5);
             this.gBUrban.Controls.Add(this.lbl3);
@@ -591,15 +574,6 @@
             this.gBUrban.TabIndex = 30;
             this.gBUrban.TabStop = false;
             this.gBUrban.Text = "Stadt";
-            // 
-            // lbl6
-            // 
-            this.lbl6.AutoSize = true;
-            this.lbl6.Location = new System.Drawing.Point(134, 84);
-            this.lbl6.Name = "lbl6";
-            this.lbl6.Size = new System.Drawing.Size(24, 13);
-            this.lbl6.TabIndex = 26;
-            this.lbl6.Text = "< z ";
             // 
             // lbl4
             // 
@@ -671,11 +645,49 @@
             this.distUrban.Size = new System.Drawing.Size(78, 20);
             this.distUrban.TabIndex = 1;
             // 
+            // lbl29
+            // 
+            this.lbl29.AutoSize = true;
+            this.lbl29.Location = new System.Drawing.Point(134, 110);
+            this.lbl29.Name = "lbl29";
+            this.lbl29.Size = new System.Drawing.Size(34, 13);
+            this.lbl29.TabIndex = 29;
+            this.lbl29.Text = "< 146";
+            // 
+            // tBFasterOH
+            // 
+            this.tBFasterOH.BackColor = System.Drawing.SystemColors.Control;
+            this.tBFasterOH.Location = new System.Drawing.Point(50, 133);
+            this.tBFasterOH.Name = "tBFasterOH";
+            this.tBFasterOH.ReadOnly = true;
+            this.tBFasterOH.Size = new System.Drawing.Size(78, 20);
+            this.tBFasterOH.TabIndex = 30;
+            // 
+            // lblTimeFasterOH
+            // 
+            this.lblTimeFasterOH.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblTimeFasterOH.AutoSize = true;
+            this.lblTimeFasterOH.Location = new System.Drawing.Point(20, 291);
+            this.lblTimeFasterOH.Name = "lblTimeFasterOH";
+            this.lblTimeFasterOH.Size = new System.Drawing.Size(122, 13);
+            this.lblTimeFasterOH.TabIndex = 45;
+            this.lblTimeFasterOH.Text = "Zeit schneller 100 km/h:";
+            // 
+            // lbl30
+            // 
+            this.lbl30.AutoSize = true;
+            this.lbl30.Location = new System.Drawing.Point(13, 136);
+            this.lbl30.Name = "lbl30";
+            this.lbl30.Size = new System.Drawing.Size(22, 13);
+            this.lbl30.TabIndex = 31;
+            this.lbl30.Text = "4 <";
+            // 
             // General
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.lblTimeFasterOH);
             this.Controls.Add(this.lblTimeHoldCold);
             this.Controls.Add(this.gBGeneral);
             this.Controls.Add(this.gBColdStart);
@@ -740,7 +752,6 @@
         private System.Windows.Forms.Label lblMeanV;
         private System.Windows.Forms.Label lblDistr;
         private System.Windows.Forms.GroupBox gBMotorway;
-        private System.Windows.Forms.Label lbl18;
         private System.Windows.Forms.Label lbl16;
         private System.Windows.Forms.Label lbl14;
         private System.Windows.Forms.Label lbl17;
@@ -750,7 +761,6 @@
         private System.Windows.Forms.TextBox avgVMotorway;
         private System.Windows.Forms.TextBox distMotorway;
         private System.Windows.Forms.GroupBox gBRural;
-        private System.Windows.Forms.Label lbl12;
         private System.Windows.Forms.Label lbl10;
         private System.Windows.Forms.Label lbl8;
         private System.Windows.Forms.Label lbl11;
@@ -760,7 +770,6 @@
         private System.Windows.Forms.TextBox avgVRural;
         private System.Windows.Forms.TextBox distRural;
         private System.Windows.Forms.GroupBox gBUrban;
-        private System.Windows.Forms.Label lbl6;
         private System.Windows.Forms.Label lbl4;
         private System.Windows.Forms.Label lbl5;
         private System.Windows.Forms.Label lbl3;
@@ -769,5 +778,9 @@
         private System.Windows.Forms.TextBox tripUrban;
         private System.Windows.Forms.TextBox avgVUrban;
         private System.Windows.Forms.TextBox distUrban;
+        private System.Windows.Forms.Label lbl29;
+        private System.Windows.Forms.Label lbl30;
+        private System.Windows.Forms.TextBox tBFasterOH;
+        private System.Windows.Forms.Label lblTimeFasterOH;
     }
 }

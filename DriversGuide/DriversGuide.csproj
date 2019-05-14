@@ -100,12 +100,6 @@
     <Compile Include="DriversGuideApp.designer.cs">
       <DependentUpon>DriversGuideApp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="General.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,20 +112,8 @@
     <Compile Include="GPS.designer.cs">
       <DependentUpon>GPS.cs</DependentUpon>
     </Compile>
-    <Compile Include="GPSVisualization.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GPSVisualization.Designer.cs">
-      <DependentUpon>GPSVisualization.cs</DependentUpon>
-    </Compile>
     <Compile Include="GraphicsCreate.cs" />
     <Compile Include="MeasurementFile.cs" />
-    <Compile Include="Overview.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Overview.Designer.cs">
-      <DependentUpon>Overview.cs</DependentUpon>
-    </Compile>
     <Compile Include="PlotGraphic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,20 +132,11 @@
     <EmbeddedResource Include="DriversGuideApp.resx">
       <DependentUpon>DriversGuideApp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="General.resx">
       <DependentUpon>General.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GPS.resx">
       <DependentUpon>GPS.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GPSVisualization.resx">
-      <DependentUpon>GPSVisualization.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Overview.resx">
-      <DependentUpon>Overview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlotGraphic.resx">
       <DependentUpon>PlotGraphic.cs</DependentUpon>
@@ -177,9 +150,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="FodyWeavers.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -200,9 +170,6 @@
   <ItemGroup>
     <EmbeddedResource Include="costura32\SQLite.Interop.dll" />
     <EmbeddedResource Include="costura64\SQLite.Interop.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />

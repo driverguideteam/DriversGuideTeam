@@ -112,6 +112,25 @@ namespace DriversGuide
             tBMaxSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"]).ToString("#.00") + " km/h";
             tBAvgSpColdVal.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"]).ToString("#.00") + " km/h";
             tBTimeHoldCold.Text = Convert.ToDouble(values.Rows[0]["Kaltstart Haltezeit"]).ToString("#.00") + " sec";
+            tBFasterOH.Text = Convert.ToDouble(values.Rows[3]["Hoechstgeschwindigkeit"]).ToString("#.00") + " min";
+
+            tBFasterOH.TextAlign = HorizontalAlignment.Center;
+
+            if (Convert.ToDouble(values.Rows[3]["Hoechstgeschwindigkeit"]) < 5)
+            {
+                tBFasterOH.BackColor = Color.Red;
+                tBFasterOH.ForeColor = Color.White;
+            }
+            else if (Convert.ToDouble(values.Rows[3]["Hoechstgeschwindigkeit"]) <= 7)
+            {
+                tBFasterOH.BackColor = Color.Yellow;
+                tBFasterOH.ForeColor = Color.Black;
+            }
+            else
+            {
+                tBFasterOH.BackColor = Color.Green;
+                tBFasterOH.ForeColor = Color.White;
+            }
         }
 
         //private void distUrban_MouseHover(object sender, EventArgs e)
