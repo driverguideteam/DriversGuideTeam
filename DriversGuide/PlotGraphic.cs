@@ -142,7 +142,7 @@ namespace DriversGuide
                 chart1.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y);
                 DrawChart(chart1, GewDaten1);
-                lblPos1.Location = new Point(chart1.Location.X + chart1.Width - 100, chart1.Location.Y + chart1.Height / 2 - 20);
+                LocateLabel(chart1, lblPos1);
                 lblPos1.Visible = true;
 
                 chart2.Visible = false;

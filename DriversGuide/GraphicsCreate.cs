@@ -46,7 +46,7 @@ namespace DriversGuide
             chartname.Series.Add(GewDaten);       //Hinzufügen einer neuen Datenpunktreihe
             chartname.ChartAreas.Add(GewDaten);   //Hinzufügen einer neuen Grafikoberfläche
             
-            for (int i = 0; i < tt.Rows.Count; i++)   //füllen Datenpunke-Serie
+            for (int i = 0; i < tt.Rows.Count; i+=2)   //füllen Datenpunke-Serie
             {
                 chartname.Series[GewDaten].Points.AddXY(Convert.ToInt64(tt.Rows[i]["Time"]), Convert.ToDouble(tt.Rows[i][GewDaten]));
                 //erzeugt Serie von Punkten mit denen gezeichnet wird
@@ -60,7 +60,8 @@ namespace DriversGuide
 
             //Chart1.CursorX.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
             Chart1.CursorX.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
-            Chart1.CursorX.Interval = 0;                         //Intervall des Cursors
+            Chart1.CursorX.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
+            Chart1.CursorX.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisX.ScaleView.Zoomable = true;
             Chart1.CursorX.LineColor = Color.Red;                //Linienfarbe Cursor
             Chart1.CursorX.LineWidth = 1;                        //Liniendicke Cursor
@@ -68,7 +69,8 @@ namespace DriversGuide
 
             //Chart1.CursorY.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
             Chart1.CursorY.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
-            Chart1.CursorY.Interval = 0;                         //Intervall des Cursors
+            Chart1.CursorY.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
+            Chart1.CursorY.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisY.ScaleView.Zoomable = true;
             Chart1.CursorY.LineColor = Color.Red;                //Linienfarbe Cursor
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
@@ -76,7 +78,7 @@ namespace DriversGuide
 
             Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0]["Time"]);                 //Festlegung x-Achsen-Minimum
             Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]); //Festlegung x-Achsen-Maximum
-            //Chart1.AxisX.Interval = 300;                                              //Festlegung x-Achsen-Intervall
+            Chart1.AxisX.Interval = 1000;                                              //Festlegung x-Achsen-Intervall
 
             string xUnit = PlotCopy.GetUnits(GewDaten)[0];   //liefert Einheit der x-Achse
             string yUnit = PlotCopy.GetUnits(GewDaten)[1];   //liefert Einheit der y-Achse
@@ -94,6 +96,7 @@ namespace DriversGuide
             Chart1.AxisY.TitleFont = new Font("Arial", 10, FontStyle.Bold);   //Schriftart der y-Achsen-Beschriftung
             Chart1.AxisY.LabelStyle.Format = "";                              //Achsenbeschriftungsformat
             Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;                 //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
+
 
             //wird ohne Einstellung vom Programm selbst besser eingestellt:
             //Chart1.AxisY.Minimum = Convert.ToInt64(tt.Rows[0][GewDaten]);     //Festlegung y-Achsen-Minimum
@@ -118,16 +121,21 @@ namespace DriversGuide
             //gibt die x- u. y-Werte der aktuellen Mausposition zurück
 
             var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
-            if (Chart1.AxisX.PixelPositionToValue(e.X) >= 0)   //iefert nur Werte, wenn Maus innerhalb des Charts
+            try
             {
-                var xv = Chart1.AxisX.PixelPositionToValue(e.X);   //liefert aktuelle Mausposition
-                Series S = chartname.Series[GewDaten];
-                DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xv).DefaultIfEmpty(S.Points.Last()).Last();
-                //liefert nächstgelegenen Datenpunkt zu aktueller Mausposition
+                if (Chart1.AxisX.PixelPositionToValue(e.X) >= 0)   //iefert nur Werte, wenn Maus innerhalb des Charts
+                {
+                    var xv = Chart1.AxisX.PixelPositionToValue(e.X);   //liefert aktuelle Mausposition
+                    Series S = chartname.Series[GewDaten];
+                    DataPoint pNext = S.Points.Select(x => x).Where(x => x.XValue <= xv).DefaultIfEmpty(S.Points.Last()).Last();
+                    //liefert nächstgelegenen Datenpunkt zu aktueller Mausposition
 
-                xp = pNext.XValue.ToString();                      //liefert aktuellen x-Wert
-                yp = Math.Round(pNext.YValues[0], 2).ToString();   //liefert aktuellen y-Wert gerundet
+                    xp = pNext.XValue.ToString();                      //liefert aktuellen x-Wert
+                    yp = Math.Round(pNext.YValues[0], 2).ToString();   //liefert aktuellen y-Wert gerundet
+                }
             }
+            catch { }
+
 
             double Xpos = Convert.ToDouble(xp);   //Konvertierung x-Wert in Double
             //double Ypos = Convert.ToDouble(yp);   //Konvertierung y-Wert in Double
