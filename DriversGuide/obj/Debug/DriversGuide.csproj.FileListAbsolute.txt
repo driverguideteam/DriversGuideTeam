@@ -120,11 +120,6 @@ C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversG
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe.config
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.exe
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\DriversGuide.pdb
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.xml
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\EntityFramework.SqlServer.xml
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\Newtonsoft.Json.xml
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.xml
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\bin\Debug\System.Data.SQLite.dll.config
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csprojAssemblyReference.cache
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.ChartSpielwiese.resources
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Datenauswahl.resources
@@ -136,6 +131,5 @@ C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.GenerateResource.cache
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CoreCompileInputs.cache
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.Fody.CopyLocal.cache
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.csproj.CopyComplete
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.exe
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.pdb
