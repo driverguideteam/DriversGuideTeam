@@ -25,6 +25,12 @@ namespace DriversGuide
         GMapProvider provHyb, provMap, provSat;
         Calculations Berechnungen = new Calculations();
 
+        GMapOverlay markers = new GMapOverlay("markers");
+        GMapMarker currPos;
+        //    new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
+        //    GMarkerGoogleType.blue_pushpin);
+        //markers.Markers.Add(marker);        
+
         public GPS(DriversGuideApp caller)
         {
             MainForm = caller;
@@ -35,6 +41,8 @@ namespace DriversGuide
             CenterMap(lat, lon);
             AddRoute(lat, lon, speed, time);
             gMap.ContextMenuStrip = conMenMap;
+
+            gMap.Overlays.Add(markers);
         }
 
         private void InitMap()
@@ -266,5 +274,11 @@ namespace DriversGuide
                 gMap.MapProvider = provHyb;
         }
 
+        public void SetMarker(double latitude, double longitude)
+        {
+            markers.Clear();
+            currPos = new GMarkerGoogle(new PointLatLng(latitude, longitude), GMarkerGoogleType.red_small);
+            markers.Markers.Add(currPos);
+        }
     }
 }

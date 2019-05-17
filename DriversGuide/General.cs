@@ -40,7 +40,7 @@ namespace DriversGuide
             {
                 txtbx.BackColor = Color.Green;
                 txtbx.ForeColor = Color.White;
-            }
+            }            
         }
 
         private void ColorTextBox(TextBox txtbx, DataTable data, int index, string column, double lowRed, double highRed, double lowYellow, double highYellow)

@@ -16,6 +16,7 @@ namespace DriversGuide
         GPS FormGPS;
         General FormGeneral;
         bool inout = false;
+        bool gpsActive = false;
 
         MeasurementFile Datei;
         Calculations Berechnung;
@@ -163,7 +164,7 @@ namespace DriversGuide
             btnGPS.Enabled = true;
             btnOverview.Enabled = true;
             lblHide.BackColor = Color.White;
-            lblShow.BackColor = Color.White;
+            lblShow.BackColor = Color.White;           
         }
 
         private void btnOverview_Click(object sender, EventArgs e)
@@ -178,6 +179,7 @@ namespace DriversGuide
             FormGeneral.Dock = DockStyle.Fill;
             lblHide.BackColor = Color.White;
             lblShow.BackColor = Color.White;
+            gpsActive = false;
         }
 
         private void btnGPS_Click(object sender, EventArgs e)
@@ -191,10 +193,12 @@ namespace DriversGuide
             FormGPS.Show();
             FormGPS.Dock = DockStyle.Fill;
             lblHide.BackColor = FormGPS.BackColor;
+            gpsActive = true;
         }
 
         private void btnReadFile_Click(object sender, EventArgs e)
         {
+            gpsActive = false;
             ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
             ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
             //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -244,7 +248,7 @@ namespace DriversGuide
             //pnlSideBar.Hide();
             tmrFade.Enabled = true;
             lblHide.Hide();
-            lblShow.Show();
+            //lblShow.Show();
             lblShow.Left = 3;
             //pnlContent.Left = 0;
             //pnlContent.Width = ClientSize.Width;
@@ -294,9 +298,16 @@ namespace DriversGuide
                     inout = true;
                     pnlContent.Left = 0;
                     pnlContent.Width = ClientSize.Width;
+                    lblShow.Show();
                 }
             }
 
+        }
+
+        public void SetMarker(double latitude, double longitude)
+        {
+            if (gpsActive)
+                FormGPS.SetMarker(latitude, longitude);
         }
     }
 }

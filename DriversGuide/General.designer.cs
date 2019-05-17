@@ -30,6 +30,9 @@
         {
             this.lblTimeHoldCold = new System.Windows.Forms.Label();
             this.gBGeneral = new System.Windows.Forms.GroupBox();
+            this.lbl30 = new System.Windows.Forms.Label();
+            this.tBFasterOH = new System.Windows.Forms.TextBox();
+            this.lbl29 = new System.Windows.Forms.Label();
             this.tBMaxSpeed = new System.Windows.Forms.TextBox();
             this.lbl27 = new System.Windows.Forms.Label();
             this.lbl25 = new System.Windows.Forms.Label();
@@ -84,10 +87,7 @@
             this.tripUrban = new System.Windows.Forms.TextBox();
             this.avgVUrban = new System.Windows.Forms.TextBox();
             this.distUrban = new System.Windows.Forms.TextBox();
-            this.lbl29 = new System.Windows.Forms.Label();
-            this.tBFasterOH = new System.Windows.Forms.TextBox();
             this.lblTimeFasterOH = new System.Windows.Forms.Label();
-            this.lbl30 = new System.Windows.Forms.Label();
             this.gBGeneral.SuspendLayout();
             this.gBColdStart.SuspendLayout();
             this.gBMotorway.SuspendLayout();
@@ -125,6 +125,33 @@
             this.gBGeneral.TabIndex = 43;
             this.gBGeneral.TabStop = false;
             this.gBGeneral.Text = "Allgemein";
+            // 
+            // lbl30
+            // 
+            this.lbl30.AutoSize = true;
+            this.lbl30.Location = new System.Drawing.Point(13, 136);
+            this.lbl30.Name = "lbl30";
+            this.lbl30.Size = new System.Drawing.Size(22, 13);
+            this.lbl30.TabIndex = 31;
+            this.lbl30.Text = "4 <";
+            // 
+            // tBFasterOH
+            // 
+            this.tBFasterOH.BackColor = System.Drawing.SystemColors.Control;
+            this.tBFasterOH.Location = new System.Drawing.Point(50, 133);
+            this.tBFasterOH.Name = "tBFasterOH";
+            this.tBFasterOH.ReadOnly = true;
+            this.tBFasterOH.Size = new System.Drawing.Size(78, 20);
+            this.tBFasterOH.TabIndex = 30;
+            // 
+            // lbl29
+            // 
+            this.lbl29.AutoSize = true;
+            this.lbl29.Location = new System.Drawing.Point(134, 110);
+            this.lbl29.Name = "lbl29";
+            this.lbl29.Size = new System.Drawing.Size(34, 13);
+            this.lbl29.TabIndex = 29;
+            this.lbl29.Text = "< 146";
             // 
             // tBMaxSpeed
             // 
@@ -645,24 +672,6 @@
             this.distUrban.Size = new System.Drawing.Size(78, 20);
             this.distUrban.TabIndex = 1;
             // 
-            // lbl29
-            // 
-            this.lbl29.AutoSize = true;
-            this.lbl29.Location = new System.Drawing.Point(134, 110);
-            this.lbl29.Name = "lbl29";
-            this.lbl29.Size = new System.Drawing.Size(34, 13);
-            this.lbl29.TabIndex = 29;
-            this.lbl29.Text = "< 146";
-            // 
-            // tBFasterOH
-            // 
-            this.tBFasterOH.BackColor = System.Drawing.SystemColors.Control;
-            this.tBFasterOH.Location = new System.Drawing.Point(50, 133);
-            this.tBFasterOH.Name = "tBFasterOH";
-            this.tBFasterOH.ReadOnly = true;
-            this.tBFasterOH.Size = new System.Drawing.Size(78, 20);
-            this.tBFasterOH.TabIndex = 30;
-            // 
             // lblTimeFasterOH
             // 
             this.lblTimeFasterOH.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -672,15 +681,6 @@
             this.lblTimeFasterOH.Size = new System.Drawing.Size(122, 13);
             this.lblTimeFasterOH.TabIndex = 45;
             this.lblTimeFasterOH.Text = "Zeit schneller 100 km/h:";
-            // 
-            // lbl30
-            // 
-            this.lbl30.AutoSize = true;
-            this.lbl30.Location = new System.Drawing.Point(13, 136);
-            this.lbl30.Name = "lbl30";
-            this.lbl30.Size = new System.Drawing.Size(22, 13);
-            this.lbl30.TabIndex = 31;
-            this.lbl30.Text = "4 <";
             // 
             // General
             // 

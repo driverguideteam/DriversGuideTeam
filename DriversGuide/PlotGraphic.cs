@@ -383,5 +383,6 @@ namespace DriversGuide
             }
             ChartReady = false;
         }
+
     }
 }
