@@ -95,6 +95,20 @@ namespace DriversGuide
             distMotorway = (double)motorway.Compute("SUM([" + column_distance + "])", "");
         }
 
+        private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
+        {
+            int firstRow = 0;
+            int lastRow = dt.Rows.Count;
+            double val;
+
+            for (int i = firstRow; i < lastRow; i++)
+            {
+                //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                val = Convert.ToDouble(dt.Rows[i][column]) * multiplier;
+                dt.Rows[i][column] = val;
+            }
+        }
+
         //Calculation of the required values for distance, acceleration and dynamic
         //Values are added to the DataTable dt as new columns
         //********************************************************************************************
@@ -384,6 +398,9 @@ namespace DriversGuide
             bool oHdrd, critMatch;       
 
             CalcReq(ref dt, column_speed);
+
+            //PerformMutliplikationOnColumn(ref dt, column_speed, 2);
+
             SortData(ref dt, column_speed);
             SepIntervals(dt, column_speed);
             CalcDistancesInterval(column_distance);

@@ -131,6 +131,21 @@ namespace DriversGuide
                 tBFasterOH.BackColor = Color.Green;
                 tBFasterOH.ForeColor = Color.White;
             }
+
+            tBState.TextAlign = HorizontalAlignment.Center;
+
+            if (MainForm.GetValidation())
+            {
+                tBState.Text = "Fahrt gueltig!";
+                tBState.BackColor = Color.Green;
+                tBState.ForeColor = Color.White;
+            }
+            else
+            {
+                tBState.Text = "Fahrt ungueltig!";
+                tBState.BackColor = Color.Red;
+                tBState.ForeColor = Color.White;
+            }
         }
 
         //private void distUrban_MouseHover(object sender, EventArgs e)

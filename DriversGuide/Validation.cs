@@ -23,6 +23,7 @@ namespace DriversGuide
         double avgSpeedCold = 0;
         double holdTimeCold = 0;
         double fasterOnehundred = 0;
+        List<string> error = new List<string>();
 
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
@@ -287,6 +288,17 @@ namespace DriversGuide
             return fasterOnehundred;
         }
 
+        //Get list of error messages
+        //********************************************************************************************
+        /*Parameters:
+         *      - error:            list with error messages
+        */
+        //********************************************************************************************
+        public List<string> GetErrors()
+        {
+            return error;
+        }
+
         //Check if speed criteria are matched
         //********************************************************************************************
         /*Parameters:
@@ -300,7 +312,24 @@ namespace DriversGuide
         {
             //Call methods for cheching urban and motorway criteria, if they both return true,
             //this method returns true
-            if (CheckUrban(urban, column_speed, column_time) && CheckMotorway(motorway, column_speed))
+            //if (CheckUrban(urban, column_speed, column_time) && CheckMotorway(motorway, column_speed))
+            //    return true;
+            //else
+            //    return false;
+            bool stateUrban = false;
+            bool stateMotorway = false;
+
+            if (CheckUrban(urban, column_speed, column_time))
+                stateUrban = true;
+            else
+                stateUrban = false;
+
+            if (CheckMotorway(motorway, column_speed))
+                stateMotorway = true;
+            else
+                stateMotorway = false;
+
+            if (stateUrban && stateMotorway)
                 return true;
             else
                 return false;
@@ -457,6 +486,12 @@ namespace DriversGuide
             DataTable rural = new DataTable();
             DataTable motorway = new DataTable();
 
+            bool stateDistance = false;
+            bool stateDistribution = false;
+            bool stateDuration = false;
+            bool stateSpeed = false;
+            bool stateCold = false;
+
             urban = dt.Clone();
             rural = dt.Clone();
             motorway = dt.Clone();                     
@@ -469,14 +504,69 @@ namespace DriversGuide
             //Call all methods for checking every criteria
             //if all of them return true, all criteria are matched and this
             //methode returns true
-            if (CheckDistanceComplete(dt, column_speed, column_distance) &&
-                CheckDistributionComplete(dt, column_speed, column_distance) &&
-                CheckDuration(dt, column_time) &&
-                CheckSpeeds(urban, motorway, column_speed, column_time) &&
-                CheckColdStart(dt, column_speed, column_time, column_coolant))
+            //if (CheckDistanceComplete(dt, column_speed, column_distance) &&
+            //    CheckDistributionComplete(dt, column_speed, column_distance) &&
+            //    CheckDuration(dt, column_time) &&
+            //    CheckSpeeds(urban, motorway, column_speed, column_time) &&
+            //    CheckColdStart(dt, column_speed, column_time, column_coolant))
+            //{
+            //    return true;
+            //}
+            //else
+            //    return false;
+
+            if (CheckDistanceComplete(dt, column_speed, column_distance))
             {
-                return true;
+                stateDistance = true;
             }
+            else
+            {
+                stateDistance = false;
+                error.Add("Distance error");
+            }
+
+            if (CheckDistributionComplete(dt, column_speed, column_distance))
+            {
+                stateDistribution = true;
+            }
+            else
+            {
+                stateDistribution = false;
+                error.Add("Distribution error");
+            }
+
+            if (CheckDuration(dt, column_time))
+            {
+                stateDuration = true;
+            }
+            else
+            {
+                stateDuration = false;
+                error.Add("Duration error");
+            }
+
+            if (CheckSpeeds(urban, motorway, column_speed, column_time))
+            {
+                stateSpeed = true;
+            }
+            else
+            {
+                stateSpeed = false;
+                error.Add("Speed error");
+            }
+
+            if (CheckColdStart(dt, column_speed, column_time, column_coolant))
+            {
+                stateCold = true;
+            }
+            else
+            {
+                stateCold = false;
+                error.Add("Cold Start error");
+            }
+
+            if (stateDistance && stateDistribution && stateDuration && stateSpeed && stateCold)
+                return true;
             else
                 return false;
         }

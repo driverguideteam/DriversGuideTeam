@@ -88,6 +88,8 @@
             this.avgVUrban = new System.Windows.Forms.TextBox();
             this.distUrban = new System.Windows.Forms.TextBox();
             this.lblTimeFasterOH = new System.Windows.Forms.Label();
+            this.tBState = new System.Windows.Forms.TextBox();
+            this.lblState = new System.Windows.Forms.Label();
             this.gBGeneral.SuspendLayout();
             this.gBColdStart.SuspendLayout();
             this.gBMotorway.SuspendLayout();
@@ -682,11 +684,30 @@
             this.lblTimeFasterOH.TabIndex = 45;
             this.lblTimeFasterOH.Text = "Zeit schneller 100 km/h:";
             // 
+            // tBState
+            // 
+            this.tBState.Location = new System.Drawing.Point(351, 359);
+            this.tBState.Name = "tBState";
+            this.tBState.Size = new System.Drawing.Size(100, 20);
+            this.tBState.TabIndex = 46;
+            // 
+            // lblState
+            // 
+            this.lblState.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblState.AutoSize = true;
+            this.lblState.Location = new System.Drawing.Point(305, 362);
+            this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(40, 13);
+            this.lblState.TabIndex = 47;
+            this.lblState.Text = "Status:";
+            // 
             // General
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.lblState);
+            this.Controls.Add(this.tBState);
             this.Controls.Add(this.lblTimeFasterOH);
             this.Controls.Add(this.lblTimeHoldCold);
             this.Controls.Add(this.gBGeneral);
@@ -782,5 +803,7 @@
         private System.Windows.Forms.Label lbl30;
         private System.Windows.Forms.TextBox tBFasterOH;
         private System.Windows.Forms.Label lblTimeFasterOH;
+        private System.Windows.Forms.TextBox tBState;
+        private System.Windows.Forms.Label lblState;
     }
 }

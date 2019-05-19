@@ -17,6 +17,8 @@ namespace DriversGuide
         General FormGeneral;
         bool inout = false;
         bool gpsActive = false;
+        bool calc = false;
+        bool valid = false;
 
         MeasurementFile Datei;
         Calculations Berechnung;
@@ -43,6 +45,20 @@ namespace DriversGuide
             //pnlContent.Controls.Add(myForm);
             ////myForm.FormBorderStyle = FormBorderStyle.None;
             //myForm.Show();
+        }
+
+        private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
+        {
+            int firstRow = 0;
+            int lastRow = dt.Rows.Count;
+            double val;
+
+            for (int i = firstRow; i < lastRow; i++)
+            {
+                //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                val = Convert.ToDouble(dt.Rows[i][column]) * multiplier;
+                dt.Rows[i][column] = val;
+            }
         }
 
         public DataTable GetCompleteDataTable()
@@ -75,10 +91,20 @@ namespace DriversGuide
             return values;
         }
 
+        public bool GetValidation()
+        {
+            if (calc && valid)
+                return true;
+            else
+                return false;
+        }
+
         //Initualize the values DataTable
         //********************************************************************************************        
         private void InitValueData()
         {
+            values.Columns.Clear();
+            values.Rows.Clear();
             values.Columns.Add("Klasse", typeof(String));
             values.Columns.Add("Verteilung");
             values.Columns.Add("Geschwindigkeit");
@@ -104,8 +130,7 @@ namespace DriversGuide
         {
             InitValueData();
             Berechnung = new Calculations();
-            Gueltigkeit = new Validation();
-            bool test1, testdur;
+            Gueltigkeit = new Validation();            
             string column_speed = "OBD_Vehicle_Speed_(PID_13)";
             string column_acc = "ai";
             string column_dynamic = "a*v";
@@ -116,8 +141,14 @@ namespace DriversGuide
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
             double tripUrban = 0, tripRural = 0, tripMotorway = 0;
 
-            test1 = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
-            testdur = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+            List<string> errors = new List<string>();
+
+            //PerformMutliplikationOnColumn(ref test, column_acc, 2);
+
+            calc = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+            valid = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
+
+            errors = Gueltigkeit.GetErrors();
 
             Berechnung.SepIntervals(test, column_speed);
             Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
@@ -151,7 +182,7 @@ namespace DriversGuide
 
             //grafikToolStripMenuItem.Enabled = true;
             //txtMeasurement.Text = "Berechnung durchgeführt!";
-            MessageBox.Show("Berechnung durchgeführt!");
+            //MessageBox.Show("Berechnung durchgeführt!");
             pnlContent.Controls.Clear();
             FormGeneral = new General(this);
             //myForm.TopLevel = false;
@@ -215,6 +246,8 @@ namespace DriversGuide
                 units = Datei.GetMeasurementUnits();  //Ausgabe der Einheiten 
                 // var listofData = Datei.ReadMeasurementFile();
 
+                DoCalculations();
+
                 //txtMeasurement.Text = listofData[1][1].ToString();
                 //berechnungDurchführenToolStripMenuItem.Enabled = true;
                 //txtMeasurement.Text = "Berechnung durchführen bevor Grafik - Zeichnen möglich ist!";
@@ -223,9 +256,7 @@ namespace DriversGuide
             {
                 //txtMeasurement.Text = "Fail";
                 MessageBox.Show("Fail!");
-            }
-
-            DoCalculations();
+            }            
         }
 
         private void btnGraphic_Click(object sender, EventArgs e)
