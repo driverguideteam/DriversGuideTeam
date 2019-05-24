@@ -41,3 +41,6 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.csproj.CopyComplete
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.exe
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.pdb
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.StartScreen.resources
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.LiveMode.resources
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.TestControl.resources

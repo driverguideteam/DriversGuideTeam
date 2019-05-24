@@ -204,6 +204,7 @@
             this.Controls.Add(this.pnlContent);
             this.Name = "DriversGuideApp";
             this.Text = "DriversGuideApp";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DriversGuideApp_FormClosed);
             this.pnlSideBar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

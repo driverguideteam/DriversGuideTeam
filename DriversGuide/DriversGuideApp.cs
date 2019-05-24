@@ -15,6 +15,7 @@ namespace DriversGuide
     {
         GPS FormGPS;
         General FormGeneral;
+        StartScreen FormStart;
         bool inout = false;
         bool gpsActive = false;
         bool calc = false;
@@ -32,8 +33,11 @@ namespace DriversGuide
         public DataTable ColumnHeaders;   //Datatable für Spaltenüberschriften
         //DataSet dx = new DataSet();
 
-        public DriversGuideApp()
+        public DriversGuideApp(StartScreen caller)
         {
+            FormStart = caller;
+            FormStart.Hide();
+
             InitializeComponent();
             lblHide.Parent = this;
             lblShow.Parent = this;
@@ -339,6 +343,11 @@ namespace DriversGuide
         {
             if (gpsActive)
                 FormGPS.SetMarker(latitude, longitude);
+        }
+
+        private void DriversGuideApp_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FormStart.Show();
         }
     }
 }
