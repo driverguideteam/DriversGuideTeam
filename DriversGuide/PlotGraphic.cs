@@ -258,6 +258,11 @@ namespace DriversGuide
                               "y = " + ypos.ToString() + " " + yUnit;
 
                 //lblPos.BackColor = Color.White;
+
+                double latitude = Convert.ToDouble(tt.Rows[Convert.ToInt32(xpos)]["GPS_Latitude"]);
+                double longitude = Convert.ToDouble(tt.Rows[Convert.ToInt32(xpos)]["GPS_Longitude"]);
+
+                Form1Copy.SetMarker(latitude, longitude);
             }
         }
 

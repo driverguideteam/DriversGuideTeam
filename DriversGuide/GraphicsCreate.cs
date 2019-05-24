@@ -46,7 +46,7 @@ namespace DriversGuide
             chartname.Series.Add(GewDaten);       //Hinzufügen einer neuen Datenpunktreihe
             chartname.ChartAreas.Add(GewDaten);   //Hinzufügen einer neuen Grafikoberfläche
             
-            for (int i = 0; i < tt.Rows.Count; i+=2)   //füllen Datenpunke-Serie
+            for (int i = 0; i < tt.Rows.Count; i+=4)   //füllen Datenpunke-Serie
             {
                 chartname.Series[GewDaten].Points.AddXY(Convert.ToInt64(tt.Rows[i]["Time"]), Convert.ToDouble(tt.Rows[i][GewDaten]));
                 //erzeugt Serie von Punkten mit denen gezeichnet wird
