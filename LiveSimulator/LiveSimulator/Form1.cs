@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,12 +22,13 @@ namespace LiveSimulator
         FileStream fsw;
         StreamReader sr;
         StreamWriter sw;
+        string alles = "";
 
 
         private void btnFileAuswahl_Click(object sender, EventArgs e)
         {
             ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             ofd.Title = "Textdatei öffnen";
             ofd.FileName = "";
@@ -59,7 +60,7 @@ namespace LiveSimulator
         private void btnSpeicherpfad_Click(object sender, EventArgs e)
         {
             sfd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
-            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             sfd.Title = "Textdatei Speichern";
             sfd.FileName = "";
@@ -71,7 +72,7 @@ namespace LiveSimulator
                 string alles = "";
 
                 //Stream zum Lesen öffnen
-                fsw = new FileStream(ofd.FileName, FileMode.Open);
+                fsw = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
 
                 //Objekt zum Lesen erzeugen
                 sw = new StreamWriter(fsw);
@@ -87,22 +88,29 @@ namespace LiveSimulator
         private void timer1_Tick(object sender, EventArgs e)
         {
             string zeile;
-            string alles = "";
+            
 
 
-            while (!sr.EndOfStream)
-            {
+            
                 zeile = sr.ReadLine();
+                sw.WriteLine(zeile);
                 alles += zeile;
                 txt.Text = alles;
-            }
+            
 
-            txt.Text = alles;
-            sr.Close();
-            sw.Close();
+           
+            
+
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
             fsr.Close();
             fsw.Close();
-
+            sw.Close();
+            sr.Close();
+           
         }
     }
 }
