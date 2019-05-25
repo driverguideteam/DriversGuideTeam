@@ -25,7 +25,7 @@ namespace DriversGuide
         Calculations Berechnung;
         Validation Gueltigkeit;
         private DataTable test = new DataTable();   //Datatable öffentl. machen (für Grafik)
-        private DataTable units = new DataTable();  //öffentl. Datatable für Einheiten erstellen (für Grafik)
+        private DataTable units = new DataTable();  //öffentl. Datatable für Einheiten (für Grafik)
         private DataTable urban = new DataTable();
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
@@ -336,7 +336,6 @@ namespace DriversGuide
                     lblShow.Show();
                 }
             }
-
         }
 
         public void SetMarker(double latitude, double longitude)
@@ -348,6 +347,30 @@ namespace DriversGuide
         private void DriversGuideApp_FormClosed(object sender, FormClosedEventArgs e)
         {
             FormStart.Show();
+        }
+
+        private void DriversGuideApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Schliessen ggf. noch offener Formen:
+            if (Application.OpenForms["Datenauswahl"] != null)
+            {
+                Application.OpenForms["Datenauswahl"].Close();
+            }
+
+            if (Application.OpenForms["PlotGraphic"] != null)
+            {
+                Application.OpenForms["PlotGraphic"].Close();
+            }
+        }
+
+        private void btnShowDynamic_Click(object sender, EventArgs e)
+        {
+            test.ToString();
+
+
+            GetUrbanDataTable();
+            GetRuralDataTable();
+            GetMotorwayDataTable();
         }
     }
 }
