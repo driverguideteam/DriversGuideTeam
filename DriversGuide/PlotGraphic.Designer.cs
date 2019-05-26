@@ -262,6 +262,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "PlotGraphic";
             this.Text = "PlotGraphic";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGraphic_Load);
             this.Resize += new System.EventHandler(this.PlotGraphic_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();

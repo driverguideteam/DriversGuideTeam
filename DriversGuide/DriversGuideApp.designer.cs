@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.pnlTest = new System.Windows.Forms.Panel();
+            this.btnShowDynamic = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnReadFile = new System.Windows.Forms.Button();
@@ -41,7 +43,6 @@
             this.lblShow = new System.Windows.Forms.Label();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tmrFade = new System.Windows.Forms.Timer(this.components);
-            this.btnShowDynamic = new System.Windows.Forms.Button();
             this.pnlSideBar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlContent.SuspendLayout();
@@ -52,6 +53,7 @@
             this.pnlSideBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlSideBar.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlSideBar.Controls.Add(this.pnlTest);
             this.pnlSideBar.Controls.Add(this.btnShowDynamic);
             this.pnlSideBar.Controls.Add(this.panel1);
             this.pnlSideBar.Controls.Add(this.btnReadFile);
@@ -59,19 +61,45 @@
             this.pnlSideBar.Controls.Add(this.btnOverview);
             this.pnlSideBar.Controls.Add(this.btnGPS);
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
-            this.pnlSideBar.Margin = new System.Windows.Forms.Padding(4);
             this.pnlSideBar.Name = "pnlSideBar";
-            this.pnlSideBar.Size = new System.Drawing.Size(259, 554);
+            this.pnlSideBar.Size = new System.Drawing.Size(194, 450);
             this.pnlSideBar.TabIndex = 31;
+            // 
+            // pnlTest
+            // 
+            this.pnlTest.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlTest.Location = new System.Drawing.Point(0, 354);
+            this.pnlTest.Name = "pnlTest";
+            this.pnlTest.Size = new System.Drawing.Size(194, 29);
+            this.pnlTest.TabIndex = 40;
+            this.pnlTest.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTest_Paint);
+            this.pnlTest.MouseEnter += new System.EventHandler(this.pnlTest_MouseEnter);
+            this.pnlTest.MouseLeave += new System.EventHandler(this.pnlTest_MouseLeave);
+            // 
+            // btnShowDynamic
+            // 
+            this.btnShowDynamic.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnShowDynamic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnShowDynamic.Enabled = false;
+            this.btnShowDynamic.FlatAppearance.BorderSize = 0;
+            this.btnShowDynamic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShowDynamic.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowDynamic.ForeColor = System.Drawing.Color.Teal;
+            this.btnShowDynamic.Location = new System.Drawing.Point(0, 297);
+            this.btnShowDynamic.Name = "btnShowDynamic";
+            this.btnShowDynamic.Size = new System.Drawing.Size(194, 29);
+            this.btnShowDynamic.TabIndex = 39;
+            this.btnShowDynamic.Text = "Dynamik";
+            this.btnShowDynamic.UseVisualStyleBackColor = true;
+            this.btnShowDynamic.Click += new System.EventHandler(this.btnShowDynamic_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightBlue;
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(259, 85);
+            this.panel1.Size = new System.Drawing.Size(194, 69);
             this.panel1.TabIndex = 38;
             // 
             // label1
@@ -79,10 +107,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(3, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(2, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 36);
+            this.label1.Size = new System.Drawing.Size(173, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Drivers Guide";
             // 
@@ -94,10 +121,9 @@
             this.btnReadFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReadFile.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReadFile.ForeColor = System.Drawing.Color.Teal;
-            this.btnReadFile.Location = new System.Drawing.Point(0, 192);
-            this.btnReadFile.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReadFile.Location = new System.Drawing.Point(0, 156);
             this.btnReadFile.Name = "btnReadFile";
-            this.btnReadFile.Size = new System.Drawing.Size(259, 36);
+            this.btnReadFile.Size = new System.Drawing.Size(194, 29);
             this.btnReadFile.TabIndex = 35;
             this.btnReadFile.Text = "File einlesen...";
             this.btnReadFile.UseVisualStyleBackColor = true;
@@ -112,10 +138,9 @@
             this.btnGraphic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGraphic.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGraphic.ForeColor = System.Drawing.Color.Teal;
-            this.btnGraphic.Location = new System.Drawing.Point(0, 235);
-            this.btnGraphic.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGraphic.Location = new System.Drawing.Point(0, 191);
             this.btnGraphic.Name = "btnGraphic";
-            this.btnGraphic.Size = new System.Drawing.Size(259, 36);
+            this.btnGraphic.Size = new System.Drawing.Size(194, 29);
             this.btnGraphic.TabIndex = 34;
             this.btnGraphic.Text = "Grafik";
             this.btnGraphic.UseVisualStyleBackColor = true;
@@ -130,10 +155,9 @@
             this.btnOverview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOverview.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOverview.ForeColor = System.Drawing.Color.Teal;
-            this.btnOverview.Location = new System.Drawing.Point(0, 321);
-            this.btnOverview.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOverview.Location = new System.Drawing.Point(0, 261);
             this.btnOverview.Name = "btnOverview";
-            this.btnOverview.Size = new System.Drawing.Size(259, 36);
+            this.btnOverview.Size = new System.Drawing.Size(194, 29);
             this.btnOverview.TabIndex = 33;
             this.btnOverview.Text = "Überblick";
             this.btnOverview.UseVisualStyleBackColor = true;
@@ -148,10 +172,9 @@
             this.btnGPS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGPS.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGPS.ForeColor = System.Drawing.Color.Teal;
-            this.btnGPS.Location = new System.Drawing.Point(0, 278);
-            this.btnGPS.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGPS.Location = new System.Drawing.Point(0, 226);
             this.btnGPS.Name = "btnGPS";
-            this.btnGPS.Size = new System.Drawing.Size(259, 36);
+            this.btnGPS.Size = new System.Drawing.Size(194, 29);
             this.btnGPS.TabIndex = 32;
             this.btnGPS.Text = "GPS";
             this.btnGPS.UseVisualStyleBackColor = true;
@@ -164,10 +187,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlContent.Controls.Add(this.lblHide);
             this.pnlContent.Controls.Add(this.lblShow);
-            this.pnlContent.Location = new System.Drawing.Point(259, 0);
-            this.pnlContent.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlContent.Location = new System.Drawing.Point(194, 0);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1067, 554);
+            this.pnlContent.Size = new System.Drawing.Size(800, 450);
             this.pnlContent.TabIndex = 32;
             // 
             // lblHide
@@ -175,10 +197,9 @@
             this.lblHide.AutoSize = true;
             this.lblHide.BackColor = System.Drawing.Color.Transparent;
             this.lblHide.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHide.Location = new System.Drawing.Point(267, 11);
-            this.lblHide.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHide.Location = new System.Drawing.Point(200, 9);
             this.lblHide.Name = "lblHide";
-            this.lblHide.Size = new System.Drawing.Size(17, 17);
+            this.lblHide.Size = new System.Drawing.Size(14, 13);
             this.lblHide.TabIndex = 36;
             this.lblHide.Text = "<";
             this.lblHide.Click += new System.EventHandler(this.lblHide_Click);
@@ -188,10 +209,9 @@
             this.lblShow.AutoSize = true;
             this.lblShow.BackColor = System.Drawing.Color.Transparent;
             this.lblShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShow.Location = new System.Drawing.Point(8, 11);
-            this.lblShow.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblShow.Location = new System.Drawing.Point(6, 9);
             this.lblShow.Name = "lblShow";
-            this.lblShow.Size = new System.Drawing.Size(17, 17);
+            this.lblShow.Size = new System.Drawing.Size(14, 13);
             this.lblShow.TabIndex = 37;
             this.lblShow.Text = ">";
             this.lblShow.Visible = false;
@@ -206,32 +226,14 @@
             this.tmrFade.Interval = 1;
             this.tmrFade.Tick += new System.EventHandler(this.tmrFade_Tick);
             // 
-            // btnShowDynamic
-            // 
-            this.btnShowDynamic.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnShowDynamic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnShowDynamic.FlatAppearance.BorderSize = 0;
-            this.btnShowDynamic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShowDynamic.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowDynamic.ForeColor = System.Drawing.Color.Teal;
-            this.btnShowDynamic.Location = new System.Drawing.Point(0, 365);
-            this.btnShowDynamic.Margin = new System.Windows.Forms.Padding(4);
-            this.btnShowDynamic.Name = "btnShowDynamic";
-            this.btnShowDynamic.Size = new System.Drawing.Size(259, 36);
-            this.btnShowDynamic.TabIndex = 39;
-            this.btnShowDynamic.Text = "Dynamik";
-            this.btnShowDynamic.UseVisualStyleBackColor = true;
-            this.btnShowDynamic.Click += new System.EventHandler(this.btnShowDynamic_Click);
-            // 
             // DriversGuideApp
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1325, 554);
+            this.ClientSize = new System.Drawing.Size(994, 450);
             this.Controls.Add(this.pnlSideBar);
             this.Controls.Add(this.pnlContent);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DriversGuideApp";
             this.Text = "DriversGuideApp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriversGuideApp_FormClosing);
@@ -260,5 +262,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer tmrFade;
         private System.Windows.Forms.Button btnShowDynamic;
+        private System.Windows.Forms.Panel pnlTest;
     }
 }

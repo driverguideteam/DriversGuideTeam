@@ -130,6 +130,7 @@
             // 
             // lbl30
             // 
+            this.lbl30.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl30.AutoSize = true;
             this.lbl30.Location = new System.Drawing.Point(13, 136);
             this.lbl30.Name = "lbl30";
@@ -139,6 +140,7 @@
             // 
             // tBFasterOH
             // 
+            this.tBFasterOH.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBFasterOH.BackColor = System.Drawing.SystemColors.Control;
             this.tBFasterOH.Location = new System.Drawing.Point(50, 133);
             this.tBFasterOH.Name = "tBFasterOH";
@@ -148,6 +150,7 @@
             // 
             // lbl29
             // 
+            this.lbl29.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl29.AutoSize = true;
             this.lbl29.Location = new System.Drawing.Point(134, 110);
             this.lbl29.Name = "lbl29";
@@ -157,6 +160,7 @@
             // 
             // tBMaxSpeed
             // 
+            this.tBMaxSpeed.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBMaxSpeed.Location = new System.Drawing.Point(50, 107);
             this.tBMaxSpeed.Name = "tBMaxSpeed";
             this.tBMaxSpeed.ReadOnly = true;
@@ -165,6 +169,7 @@
             // 
             // lbl27
             // 
+            this.lbl27.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl27.AutoSize = true;
             this.lbl27.Location = new System.Drawing.Point(134, 84);
             this.lbl27.Name = "lbl27";
@@ -174,6 +179,7 @@
             // 
             // lbl25
             // 
+            this.lbl25.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl25.AutoSize = true;
             this.lbl25.Location = new System.Drawing.Point(134, 58);
             this.lbl25.Name = "lbl25";
@@ -183,6 +189,7 @@
             // 
             // lbl26
             // 
+            this.lbl26.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl26.AutoSize = true;
             this.lbl26.Location = new System.Drawing.Point(13, 84);
             this.lbl26.Name = "lbl26";
@@ -192,6 +199,7 @@
             // 
             // lbl24
             // 
+            this.lbl24.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl24.AutoSize = true;
             this.lbl24.Location = new System.Drawing.Point(13, 58);
             this.lbl24.Name = "lbl24";
@@ -201,6 +209,7 @@
             // 
             // tBTimeHold
             // 
+            this.tBTimeHold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBTimeHold.Location = new System.Drawing.Point(50, 81);
             this.tBTimeHold.Name = "tBTimeHold";
             this.tBTimeHold.ReadOnly = true;
@@ -209,6 +218,7 @@
             // 
             // tBDuration
             // 
+            this.tBDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBDuration.Location = new System.Drawing.Point(50, 55);
             this.tBDuration.Name = "tBDuration";
             this.tBDuration.ReadOnly = true;
@@ -217,6 +227,7 @@
             // 
             // tBTrip
             // 
+            this.tBTrip.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBTrip.BackColor = System.Drawing.SystemColors.Control;
             this.tBTrip.Location = new System.Drawing.Point(50, 29);
             this.tBTrip.Name = "tBTrip";
@@ -245,6 +256,7 @@
             // 
             // lbl28
             // 
+            this.lbl28.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl28.AutoSize = true;
             this.lbl28.Location = new System.Drawing.Point(19, 32);
             this.lbl28.Name = "lbl28";
@@ -254,6 +266,7 @@
             // 
             // lbl23
             // 
+            this.lbl23.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl23.AutoSize = true;
             this.lbl23.Location = new System.Drawing.Point(134, 84);
             this.lbl23.Name = "lbl23";
@@ -263,6 +276,7 @@
             // 
             // lbl21
             // 
+            this.lbl21.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl21.AutoSize = true;
             this.lbl21.Location = new System.Drawing.Point(134, 58);
             this.lbl21.Name = "lbl21";
@@ -272,6 +286,7 @@
             // 
             // lbl22
             // 
+            this.lbl22.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl22.AutoSize = true;
             this.lbl22.Location = new System.Drawing.Point(19, 84);
             this.lbl22.Name = "lbl22";
@@ -281,6 +296,7 @@
             // 
             // lbl20
             // 
+            this.lbl20.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl20.AutoSize = true;
             this.lbl20.Location = new System.Drawing.Point(13, 58);
             this.lbl20.Name = "lbl20";
@@ -290,6 +306,7 @@
             // 
             // lbl19
             // 
+            this.lbl19.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl19.AutoSize = true;
             this.lbl19.Location = new System.Drawing.Point(134, 32);
             this.lbl19.Name = "lbl19";
@@ -299,6 +316,7 @@
             // 
             // tBTimeHoldCold
             // 
+            this.tBTimeHoldCold.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBTimeHoldCold.Location = new System.Drawing.Point(50, 81);
             this.tBTimeHoldCold.Name = "tBTimeHoldCold";
             this.tBTimeHoldCold.ReadOnly = true;
@@ -307,6 +325,7 @@
             // 
             // tBAvgSpColdVal
             // 
+            this.tBAvgSpColdVal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBAvgSpColdVal.Location = new System.Drawing.Point(50, 55);
             this.tBAvgSpColdVal.Name = "tBAvgSpColdVal";
             this.tBAvgSpColdVal.ReadOnly = true;
@@ -315,6 +334,7 @@
             // 
             // tBMaxSpColdVal
             // 
+            this.tBMaxSpColdVal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBMaxSpColdVal.BackColor = System.Drawing.SystemColors.Control;
             this.tBMaxSpColdVal.Location = new System.Drawing.Point(50, 29);
             this.tBMaxSpColdVal.Name = "tBMaxSpColdVal";
@@ -432,6 +452,7 @@
             // 
             // lbl16
             // 
+            this.lbl16.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl16.AutoSize = true;
             this.lbl16.Location = new System.Drawing.Point(134, 58);
             this.lbl16.Name = "lbl16";
@@ -441,6 +462,7 @@
             // 
             // lbl14
             // 
+            this.lbl14.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl14.AutoSize = true;
             this.lbl14.Location = new System.Drawing.Point(134, 32);
             this.lbl14.Name = "lbl14";
@@ -450,6 +472,7 @@
             // 
             // lbl17
             // 
+            this.lbl17.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl17.AutoSize = true;
             this.lbl17.Location = new System.Drawing.Point(13, 84);
             this.lbl17.Name = "lbl17";
@@ -459,6 +482,7 @@
             // 
             // lbl15
             // 
+            this.lbl15.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl15.AutoSize = true;
             this.lbl15.Location = new System.Drawing.Point(13, 58);
             this.lbl15.Name = "lbl15";
@@ -468,6 +492,7 @@
             // 
             // lbl13
             // 
+            this.lbl13.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl13.AutoSize = true;
             this.lbl13.Location = new System.Drawing.Point(13, 32);
             this.lbl13.Name = "lbl13";
@@ -477,6 +502,7 @@
             // 
             // tripMotorway
             // 
+            this.tripMotorway.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tripMotorway.Location = new System.Drawing.Point(50, 81);
             this.tripMotorway.Name = "tripMotorway";
             this.tripMotorway.ReadOnly = true;
@@ -485,6 +511,7 @@
             // 
             // avgVMotorway
             // 
+            this.avgVMotorway.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.avgVMotorway.Location = new System.Drawing.Point(50, 55);
             this.avgVMotorway.Name = "avgVMotorway";
             this.avgVMotorway.ReadOnly = true;
@@ -493,6 +520,7 @@
             // 
             // distMotorway
             // 
+            this.distMotorway.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.distMotorway.Location = new System.Drawing.Point(50, 29);
             this.distMotorway.Name = "distMotorway";
             this.distMotorway.ReadOnly = true;
@@ -519,6 +547,7 @@
             // 
             // lbl10
             // 
+            this.lbl10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl10.AutoSize = true;
             this.lbl10.Location = new System.Drawing.Point(133, 58);
             this.lbl10.Name = "lbl10";
@@ -528,6 +557,7 @@
             // 
             // lbl8
             // 
+            this.lbl8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl8.AutoSize = true;
             this.lbl8.Location = new System.Drawing.Point(133, 32);
             this.lbl8.Name = "lbl8";
@@ -537,6 +567,7 @@
             // 
             // lbl11
             // 
+            this.lbl11.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl11.AutoSize = true;
             this.lbl11.Location = new System.Drawing.Point(12, 84);
             this.lbl11.Name = "lbl11";
@@ -546,6 +577,7 @@
             // 
             // lbl9
             // 
+            this.lbl9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl9.AutoSize = true;
             this.lbl9.Location = new System.Drawing.Point(12, 58);
             this.lbl9.Name = "lbl9";
@@ -555,6 +587,7 @@
             // 
             // lbl7
             // 
+            this.lbl7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl7.AutoSize = true;
             this.lbl7.Location = new System.Drawing.Point(12, 32);
             this.lbl7.Name = "lbl7";
@@ -564,6 +597,7 @@
             // 
             // tripRural
             // 
+            this.tripRural.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tripRural.Location = new System.Drawing.Point(49, 81);
             this.tripRural.Name = "tripRural";
             this.tripRural.ReadOnly = true;
@@ -572,6 +606,7 @@
             // 
             // avgVRural
             // 
+            this.avgVRural.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.avgVRural.Location = new System.Drawing.Point(49, 55);
             this.avgVRural.Name = "avgVRural";
             this.avgVRural.ReadOnly = true;
@@ -580,6 +615,7 @@
             // 
             // distRural
             // 
+            this.distRural.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.distRural.Location = new System.Drawing.Point(49, 29);
             this.distRural.Name = "distRural";
             this.distRural.ReadOnly = true;
@@ -606,6 +642,7 @@
             // 
             // lbl4
             // 
+            this.lbl4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl4.AutoSize = true;
             this.lbl4.Location = new System.Drawing.Point(134, 58);
             this.lbl4.Name = "lbl4";
@@ -615,6 +652,7 @@
             // 
             // lbl5
             // 
+            this.lbl5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl5.AutoSize = true;
             this.lbl5.Location = new System.Drawing.Point(13, 84);
             this.lbl5.Name = "lbl5";
@@ -624,6 +662,7 @@
             // 
             // lbl3
             // 
+            this.lbl3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl3.AutoSize = true;
             this.lbl3.Location = new System.Drawing.Point(13, 58);
             this.lbl3.Name = "lbl3";
@@ -633,6 +672,7 @@
             // 
             // lbl2
             // 
+            this.lbl2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl2.AutoSize = true;
             this.lbl2.Location = new System.Drawing.Point(134, 32);
             this.lbl2.Name = "lbl2";
@@ -642,6 +682,7 @@
             // 
             // lbl1
             // 
+            this.lbl1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbl1.AutoSize = true;
             this.lbl1.Location = new System.Drawing.Point(13, 32);
             this.lbl1.Name = "lbl1";
@@ -651,6 +692,7 @@
             // 
             // tripUrban
             // 
+            this.tripUrban.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tripUrban.Location = new System.Drawing.Point(50, 81);
             this.tripUrban.Name = "tripUrban";
             this.tripUrban.ReadOnly = true;
@@ -659,6 +701,7 @@
             // 
             // avgVUrban
             // 
+            this.avgVUrban.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.avgVUrban.Location = new System.Drawing.Point(50, 55);
             this.avgVUrban.Name = "avgVUrban";
             this.avgVUrban.ReadOnly = true;
@@ -667,6 +710,7 @@
             // 
             // distUrban
             // 
+            this.distUrban.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.distUrban.BackColor = System.Drawing.SystemColors.Control;
             this.distUrban.Location = new System.Drawing.Point(50, 29);
             this.distUrban.Name = "distUrban";
@@ -686,6 +730,7 @@
             // 
             // tBState
             // 
+            this.tBState.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tBState.Location = new System.Drawing.Point(351, 359);
             this.tBState.Name = "tBState";
             this.tBState.Size = new System.Drawing.Size(100, 20);

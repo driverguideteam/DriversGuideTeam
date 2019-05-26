@@ -16,8 +16,7 @@ namespace DriversGuide
         GPS FormGPS;
         General FormGeneral;
         TestControl FormTest;
-        bool topClicked = true;
-        bool bottomClicked = false;
+        bool topBottom = true;        
 
         public LiveMode(StartScreen caller)
         {
@@ -29,8 +28,7 @@ namespace DriversGuide
 
         private void pnlTopContent_Click(object sender, EventArgs e)
         {
-            topClicked = true;
-            bottomClicked = false;
+            topBottom = true;
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
@@ -40,7 +38,7 @@ namespace DriversGuide
 
         private void btnGPS_Click(object sender, EventArgs e)
         {
-            if (topClicked)
+            if (topBottom)
             {
                 pnlTopContent.Controls.Clear();
                 FormTest = new TestControl();
@@ -51,8 +49,7 @@ namespace DriversGuide
                 FormTest.Show();
                 FormTest.Dock = DockStyle.Fill;
             }
-
-            if (bottomClicked)
+            else
             {
                 pnlBottomContent.Controls.Clear();
                 FormTest = new TestControl();
@@ -67,8 +64,7 @@ namespace DriversGuide
 
         private void pnlBottomContent_Click(object sender, EventArgs e)
         {
-            bottomClicked = true;
-            topClicked = false;
+            topBottom = false;
         }
     }
 }

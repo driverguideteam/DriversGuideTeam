@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace DriversGuide
 {
@@ -20,7 +21,8 @@ namespace DriversGuide
         bool gpsActive = false;
         bool calc = false;
         bool valid = false;
-
+        bool calcDone = false;
+        
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -51,19 +53,19 @@ namespace DriversGuide
             //myForm.Show();
         }
 
-        private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
-        {
-            int firstRow = 0;
-            int lastRow = dt.Rows.Count;
-            double val;
+        //private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
+        //{
+        //    int firstRow = 0;
+        //    int lastRow = dt.Rows.Count;
+        //    double val;
 
-            for (int i = firstRow; i < lastRow; i++)
-            {
-                //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
-                val = Convert.ToDouble(dt.Rows[i][column]) * multiplier;
-                dt.Rows[i][column] = val;
-            }
-        }
+        //    for (int i = firstRow; i < lastRow; i++)
+        //    {
+        //        //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+        //        val = Convert.ToDouble(dt.Rows[i][column]) * multiplier;
+        //        dt.Rows[i][column] = val;
+        //    }
+        //}
 
         public DataTable GetCompleteDataTable()
         {
@@ -93,6 +95,12 @@ namespace DriversGuide
         public DataTable GetValuesDataTable()
         {
             return values;
+        }
+
+        public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
+        {
+            if (calcDone)
+                Berechnung.GetPercentiles(ref percentileUrban, ref percentileRural, ref percentileMotorway);
         }
 
         public bool GetValidation()
@@ -144,18 +152,22 @@ namespace DriversGuide
             double avgUrban = 0, avgRural = 0, avgMotorway = 0;
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
             double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+            DataTable urban_temp = new DataTable();
+            DataTable rural_temp = new DataTable();
+            DataTable motorway_temp = new DataTable();
 
             List<string> errors = new List<string>();
 
             //PerformMutliplikationOnColumn(ref test, column_acc, 2);
 
             calc = Berechnung.CalcAll(test, column_speed, column_acc, column_dynamic, column_distance);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
             valid = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 
             errors = Gueltigkeit.GetErrors();
 
             Berechnung.SepIntervals(test, column_speed);
-            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
             Berechnung.AddUnits(units);
 
             Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
@@ -198,8 +210,10 @@ namespace DriversGuide
             btnGraphic.Enabled = true;
             btnGPS.Enabled = true;
             btnOverview.Enabled = true;
+            btnShowDynamic.Enabled = true;
             lblHide.BackColor = Color.White;
-            lblShow.BackColor = Color.White;           
+            lblShow.BackColor = Color.White;
+            calcDone = true;
         }
 
         private void btnOverview_Click(object sender, EventArgs e)
@@ -371,6 +385,21 @@ namespace DriversGuide
             GetUrbanDataTable();
             GetRuralDataTable();
             GetMotorwayDataTable();
+        }
+
+        private void pnlTest_MouseLeave(object sender, EventArgs e)
+        {
+            pnlTest.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void pnlTest_MouseEnter(object sender, EventArgs e)
+        {
+            pnlTest.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void pnlTest_Paint(object sender, PaintEventArgs e)
+        {
+            
         }
     }
 }
