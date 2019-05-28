@@ -15,7 +15,7 @@ namespace DriversGuide
 
         DataTable dt = new DataTable();
         DataTable units = new DataTable();
-        DataTable headers = new DataTable();
+        DataTable dheaders = new DataTable();
        
         /*
          Einlesen des Messfiles + Convertierung in 2 Datentables "dt" und "units"
@@ -66,7 +66,44 @@ namespace DriversGuide
                 }
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
+            sr.Close();
             return dt;
+            
+        }
+
+        public DataTable ConvertLiveCSVtoDataTable()
+        {
+
+            StreamReader sr = new StreamReader(Filename);
+            string[] headers = sr.ReadLine().Split('\t');
+            string[] Units = sr.ReadLine().Split('\t');
+
+           
+
+            while (!sr.EndOfStream)
+            {
+                string[] rows = Regex.Split(sr.ReadLine(), "\t"); //",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                DataRow dr = dt.NewRow();
+
+                if ((Convert.ToDouble(rows[0]) % 1000) == 0)
+                {
+
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        dr[i] = Convert.ToDouble(rows[i]);
+                    }
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    //Reihe verwerfen
+                }
+            }
+            dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
+            sr.Close();
+            return dt;
+
         }
 
         public DataTable GetMeasurementData()   //Rückgabe der Messdaten
@@ -100,6 +137,7 @@ namespace DriversGuide
         }
 
     */
+
 
 
         public MeasurementFile (string a)

@@ -59,6 +59,7 @@
             this.txt.Location = new System.Drawing.Point(12, 77);
             this.txt.Multiline = true;
             this.txt.Name = "txt";
+            this.txt.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txt.Size = new System.Drawing.Size(776, 361);
             this.txt.TabIndex = 1;
             // 

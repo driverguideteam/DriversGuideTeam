@@ -38,11 +38,7 @@ namespace LiveSimulator
             {
                 
 
-                //Stream zum Lesen öffnen
-                fsr = new FileStream(ofd.FileName, FileMode.Open);
-
-                //Objekt zum Lesen erzeugen
-                sr = new StreamReader(fsr);
+               
 
              /*   while (!sr.EndOfStream)
                 {
@@ -71,46 +67,53 @@ namespace LiveSimulator
                 string zeile;
                 string alles = "";
 
-                //Stream zum Lesen öffnen
-                fsw = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
-
-                //Objekt zum Lesen erzeugen
-                sw = new StreamWriter(fsw);
-                //  DialogResult dr = sfd.ShowDialog();
+                
             }
         }
 
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
             timer1.Start();
+            //Stream zum Lesen öffnen
+            fsr = new FileStream(ofd.FileName, FileMode.Open);
+            //Objekt zum Lesen erzeugen
+            sr = new StreamReader(fsr);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
             string zeile;
-            
-
 
             
-                zeile = sr.ReadLine();
+            //Stream zum Lesen öffnen
+            fsw = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
+            //Objekt zum Lesen erzeugen
+            sw = new StreamWriter(fsw);
+            //  DialogResult dr = sfd.ShowDialog();
+
+            zeile = sr.ReadLine();
                 sw.WriteLine(zeile);
                 alles += zeile;
                 txt.Text = alles;
-            
 
-           
             
+            sw.Close();
+            
+            fsw.Close();
+
 
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
             timer1.Stop();
-            fsr.Close();
-            fsw.Close();
-            sw.Close();
+
+            // sw.Close();
+            //sr.Close();
             sr.Close();
-           
+            fsr.Close();
+
         }
     }
 }

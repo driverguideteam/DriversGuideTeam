@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlSideBar = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Button();
             this.btnOverview = new System.Windows.Forms.Button();
@@ -35,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pnlTopContent = new System.Windows.Forms.Panel();
             this.pnlBottomContent = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btn_Fileauswahl = new System.Windows.Forms.Button();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.pnlSideBar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -45,6 +49,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlSideBar.BackColor = System.Drawing.Color.LightSkyBlue;
             this.pnlSideBar.Controls.Add(this.btnGPS);
+            this.pnlSideBar.Controls.Add(this.btn_Fileauswahl);
             this.pnlSideBar.Controls.Add(this.btnOverview);
             this.pnlSideBar.Controls.Add(this.panel1);
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
@@ -61,9 +66,9 @@
             this.btnGPS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGPS.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGPS.ForeColor = System.Drawing.Color.Teal;
-            this.btnGPS.Location = new System.Drawing.Point(3, 273);
+            this.btnGPS.Location = new System.Drawing.Point(3, 334);
             this.btnGPS.Name = "btnGPS";
-            this.btnGPS.Size = new System.Drawing.Size(103, 126);
+            this.btnGPS.Size = new System.Drawing.Size(103, 95);
             this.btnGPS.TabIndex = 40;
             this.btnGPS.Text = "GPS";
             this.btnGPS.UseVisualStyleBackColor = false;
@@ -78,9 +83,9 @@
             this.btnOverview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOverview.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOverview.ForeColor = System.Drawing.Color.Teal;
-            this.btnOverview.Location = new System.Drawing.Point(3, 110);
+            this.btnOverview.Location = new System.Drawing.Point(3, 218);
             this.btnOverview.Name = "btnOverview";
-            this.btnOverview.Size = new System.Drawing.Size(103, 126);
+            this.btnOverview.Size = new System.Drawing.Size(103, 101);
             this.btnOverview.TabIndex = 39;
             this.btnOverview.Text = "Übersicht";
             this.btnOverview.UseVisualStyleBackColor = false;
@@ -127,6 +132,33 @@
             this.pnlBottomContent.TabIndex = 40;
             this.pnlBottomContent.Click += new System.EventHandler(this.pnlBottomContent_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btn_Fileauswahl
+            // 
+            this.btn_Fileauswahl.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btn_Fileauswahl.BackColor = System.Drawing.Color.White;
+            this.btn_Fileauswahl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_Fileauswahl.FlatAppearance.BorderSize = 0;
+            this.btn_Fileauswahl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Fileauswahl.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Fileauswahl.ForeColor = System.Drawing.Color.Teal;
+            this.btn_Fileauswahl.Location = new System.Drawing.Point(3, 93);
+            this.btn_Fileauswahl.Name = "btn_Fileauswahl";
+            this.btn_Fileauswahl.Size = new System.Drawing.Size(103, 101);
+            this.btn_Fileauswahl.TabIndex = 39;
+            this.btn_Fileauswahl.Text = "File-Auswahl";
+            this.btn_Fileauswahl.UseMnemonic = false;
+            this.btn_Fileauswahl.UseVisualStyleBackColor = false;
+            this.btn_Fileauswahl.Click += new System.EventHandler(this.btn_Fileauswahl_Click);
+            // 
+            // ofd
+            // 
+            this.ofd.FileName = "ofd";
+            // 
             // LiveMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,5 +187,8 @@
         private System.Windows.Forms.Panel pnlBottomContent;
         private System.Windows.Forms.Button btnGPS;
         private System.Windows.Forms.Button btnOverview;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btn_Fileauswahl;
+        private System.Windows.Forms.OpenFileDialog ofd;
     }
 }

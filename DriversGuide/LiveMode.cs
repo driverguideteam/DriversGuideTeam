@@ -16,7 +16,9 @@ namespace DriversGuide
         GPS FormGPS;
         General FormGeneral;
         TestControl FormTest;
-        bool topBottom = true;        
+        bool topBottom = true;
+        MeasurementFile LiveDatei;
+        private DataTable Dataset = new DataTable();
 
         public LiveMode(StartScreen caller)
         {
@@ -65,6 +67,30 @@ namespace DriversGuide
         private void pnlBottomContent_Click(object sender, EventArgs e)
         {
             topBottom = false;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Dataset.Clear();
+            Dataset = LiveDatei.ConvertLiveCSVtoDataTable();
+        }
+
+        private void btn_Fileauswahl_Click(object sender, EventArgs e)
+        {
+            ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
+            ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
+            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            ofd.Title = "Textdatei öffnen";
+            ofd.FileName = "";
+
+            DialogResult dr = ofd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                LiveDatei = new MeasurementFile(ofd.FileName);
+                Dataset = LiveDatei.ConvertCSVtoDataTable();
+            }
+            timer1.Start();
         }
     }
 }
