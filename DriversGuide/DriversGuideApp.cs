@@ -17,11 +17,15 @@ namespace DriversGuide
         GPS FormGPS;
         General FormGeneral;
         StartScreen FormStart;
+        Bitmap bmp;
+        Graphics z;
         bool inout = false;
         bool gpsActive = false;
         bool calc = false;
         bool valid = false;
         bool calcDone = false;
+        Color enabled = Color.Teal;
+        Color disabled = Color.Gray;
         
         MeasurementFile Datei;
         Calculations Berechnung;
@@ -51,6 +55,8 @@ namespace DriversGuide
             //pnlContent.Controls.Add(myForm);
             ////myForm.FormBorderStyle = FormBorderStyle.None;
             //myForm.Show();
+            bmp = new Bitmap(btnReadFile.ClientSize.Width, btnReadFile.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
         }
 
         //private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
@@ -387,19 +393,190 @@ namespace DriversGuide
             GetMotorwayDataTable();
         }
 
-        private void pnlTest_MouseLeave(object sender, EventArgs e)
+        private void btnReadFile_MouseLeave(object sender, EventArgs e)
         {
-            pnlTest.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+            btnReadFile.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
-        private void pnlTest_MouseEnter(object sender, EventArgs e)
+        private void btnReadFile_MouseEnter(object sender, EventArgs e)
         {
-            pnlTest.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+            btnReadFile.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
-        private void pnlTest_Paint(object sender, PaintEventArgs e)
+        private void btnReadFile_Paint(object sender, PaintEventArgs e)
         {
-            
+            DrawInBitmap(btnReadFile, "File einlesen...", Color.Teal);
+            Graphics g = e.Graphics;
+            g.DrawImage(bmp, 0, 0);
+        }        
+
+        private void btnReadFile_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnReadFile.ClientSize.Width, btnReadFile.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnReadFile.Invalidate();
+        }
+
+        private void DrawInBitmap(Panel caller, string text, Color color)
+        {
+            z.Clear(caller.BackColor);
+            z.SmoothingMode = SmoothingMode.AntiAlias;
+
+            float breite = 194;
+            float hoehe = 30;
+
+            Matrix myMatrix = new Matrix();
+            myMatrix.Scale(bmp.Width / breite, bmp.Height / hoehe);
+
+            myMatrix.Translate(breite / 2, hoehe / 2 + 1, MatrixOrder.Prepend);
+
+            z.Transform = myMatrix;
+
+            Font type = new Font("Century Gothic", 12f, FontStyle.Bold);
+            Brush style = new SolidBrush(color);
+
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+
+            z.DrawString(text, type, style, new Point(0, 0), sf);
+        }
+
+        private void btnGraphic_MouseLeave(object sender, EventArgs e)
+        {
+            btnGraphic.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnGraphic_MouseEnter(object sender, EventArgs e)
+        {
+            btnGraphic.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnGraphic_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnGraphic.Enabled)
+            {
+                DrawInBitmap(btnGraphic, "Grafik", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnGraphic, "Grafik", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnGraphic_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnGraphic.ClientSize.Width, btnGraphic.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnGraphic.Invalidate();
+        }
+
+        private void btnGPS_MouseLeave(object sender, EventArgs e)
+        {
+            btnGPS.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnGPS_MouseEnter(object sender, EventArgs e)
+        {
+            btnGPS.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnGPS_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnGPS.Enabled)
+            {
+                DrawInBitmap(btnGPS, "GPS", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnGPS, "GPS", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnGPS_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnGPS.ClientSize.Width, btnGPS.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnGPS.Invalidate();
+        }
+
+        private void btnOverview_MouseLeave(object sender, EventArgs e)
+        {
+            btnOverview.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnOverview_MouseEnter(object sender, EventArgs e)
+        {
+            btnOverview.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnOverview_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnOverview.Enabled)
+            {
+                DrawInBitmap(btnOverview, "Überblick", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnOverview, "Überblick", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnOverview_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnOverview.ClientSize.Width, btnOverview.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnOverview.Invalidate();
+        }
+
+        private void btnShowDynamic_MouseLeave(object sender, EventArgs e)
+        {
+            btnShowDynamic.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnShowDynamic_MouseEnter(object sender, EventArgs e)
+        {
+            btnShowDynamic.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnShowDynamic_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnShowDynamic.Enabled)
+            {
+                DrawInBitmap(btnShowDynamic, "Dynamik", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnShowDynamic, "Dynamik", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnShowDynamic_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnShowDynamic.ClientSize.Width, btnShowDynamic.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnShowDynamic.Invalidate();
         }
     }
 }
