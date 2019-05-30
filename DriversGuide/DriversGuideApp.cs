@@ -26,7 +26,9 @@ namespace DriversGuide
         bool calcDone = false;
         Color enabled = Color.Teal;
         Color disabled = Color.Gray;
-        
+
+        public List<string> errors = new List<string>();
+
         MeasurementFile Datei;
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -163,7 +165,7 @@ namespace DriversGuide
             DataTable rural_temp = new DataTable();
             DataTable motorway_temp = new DataTable();
 
-            List<string> errors = new List<string>();
+            //List<string> errors = new List<string>();
 
             //PerformMutliplikationOnColumn(ref test, column_acc, 2);
 

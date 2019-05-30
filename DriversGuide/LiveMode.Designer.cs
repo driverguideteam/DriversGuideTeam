@@ -81,6 +81,7 @@
             this.btnOverview.Name = "btnOverview";
             this.btnOverview.Size = new System.Drawing.Size(109, 100);
             this.btnOverview.TabIndex = 1;
+            this.btnOverview.Click += new System.EventHandler(this.btnOverview_Click);
             this.btnOverview.Paint += new System.Windows.Forms.PaintEventHandler(this.btnOverview_Paint);
             this.btnOverview.MouseEnter += new System.EventHandler(this.btnOverview_MouseEnter);
             this.btnOverview.MouseLeave += new System.EventHandler(this.btnOverview_MouseLeave);

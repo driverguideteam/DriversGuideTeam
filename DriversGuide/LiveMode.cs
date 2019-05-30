@@ -15,7 +15,7 @@ namespace DriversGuide
     {
         StartScreen FormStart;
         GPS FormGPS;
-        General FormGeneral;        
+        OverviewLive FormLiveOverview;             
         Bitmap bmp;
         Graphics z;
         bool topBottom = true;
@@ -413,6 +413,34 @@ namespace DriversGuide
             btn_Fileauswahl.Top = half - 170;
             btnOverview.Top = half - 50;
             btnGPS.Top = half + 70;
+        }
+
+        private void btnOverview_Click(object sender, EventArgs e)
+        {
+            if (topBottom)
+            {
+                pnlTopContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this);
+                //myForm.TopLevel = false;
+                FormLiveOverview.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormLiveOverview);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+            }
+            else
+            {
+                pnlBottomContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this);
+                //myForm.TopLevel = false;
+                FormLiveOverview.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormLiveOverview);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+            }
         }
     }
 }

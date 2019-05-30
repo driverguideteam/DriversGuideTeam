@@ -146,6 +146,8 @@ namespace DriversGuide
                 tBState.BackColor = Color.Red;
                 tBState.ForeColor = Color.White;
             }
+
+            lB.DataSource = MainForm.errors;
         }
 
         //private void distUrban_MouseHover(object sender, EventArgs e)

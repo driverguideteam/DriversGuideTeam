@@ -58,9 +58,11 @@
             this.tripUrban = new System.Windows.Forms.TextBox();
             this.avgVUrban = new System.Windows.Forms.TextBox();
             this.distUrban = new System.Windows.Forms.TextBox();
+            this.picTest = new System.Windows.Forms.PictureBox();
             this.gBMotorway.SuspendLayout();
             this.gBRural.SuspendLayout();
             this.gBUrban.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picTest)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTrip
@@ -286,6 +288,7 @@
             // gBUrban
             // 
             this.gBUrban.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.gBUrban.Controls.Add(this.picTest);
             this.gBUrban.Controls.Add(this.lbl4);
             this.gBUrban.Controls.Add(this.lbl5);
             this.gBUrban.Controls.Add(this.lbl3);
@@ -379,6 +382,15 @@
             this.distUrban.Size = new System.Drawing.Size(78, 20);
             this.distUrban.TabIndex = 1;
             // 
+            // picTest
+            // 
+            this.picTest.Location = new System.Drawing.Point(16, 19);
+            this.picTest.Name = "picTest";
+            this.picTest.Size = new System.Drawing.Size(130, 130);
+            this.picTest.TabIndex = 42;
+            this.picTest.TabStop = false;
+            this.picTest.Paint += new System.Windows.Forms.PaintEventHandler(this.picTest_Paint);
+            // 
             // OverviewLive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -398,6 +410,7 @@
             this.gBRural.PerformLayout();
             this.gBUrban.ResumeLayout(false);
             this.gBUrban.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picTest)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -435,5 +448,6 @@
         private System.Windows.Forms.TextBox tripUrban;
         private System.Windows.Forms.TextBox avgVUrban;
         private System.Windows.Forms.TextBox distUrban;
+        private System.Windows.Forms.PictureBox picTest;
     }
 }
