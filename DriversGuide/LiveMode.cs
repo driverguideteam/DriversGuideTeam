@@ -15,14 +15,17 @@ namespace DriversGuide
     {
         StartScreen FormStart;
         GPS FormGPS;
-        General FormGeneral;
-        TestControl FormTest;
+        General FormGeneral;        
         Bitmap bmp;
         Graphics z;
         bool topBottom = true;
         MeasurementFile LiveDatei;
         private DataTable Dataset = new DataTable();
         bool inout = false;
+        bool gpsActive = false;
+
+        Calculations Berechnung;
+        Validation Gueltigkeit;
 
         Color enabled = Color.Teal;
         Color disabled = Color.Gray;
@@ -39,6 +42,12 @@ namespace DriversGuide
             lblShow.Parent = this;
             lblHide.BringToFront();
             lblShow.BringToFront();
+            CenterButtons();
+        }
+
+        public DataTable GetCompleteDataTable()
+        {
+            return Dataset;
         }
 
         private void pnlTopContent_Click(object sender, EventArgs e)
@@ -49,6 +58,7 @@ namespace DriversGuide
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
         {
             FormStart.Show();
+            timer1.Stop();
         }
 
         private void btnGPS_Click(object sender, EventArgs e)
@@ -56,24 +66,28 @@ namespace DriversGuide
             if (topBottom)
             {
                 pnlTopContent.Controls.Clear();
-                FormTest = new TestControl();
+                FormGPS = new GPS(this);
                 //myForm.TopLevel = false;
-                FormTest.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormTest);
+                FormGPS.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormGPS);
                 //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormTest.Show();
-                FormTest.Dock = DockStyle.Fill;
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormGPS.BackColor;
+                gpsActive = true;
             }
             else
             {
                 pnlBottomContent.Controls.Clear();
-                FormTest = new TestControl();
+                FormGPS = new GPS(this);
                 //myForm.TopLevel = false;
-                FormTest.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormTest);
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
                 //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormTest.Show();
-                FormTest.Dock = DockStyle.Fill;
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormGPS.BackColor;
+                gpsActive = true;
             }
         }
 
@@ -86,6 +100,90 @@ namespace DriversGuide
         {
             Dataset.Clear();
             Dataset = LiveDatei.ConvertLiveCSVtoDataTable();
+            DoCalculations(false);
+        }
+
+        private void DoCalculations(bool first)
+        {
+            //InitValueData();
+            Berechnung = new Calculations();
+            Gueltigkeit = new Validation();
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
+            string column_distance = "di";
+            string column_time = "Time";
+            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
+            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+            DataTable urban_temp = new DataTable();
+            DataTable rural_temp = new DataTable();
+            DataTable motorway_temp = new DataTable();
+
+            List<string> errors = new List<string>();
+
+            Berechnung.CalcReq(ref Dataset, column_speed, first);
+
+            //PerformMutliplikationOnColumn(ref test, column_acc, 2);
+
+            ///*calc = */Berechnung.CalcAll(Dataset, column_speed, column_acc, column_dynamic, column_distance);
+            //Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
+            ///*valid = */Gueltigkeit.CheckValidity(Dataset, column_speed, column_time, column_coolant, column_distance);
+
+            //errors = Gueltigkeit.GetErrors();
+
+            //Berechnung.SepIntervals(test, column_speed);
+            //Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
+            //Berechnung.AddUnits(units);
+
+            //Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
+            //Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            //Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+
+            //values.Rows[1]["Geschwindigkeit"] = avgUrban;
+            //values.Rows[2]["Geschwindigkeit"] = avgRural;
+            //values.Rows[3]["Geschwindigkeit"] = avgMotorway;
+
+            //values.Rows[1]["Verteilung"] = distrUrban;
+            //values.Rows[2]["Verteilung"] = distrRural;
+            //values.Rows[3]["Verteilung"] = distrMotorway;
+
+            //values.Rows[0]["Strecke"] = (double)test.Compute("SUM([" + column_distance + "])", "") / 1000;
+            //values.Rows[1]["Strecke"] = tripUrban;
+            //values.Rows[2]["Strecke"] = tripRural;
+            //values.Rows[3]["Strecke"] = tripMotorway;
+
+            //values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
+            //values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
+            //values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
+            //values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
+            //values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
+            //values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
+
+            //values.Rows[3]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetTimeFasterHundred();
+
+            ////grafikToolStripMenuItem.Enabled = true;
+            ////txtMeasurement.Text = "Berechnung durchgeführt!";
+            ////MessageBox.Show("Berechnung durchgeführt!");
+            //pnlContent.Controls.Clear();
+            //FormGeneral = new General(this);
+            ////myForm.TopLevel = false;
+            //FormGeneral.AutoScroll = true;
+            //pnlContent.Controls.Add(FormGeneral);
+            ////myForm.FormBorderStyle = FormBorderStyle.None;
+            //FormGeneral.Show();
+            //FormGeneral.Dock = DockStyle.Fill;
+            //btnGraphic.Enabled = true;
+            //btnGPS.Enabled = true;
+            //btnOverview.Enabled = true;
+            //btnShowDynamic.Enabled = true;
+            //lblHide.BackColor = Color.White;
+            //lblShow.BackColor = Color.White;
+            //calcDone = true;
+
+            btnGPS.Enabled = true;
+            btnOverview.Enabled = true;
         }
 
         private void btn_Fileauswahl_Click(object sender, EventArgs e)
@@ -102,6 +200,8 @@ namespace DriversGuide
             {
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 Dataset = LiveDatei.ConvertCSVtoDataTable();
+
+                DoCalculations(true);
             }
             timer1.Start();
         }
@@ -295,6 +395,24 @@ namespace DriversGuide
                     lblShow.Show();
                 }
             }
+        }
+
+        private void LiveMode_Resize(object sender, EventArgs e)
+        {
+            pnlTopContent.Height = ClientSize.Height / 2;
+            pnlBottomContent.Top = ClientSize.Height / 2;
+            pnlBottomContent.Height = ClientSize.Height / 2;
+
+            CenterButtons();
+        }
+
+        private void CenterButtons()
+        {
+            int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
+
+            btn_Fileauswahl.Top = half - 170;
+            btnOverview.Top = half - 50;
+            btnGPS.Top = half + 70;
         }
     }
 }

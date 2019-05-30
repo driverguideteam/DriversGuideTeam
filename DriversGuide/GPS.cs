@@ -17,6 +17,7 @@ namespace DriversGuide
     public partial class GPS : UserControl
     {
         private DriversGuideApp MainForm;
+        private LiveMode LiveForm;
         DataTable dataset = new DataTable();
         string lat = "GPS_Latitude";
         string lon = "GPS_Longitude";
@@ -24,6 +25,9 @@ namespace DriversGuide
         string time = "Time";
         GMapProvider provHyb, provMap, provSat;
         Calculations Berechnungen = new Calculations();
+        double ZoomLive = 10;
+        double ZoomNormal = 11;
+        bool live = false;
 
         GMapOverlay markers = new GMapOverlay("markers");
         GMapMarker currPos;
@@ -34,7 +38,6 @@ namespace DriversGuide
         public GPS(DriversGuideApp caller)
         {
             MainForm = caller;
-            //MainForm.Hide();
             dataset = MainForm.GetCompleteDataTable();
             InitializeComponent();
             InitMap();
@@ -43,6 +46,23 @@ namespace DriversGuide
             gMap.ContextMenuStrip = conMenMap;
 
             gMap.Overlays.Add(markers);
+            gMap.Zoom = ZoomNormal;
+            live = false;
+        }
+
+        public GPS(LiveMode caller)
+        {
+            LiveForm = caller;            
+            dataset = LiveForm.GetCompleteDataTable();
+            InitializeComponent();
+            InitMap();
+            CenterMap(lat, lon);
+            AddRoute(lat, lon, speed, time);
+            gMap.ContextMenuStrip = conMenMap;
+
+            gMap.Overlays.Add(markers);
+            gMap.Zoom = ZoomLive;
+            live = true;
         }
 
         private void InitMap()
@@ -231,7 +251,15 @@ namespace DriversGuide
 
         private void zoomZurücksetzenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gMap.Zoom = 11;
+            if (live)
+            {
+                if (ClientSize.Height >= 300)
+                    gMap.Zoom = ZoomNormal;
+                else
+                    gMap.Zoom = ZoomLive;
+            }                
+            else
+                gMap.Zoom = ZoomNormal;
         }
 
         private void googleToolStripMenuItem_Click(object sender, EventArgs e)

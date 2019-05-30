@@ -57,6 +57,7 @@ namespace DriversGuide
             //myForm.Show();
             bmp = new Bitmap(btnReadFile.ClientSize.Width, btnReadFile.ClientSize.Height);
             z = Graphics.FromImage(bmp);
+            CenterButtons();
         }
 
         //private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
@@ -577,6 +578,22 @@ namespace DriversGuide
             z = Graphics.FromImage(bmp);
 
             btnShowDynamic.Invalidate();
+        }
+
+        private void CenterButtons()
+        {
+            int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
+
+            btnReadFile.Top = half - 95;
+            btnGraphic.Top = half - 55;
+            btnGPS.Top = half - 15;
+            btnOverview.Top = half + 25;
+            btnShowDynamic.Top = half + 65;
+        }
+
+        private void DriversGuideApp_Resize(object sender, EventArgs e)
+        {
+            CenterButtons();
         }
     }
 }

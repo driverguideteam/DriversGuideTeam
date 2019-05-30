@@ -140,6 +140,12 @@
       <DependentUpon>LiveMode.cs</DependentUpon>
     </Compile>
     <Compile Include="MeasurementFile.cs" />
+    <Compile Include="OverviewLive.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OverviewLive.Designer.cs">
+      <DependentUpon>OverviewLive.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlotGraphic.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,12 +159,6 @@
     </Compile>
     <Compile Include="StartScreen.Designer.cs">
       <DependentUpon>StartScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TestControl.Designer.cs">
-      <DependentUpon>TestControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Validation.cs" />
     <EmbeddedResource Include="ChartSpielwiese.resx">
@@ -179,6 +179,9 @@
     <EmbeddedResource Include="LiveMode.resx">
       <DependentUpon>LiveMode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OverviewLive.resx">
+      <DependentUpon>OverviewLive.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PlotGraphic.resx">
       <DependentUpon>PlotGraphic.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,9 +196,6 @@
     </Compile>
     <EmbeddedResource Include="StartScreen.resx">
       <DependentUpon>StartScreen.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestControl.resx">
-      <DependentUpon>TestControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

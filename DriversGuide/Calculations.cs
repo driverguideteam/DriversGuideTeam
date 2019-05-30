@@ -113,46 +113,49 @@ namespace DriversGuide
         //Values are added to the DataTable dt as new columns
         //********************************************************************************************
         /*Parameters:
-         *      - dt:       DataTable which contains complete dataset for calculations
-         *      - column:   string with the name of the column by which the calculations are done
+         *      - dt:             DataTable which contains complete dataset for calculations
+         *      - column_speed:   string with the name of the column by which the calculations are done
         */
         //********************************************************************************************
-        public void CalcReq (ref DataTable dt, string column)
+        public void CalcReq (ref DataTable dt, string column_speed, bool init)
         {
             int firstRow = 0;
             int lastRow = dt.Rows.Count;
             double strecke, beschl, dynamik;
 
             //Add the new columns 
-            dt.Columns.Add("di", typeof(Double));
-            dt.Columns.Add("ai", typeof(Double));
-            dt.Columns.Add("a*v", typeof(Double));            
+            if (init)
+            {
+                dt.Columns.Add("di", typeof(Double));
+                dt.Columns.Add("ai", typeof(Double));
+                dt.Columns.Add("a*v", typeof(Double));
+            }                     
 
             //Calculation of distance, acceleration and dynamic
             for (int i = firstRow; i < lastRow; i++)
             {
                 //Calculate distance by integration
-                strecke = Convert.ToDouble(dt.Rows[i][column]) / 3.6;
+                strecke = Convert.ToDouble(dt.Rows[i][column_speed]) / 3.6;
                 dt.Rows[i]["di"] = strecke;               
                  
                 //Calculate acceleration by derivation
                 if (i == firstRow)
                 {
-                    beschl = Convert.ToDouble(dt.Rows[i + 1][column]) / (2 * 3.6);
+                    beschl = Convert.ToDouble(dt.Rows[i + 1][column_speed]) / (2 * 3.6);
                 }
                 else if (i == lastRow - 1)
                 {
-                    beschl = -Convert.ToDouble(dt.Rows[i - 1][column]) / (2 * 3.6);
+                    beschl = -Convert.ToDouble(dt.Rows[i - 1][column_speed]) / (2 * 3.6);
                 }
                 else
                 {
-                    beschl = (Convert.ToDouble(dt.Rows[i + 1][column]) - Convert.ToDouble(dt.Rows[i - 1][column])) / (2 * 3.6);
+                    beschl = (Convert.ToDouble(dt.Rows[i + 1][column_speed]) - Convert.ToDouble(dt.Rows[i - 1][column_speed])) / (2 * 3.6);
                 }           
 
                 dt.Rows[i]["ai"] = beschl;
 
                 //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
-                dynamik = Convert.ToDouble(dt.Rows[i][column]) * Convert.ToDouble(dt.Rows[i]["ai"])/ 3.6;
+                dynamik = Convert.ToDouble(dt.Rows[i][column_speed]) * Convert.ToDouble(dt.Rows[i]["ai"])/ 3.6;
                 dt.Rows[i]["a*v"] = dynamik;                
             }
         }
@@ -397,7 +400,7 @@ namespace DriversGuide
         {
             bool oHdrd, critMatch;       
 
-            CalcReq(ref dt, column_speed);
+            CalcReq(ref dt, column_speed, true);
 
             //PerformMutliplikationOnColumn(ref dt, column_speed, 2);
 
