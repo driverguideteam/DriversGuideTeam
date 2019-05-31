@@ -73,3 +73,4 @@ C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.StartScreen.resources
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.TestControl.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources

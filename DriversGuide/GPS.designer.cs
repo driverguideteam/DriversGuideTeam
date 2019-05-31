@@ -70,6 +70,7 @@
             this.gMap.Size = new System.Drawing.Size(800, 450);
             this.gMap.TabIndex = 1;
             this.gMap.Zoom = 11D;
+            this.gMap.Click += new System.EventHandler(this.gMap_Click);
             // 
             // conMenMap
             // 
@@ -81,28 +82,28 @@
             this.zurückZurRouteToolStripMenuItem,
             this.zoomZurücksetzenToolStripMenuItem});
             this.conMenMap.Name = "conMenMap";
-            this.conMenMap.Size = new System.Drawing.Size(181, 158);
+            this.conMenMap.Size = new System.Drawing.Size(178, 136);
             // 
             // karteToolStripMenuItem
             // 
             this.karteToolStripMenuItem.Checked = true;
             this.karteToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.karteToolStripMenuItem.Name = "karteToolStripMenuItem";
-            this.karteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.karteToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.karteToolStripMenuItem.Text = "Karte";
             this.karteToolStripMenuItem.Click += new System.EventHandler(this.karteToolStripMenuItem_Click);
             // 
             // satelitToolStripMenuItem
             // 
             this.satelitToolStripMenuItem.Name = "satelitToolStripMenuItem";
-            this.satelitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.satelitToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.satelitToolStripMenuItem.Text = "Satelit";
             this.satelitToolStripMenuItem.Click += new System.EventHandler(this.satelitToolStripMenuItem_Click);
             // 
             // hybridToolStripMenuItem
             // 
             this.hybridToolStripMenuItem.Name = "hybridToolStripMenuItem";
-            this.hybridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hybridToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.hybridToolStripMenuItem.Text = "Hybrid";
             this.hybridToolStripMenuItem.Click += new System.EventHandler(this.hybridToolStripMenuItem_Click);
             // 
@@ -112,34 +113,34 @@
             this.googleToolStripMenuItem,
             this.bingToolStripMenuItem});
             this.kartenquelleToolStripMenuItem.Name = "kartenquelleToolStripMenuItem";
-            this.kartenquelleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.kartenquelleToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.kartenquelleToolStripMenuItem.Text = "Kartenquelle";
             // 
             // googleToolStripMenuItem
             // 
             this.googleToolStripMenuItem.Name = "googleToolStripMenuItem";
-            this.googleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.googleToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.googleToolStripMenuItem.Text = "Google";
             this.googleToolStripMenuItem.Click += new System.EventHandler(this.googleToolStripMenuItem_Click);
             // 
             // bingToolStripMenuItem
             // 
             this.bingToolStripMenuItem.Name = "bingToolStripMenuItem";
-            this.bingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bingToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.bingToolStripMenuItem.Text = "Bing";
             this.bingToolStripMenuItem.Click += new System.EventHandler(this.bingToolStripMenuItem_Click);
             // 
             // zurückZurRouteToolStripMenuItem
             // 
             this.zurückZurRouteToolStripMenuItem.Name = "zurückZurRouteToolStripMenuItem";
-            this.zurückZurRouteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zurückZurRouteToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.zurückZurRouteToolStripMenuItem.Text = "Zurück zur Route";
             this.zurückZurRouteToolStripMenuItem.Click += new System.EventHandler(this.zurückZurRouteToolStripMenuItem_Click);
             // 
             // zoomZurücksetzenToolStripMenuItem
             // 
             this.zoomZurücksetzenToolStripMenuItem.Name = "zoomZurücksetzenToolStripMenuItem";
-            this.zoomZurücksetzenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zoomZurücksetzenToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.zoomZurücksetzenToolStripMenuItem.Text = "Zoom zurücksetzen";
             this.zoomZurücksetzenToolStripMenuItem.Click += new System.EventHandler(this.zoomZurücksetzenToolStripMenuItem_Click);
             // 

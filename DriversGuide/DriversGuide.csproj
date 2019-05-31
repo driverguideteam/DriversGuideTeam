@@ -120,6 +120,12 @@
     <Compile Include="DriversGuideApp.designer.cs">
       <DependentUpon>DriversGuideApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dynamic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dynamic.Designer.cs">
+      <DependentUpon>Dynamic.cs</DependentUpon>
+    </Compile>
     <Compile Include="General.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -169,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DriversGuideApp.resx">
       <DependentUpon>DriversGuideApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dynamic.resx">
+      <DependentUpon>Dynamic.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="General.resx">
       <DependentUpon>General.cs</DependentUpon>

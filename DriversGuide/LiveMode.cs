@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace DriversGuide
 {
@@ -18,11 +19,12 @@ namespace DriversGuide
         OverviewLive FormLiveOverview;             
         Bitmap bmp;
         Graphics z;
-        bool topBottom = true;
+        public bool topBottom = true;
         MeasurementFile LiveDatei;
         private DataTable Dataset = new DataTable();
         bool inout = false;
         bool gpsActive = false;
+        private DataTable values = new DataTable();
 
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -43,6 +45,32 @@ namespace DriversGuide
             lblHide.BringToFront();
             lblShow.BringToFront();
             CenterButtons();
+            InitValueData();
+        }
+
+        private void InitValueData()
+        {
+            values.Columns.Clear();
+            values.Rows.Clear();
+            values.Columns.Add("Klasse", typeof(String));
+            values.Columns.Add("Verteilung");
+            values.Columns.Add("Geschwindigkeit");
+            values.Columns.Add("Strecke");
+            values.Columns.Add("Dauer");
+            values.Columns.Add("Haltezeit");
+            values.Columns.Add("Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Hoechstgeschwindigkeit");
+            values.Columns.Add("Kaltstart Durchschnittsgeschwindigkeit");
+            values.Columns.Add("Kaltstart Haltezeit");
+
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows.Add();
+            values.Rows[0]["Klasse"] = "Gesamt";
+            values.Rows[1]["Klasse"] = "Stadt";
+            values.Rows[2]["Klasse"] = "Land";
+            values.Rows[3]["Klasse"] = "Autobahn";
         }
 
         public DataTable GetCompleteDataTable()
@@ -50,9 +78,9 @@ namespace DriversGuide
             return Dataset;
         }
 
-        private void pnlTopContent_Click(object sender, EventArgs e)
+        public DataTable GetValuesDataTable()
         {
-            topBottom = true;
+            return values;
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
@@ -91,11 +119,6 @@ namespace DriversGuide
             }
         }
 
-        private void pnlBottomContent_Click(object sender, EventArgs e)
-        {
-            topBottom = false;
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             Dataset.Clear();
@@ -124,6 +147,23 @@ namespace DriversGuide
             List<string> errors = new List<string>();
 
             Berechnung.CalcReq(ref Dataset, column_speed, first);
+            Berechnung.SepIntervals(Dataset, column_speed);
+            Berechnung.CalcDistancesInterval(column_distance);
+            //Gueltigkeit.CheckValidity(Dataset, column_speed, column_time, column_coolant, column_distance);
+            Gueltigkeit.CheckDistributionComplete(Dataset, column_speed, column_distance);
+            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            values.Rows[0]["Strecke"] = (double)Dataset.Compute("SUM([" + column_distance + "])", "") / 1000;
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+
+            values.Rows[0]["Dauer"] = Convert.ToDouble(Dataset.Rows[Dataset.Rows.Count - 1][column_time]) / 60000d;
 
             //PerformMutliplikationOnColumn(ref test, column_acc, 2);
 
@@ -181,6 +221,43 @@ namespace DriversGuide
             //lblHide.BackColor = Color.White;
             //lblShow.BackColor = Color.White;
             //calcDone = true;
+
+            Stopwatch stopwatch = new Stopwatch();
+            
+            // Write result.
+            
+
+            if (first)
+            {               
+                pnlTopContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this);
+                //myForm.TopLevel = false;
+                FormLiveOverview.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormLiveOverview);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+
+
+                stopwatch.Start();
+
+                topBottom = false;
+                pnlBottomContent.Controls.Clear();
+                FormGPS = new GPS(this);
+                //myForm.TopLevel = false;
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormGPS.BackColor;
+                gpsActive = true;
+
+                // Stop timing.
+                stopwatch.Stop();
+                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+            }
 
             btnGPS.Enabled = true;
             btnOverview.Enabled = true;
@@ -442,5 +519,6 @@ namespace DriversGuide
                 lblHide.BackColor = FormLiveOverview.BackColor;
             }
         }
+
     }
 }

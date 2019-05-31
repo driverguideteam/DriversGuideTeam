@@ -41,9 +41,9 @@
             this.btnEval.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEval.Font = new System.Drawing.Font("Century Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEval.ForeColor = System.Drawing.Color.Black;
-            this.btnEval.Location = new System.Drawing.Point(48, 42);
+            this.btnEval.Location = new System.Drawing.Point(40, 40);
             this.btnEval.Name = "btnEval";
-            this.btnEval.Size = new System.Drawing.Size(214, 158);
+            this.btnEval.Size = new System.Drawing.Size(220, 160);
             this.btnEval.TabIndex = 36;
             this.btnEval.Text = "Auswertung";
             this.btnEval.UseVisualStyleBackColor = false;
@@ -58,9 +58,9 @@
             this.btnLive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLive.Font = new System.Drawing.Font("Century Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLive.ForeColor = System.Drawing.Color.Black;
-            this.btnLive.Location = new System.Drawing.Point(305, 42);
+            this.btnLive.Location = new System.Drawing.Point(300, 40);
             this.btnLive.Name = "btnLive";
-            this.btnLive.Size = new System.Drawing.Size(214, 158);
+            this.btnLive.Size = new System.Drawing.Size(220, 160);
             this.btnLive.TabIndex = 37;
             this.btnLive.Text = "Live - Modus";
             this.btnLive.UseVisualStyleBackColor = false;
@@ -71,9 +71,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(561, 248);
+            this.ClientSize = new System.Drawing.Size(560, 241);
             this.Controls.Add(this.btnLive);
             this.Controls.Add(this.btnEval);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(576, 280);
+            this.MinimumSize = new System.Drawing.Size(576, 280);
             this.Name = "StartScreen";
             this.Text = "Drivers Guide";
             this.ResumeLayout(false);

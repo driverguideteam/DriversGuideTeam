@@ -28,6 +28,7 @@ namespace DriversGuide
         double ZoomLive = 10;
         double ZoomNormal = 11;
         bool live = false;
+        bool topBottomSave;
 
         GMapOverlay markers = new GMapOverlay("markers");
         GMapMarker currPos;
@@ -63,6 +64,8 @@ namespace DriversGuide
             gMap.Overlays.Add(markers);
             gMap.Zoom = ZoomLive;
             live = true;
+
+            topBottomSave = LiveForm.topBottom;
         }
 
         private void InitMap()
@@ -284,6 +287,12 @@ namespace DriversGuide
             hybridToolStripMenuItem.Checked = true;
             satelitToolStripMenuItem.Checked = false;
             karteToolStripMenuItem.Checked = false;
+        }
+
+        private void gMap_Click(object sender, EventArgs e)
+        {
+            if (live)
+                LiveForm.topBottom = topBottomSave;
         }
 
         private void bingToolStripMenuItem_Click(object sender, EventArgs e)

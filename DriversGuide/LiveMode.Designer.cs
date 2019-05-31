@@ -131,7 +131,6 @@
             this.pnlTopContent.Name = "pnlTopContent";
             this.pnlTopContent.Size = new System.Drawing.Size(885, 225);
             this.pnlTopContent.TabIndex = 39;
-            this.pnlTopContent.Click += new System.EventHandler(this.pnlTopContent_Click);
             // 
             // lblHide
             // 
@@ -168,7 +167,6 @@
             this.pnlBottomContent.Name = "pnlBottomContent";
             this.pnlBottomContent.Size = new System.Drawing.Size(885, 225);
             this.pnlBottomContent.TabIndex = 40;
-            this.pnlBottomContent.Click += new System.EventHandler(this.pnlBottomContent_Click);
             // 
             // timer1
             // 

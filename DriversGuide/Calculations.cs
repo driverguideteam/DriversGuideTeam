@@ -88,7 +88,7 @@ namespace DriversGuide
          *      - column_distance:   string with the name of the distance column    
         */
         //********************************************************************************************
-        private void CalcDistancesInterval (string column_distance)
+        public void CalcDistancesInterval (string column_distance)
         {
             distUrban = (double)urban.Compute("SUM([" + column_distance + "])", "");
             distRural = (double)rural.Compute("SUM([" + column_distance + "])", "");
