@@ -120,11 +120,12 @@ namespace DriversGuide
             chartname.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
         }
 
-        private void DrawChart(Chart chartname, string GewDat)
+        private void DrawChart(Chart chartname, DataTable tt, string GewDat)
         {
-            newchart.ConnectToForm1(Form1Copy);                     //Form1-Verlinkung zu GraphicsCreate
-            newchart.GetChosenData(this);                           //erstellt Zugriff auf Datenauswahl-Feld
-            newchart.SetChartProperties(ref chartname, GewDat);   //Festlegen der Chart-Eigenschaften
+            newchart.ConnectToForm1(Form1Copy);                                    //Form1-Verlinkung zu GraphicsCreate
+            newchart.GetChosenData(this);                                          //erstellt Zugriff auf Datenauswahl-Feld
+            newchart.SetChartProperties(ref chartname, tt,"Time", GewDat, this);   //Festlegen der Chart-Eigenschaften
+            newchart.SetChartAxes(ref chartname, tt, "Time", GewDat, this);        //Festlegen der x-u.y-Achsen-Eigenschaften
         }
 
         private void LocateLabel(Chart chartname, Label labelname)
@@ -135,13 +136,18 @@ namespace DriversGuide
 
         public void LocateCharts(string GewDaten1, string GewDaten2, string GewDaten3, string GewDaten4)
         {
+            tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
+            tt = tt.Copy();                          //Kopie des Datatables
+
+            AddTimeFormat(ref tt);
+
             if (GewDaten1 != "" && GewDaten2 == "" && GewDaten3 == "" && GewDaten4 == "")
             {
                 chart1.Height = pictureBox1.Height;
                 chart1.Width = pictureBox1.Width;
                 chart1.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y);
-                DrawChart(chart1, GewDaten1);
+                DrawChart(chart1, tt, GewDaten1);
                 LocateLabel(chart1, lblPos1);
                 lblPos1.Visible = true;
 
@@ -155,14 +161,14 @@ namespace DriversGuide
                 chart1.Width = pictureBox1.Width;
                 chart1.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y);
-                DrawChart(chart1, GewDaten1);
+                DrawChart(chart1, tt, GewDaten1);
                 LocateLabel(chart1, lblPos1);
 
                 chart2.Height = pictureBox1.Height / 2;
                 chart2.Width = pictureBox1.Width;
                 chart2.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y + pictureBox1.Height - chart2.Height);
-                DrawChart(chart2, GewDaten2);
+                DrawChart(chart2, tt, GewDaten2);
                 LocateLabel(chart2, lblPos2);
 
                 chart3.Visible = false;
@@ -174,21 +180,21 @@ namespace DriversGuide
                 chart1.Width = pictureBox1.Width / 2;
                 chart1.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y);
-                DrawChart(chart1, GewDaten1);
+                DrawChart(chart1, tt, GewDaten1);
                 LocateLabel(chart1, lblPos1);
 
                 chart2.Height = pictureBox1.Height / 2;
                 chart2.Width = pictureBox1.Width / 2;
                 chart2.Location = new Point(pictureBox1.Location.X + pictureBox1.Width - chart2.Width,
                                             pictureBox1.Location.Y);
-                DrawChart(chart2, GewDaten2);
+                DrawChart(chart2, tt, GewDaten2);
                 LocateLabel(chart2, lblPos2);
 
                 chart3.Height = pictureBox1.Height / 2;
                 chart3.Width = pictureBox1.Width;
                 chart3.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y + pictureBox1.Height - chart3.Height);
-                DrawChart(chart3, GewDaten3);
+                DrawChart(chart3, tt, GewDaten3);
                 LocateLabel(chart3, lblPos3);
 
                 chart4.Visible = false;
@@ -199,28 +205,28 @@ namespace DriversGuide
                 chart1.Width = pictureBox1.Width / 2;
                 chart1.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y);
-                DrawChart(chart1, GewDaten1);
+                DrawChart(chart1, tt, GewDaten1);
                 LocateLabel(chart1, lblPos1);
 
                 chart2.Height = pictureBox1.Height / 2;
                 chart2.Width = pictureBox1.Width / 2;
                 chart2.Location = new Point(pictureBox1.Location.X + pictureBox1.Width - chart2.Width,
                                             pictureBox1.Location.Y);
-                DrawChart(chart2, GewDaten2);
+                DrawChart(chart2, tt, GewDaten2);
                 LocateLabel(chart2, lblPos2);
 
                 chart3.Height = pictureBox1.Height / 2;
                 chart3.Width = pictureBox1.Width / 2;
                 chart3.Location = new Point(pictureBox1.Location.X,
                                             pictureBox1.Location.Y + pictureBox1.Height - chart3.Height);
-                DrawChart(chart3, GewDaten3);
+                DrawChart(chart3, tt, GewDaten3);
                 LocateLabel(chart3, lblPos3);
 
                 chart4.Height = pictureBox1.Height / 2;
                 chart4.Width = pictureBox1.Width / 2;
                 chart4.Location = new Point(pictureBox1.Location.X + pictureBox1.Width - chart4.Width,
                                             pictureBox1.Location.Y + pictureBox1.Height - chart4.Height);
-                DrawChart(chart4, GewDaten4);
+                DrawChart(chart4, tt, GewDaten4);
                 LocateLabel(chart4, lblPos4);
             }
             tmrTimeSpan.Enabled = true;   //aktiviert Timer, um verstrichene Zeit zu messen

@@ -16,6 +16,7 @@ namespace DriversGuide
     {
         GPS FormGPS;
         General FormGeneral;
+        Dynamic FormDynamic;
         StartScreen FormStart;
         Bitmap bmp;
         Graphics z;
@@ -388,12 +389,16 @@ namespace DriversGuide
 
         private void btnShowDynamic_Click(object sender, EventArgs e)
         {
-            test.ToString();
-
-
-            GetUrbanDataTable();
-            GetRuralDataTable();
-            GetMotorwayDataTable();
+            pnlContent.Controls.Clear();
+            FormDynamic = new Dynamic(this);
+            FormDynamic.AutoScroll = true;
+            pnlContent.Controls.Add(FormDynamic);
+            //myForm.FormBorderStyle = FormBorderStyle.None;
+            FormDynamic.Show();
+            FormDynamic.Dock = DockStyle.Fill;
+            lblHide.BackColor = Color.White;
+            lblShow.BackColor = Color.White;
+            gpsActive = false;
         }
 
         private void btnReadFile_MouseLeave(object sender, EventArgs e)

@@ -36,7 +36,7 @@ namespace DriversGuide
             PlotCopy = ConnectForm;   //Zugriff auf Datenauswahlform
         }
 
-        public void SetChartProperties(ref Chart chartname, string GewDaten)
+        public void SetChartProperties(ref Chart chartname, DataTable tt, string xGewDat, string GewDaten, PlotGraphic plc)
         {
             chartname.Show();   //Anzeigen der Grafik
 
@@ -48,7 +48,7 @@ namespace DriversGuide
             
             for (int i = 0; i < tt.Rows.Count; i+=4)   //füllen Datenpunke-Serie
             {
-                chartname.Series[GewDaten].Points.AddXY(Convert.ToInt64(tt.Rows[i]["Time"]), Convert.ToDouble(tt.Rows[i][GewDaten]));
+                chartname.Series[GewDaten].Points.AddXY(Convert.ToDouble(tt.Rows[i][xGewDat]), Convert.ToDouble(tt.Rows[i][GewDaten]));
                 //erzeugt Serie von Punkten mit denen gezeichnet wird
             }
 
@@ -76,15 +76,20 @@ namespace DriversGuide
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
-            Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0]["Time"]);                 //Festlegung x-Achsen-Minimum
-            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1]["Time"]); //Festlegung x-Achsen-Maximum
+            Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0][xGewDat]);                 //Festlegung x-Achsen-Minimum
+            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1][xGewDat]); //Festlegung x-Achsen-Maximum
             Chart1.AxisX.Interval = 1000;                                              //Festlegung x-Achsen-Intervall
+        }
 
-            string xUnit = PlotCopy.GetUnits(GewDaten)[0];   //liefert Einheit der x-Achse
-            string yUnit = PlotCopy.GetUnits(GewDaten)[1];   //liefert Einheit der y-Achse
+        public void SetChartAxes(ref Chart chartname, DataTable tt, string xGewDat, string GewDaten, PlotGraphic plc)
+        {
+            var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
+
+            string xUnit = plc.GetUnits(GewDaten)[0];   //liefert Einheit der x-Achse
+            string yUnit = plc.GetUnits(GewDaten)[1];   //liefert Einheit der y-Achse
 
             //chartname.Titles.Add("Test").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-            Chart1.AxisX.Title = "Time" + " in " + xUnit;                     //Beschriftung der x-Achse
+            Chart1.AxisX.Title = xGewDat + " in " + xUnit;                     //Beschriftung der x-Achse
             Chart1.AxisX.TitleAlignment = StringAlignment.Center;             //Ausrichtung der x-Achsen-Beschriftung
             Chart1.AxisX.TextOrientation = TextOrientation.Horizontal;        //Orientierung der x-Achsen-Beschriftung
             Chart1.AxisX.TitleFont = new Font("Arial", 10, FontStyle.Bold);   //Schriftart der x-Achsen-Beschriftung

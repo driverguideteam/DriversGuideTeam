@@ -61,7 +61,6 @@ C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\Driv
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.PlotGraphic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Properties.Resources.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.StartScreen.resources
-C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.TestControl.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.csproj.GenerateResource.cache
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.csproj.CoreCompileInputs.cache
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.csproj.Fody.CopyLocal.cache
@@ -74,3 +73,5 @@ C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.TestControl.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
