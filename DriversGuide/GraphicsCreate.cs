@@ -63,7 +63,7 @@ namespace DriversGuide
             Chart1.CursorX.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
             Chart1.CursorX.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisX.ScaleView.Zoomable = true;
-            Chart1.CursorX.LineColor = Color.Red;                //Linienfarbe Cursor
+            Chart1.CursorX.LineColor = Color.DarkOrange;                //Linienfarbe Cursor
             Chart1.CursorX.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorX.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
@@ -72,7 +72,7 @@ namespace DriversGuide
             Chart1.CursorY.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
             Chart1.CursorY.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisY.ScaleView.Zoomable = true;
-            Chart1.CursorY.LineColor = Color.Red;                //Linienfarbe Cursor
+            Chart1.CursorY.LineColor = Color.DarkOrange;                //Linienfarbe Cursor
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 

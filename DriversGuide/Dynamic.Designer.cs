@@ -40,6 +40,9 @@
             this.ChUrb = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ChRur = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ChMw = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.lblUrb = new System.Windows.Forms.Label();
+            this.lblRur = new System.Windows.Forms.Label();
+            this.lblMw = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ChUrb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChRur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChMw)).BeginInit();
@@ -60,6 +63,7 @@
             this.ChUrb.Size = new System.Drawing.Size(310, 446);
             this.ChUrb.TabIndex = 0;
             this.ChUrb.Text = "chart1";
+            this.ChUrb.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChUrb_MouseMove);
             // 
             // ChRur
             // 
@@ -76,6 +80,7 @@
             this.ChRur.Size = new System.Drawing.Size(310, 446);
             this.ChRur.TabIndex = 1;
             this.ChRur.Text = "chart2";
+            this.ChRur.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChRur_MouseMove);
             // 
             // ChMw
             // 
@@ -83,31 +88,64 @@
             this.ChMw.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.ChMw.Legends.Add(legend3);
-            this.ChMw.Location = new System.Drawing.Point(622, 0);
+            this.ChMw.Location = new System.Drawing.Point(618, -3);
             this.ChMw.Name = "ChMw";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.ChMw.Series.Add(series3);
-            this.ChMw.Size = new System.Drawing.Size(310, 446);
+            this.ChMw.Size = new System.Drawing.Size(314, 449);
             this.ChMw.TabIndex = 2;
             this.ChMw.Text = "chart3";
+            this.ChMw.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChMw_MouseMove);
+            // 
+            // lblUrb
+            // 
+            this.lblUrb.AutoSize = true;
+            this.lblUrb.Location = new System.Drawing.Point(234, 410);
+            this.lblUrb.Name = "lblUrb";
+            this.lblUrb.Size = new System.Drawing.Size(46, 17);
+            this.lblUrb.TabIndex = 3;
+            this.lblUrb.Text = "label1";
+            // 
+            // lblRur
+            // 
+            this.lblRur.AutoSize = true;
+            this.lblRur.Location = new System.Drawing.Point(530, 410);
+            this.lblRur.Name = "lblRur";
+            this.lblRur.Size = new System.Drawing.Size(46, 17);
+            this.lblRur.TabIndex = 4;
+            this.lblRur.Text = "label1";
+            // 
+            // lblMw
+            // 
+            this.lblMw.AutoSize = true;
+            this.lblMw.Location = new System.Drawing.Point(846, 410);
+            this.lblMw.Name = "lblMw";
+            this.lblMw.Size = new System.Drawing.Size(46, 17);
+            this.lblMw.TabIndex = 5;
+            this.lblMw.Text = "label1";
             // 
             // Dynamic
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblMw);
+            this.Controls.Add(this.lblRur);
+            this.Controls.Add(this.lblUrb);
             this.Controls.Add(this.ChMw);
             this.Controls.Add(this.ChRur);
             this.Controls.Add(this.ChUrb);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Dynamic";
             this.Size = new System.Drawing.Size(932, 446);
             this.Load += new System.EventHandler(this.Dynamic_Load);
+            this.SizeChanged += new System.EventHandler(this.Dynamic_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.ChUrb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChRur)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChMw)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -116,5 +154,8 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart ChUrb;
         private System.Windows.Forms.DataVisualization.Charting.Chart ChRur;
         private System.Windows.Forms.DataVisualization.Charting.Chart ChMw;
+        private System.Windows.Forms.Label lblUrb;
+        private System.Windows.Forms.Label lblRur;
+        private System.Windows.Forms.Label lblMw;
     }
 }

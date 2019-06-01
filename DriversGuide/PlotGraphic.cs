@@ -30,6 +30,7 @@ namespace DriversGuide
             this.chart2.MouseWheel += chart2_MouseWheel;   //Erstellen MouseWheel-Ereignis
             this.chart3.MouseWheel += chart3_MouseWheel;   //Erstellen MouseWheel-Ereignis
             this.chart4.MouseWheel += chart4_MouseWheel;   //Erstellen MouseWheel-Ereignis
+
         }
 
         public void ConnectToDatenauswahl(Datenauswahl CreateForm)
