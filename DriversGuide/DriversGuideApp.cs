@@ -18,6 +18,7 @@ namespace DriversGuide
         General FormGeneral;
         Dynamic FormDynamic;
         StartScreen FormStart;
+        Overview FormOverview;
         Bitmap bmp;
         Graphics z;
         bool inout = false;
@@ -228,14 +229,26 @@ namespace DriversGuide
 
         private void btnOverview_Click(object sender, EventArgs e)
         {
+            //    pnlContent.Controls.Clear();
+            //    FormGeneral = new General(this);
+            //    //myForm.TopLevel = false;
+            //    FormGeneral.AutoScroll = true;
+            //    pnlContent.Controls.Add(FormGeneral);
+            //    //myForm.FormBorderStyle = FormBorderStyle.None;
+            //    FormGeneral.Show();
+            //    FormGeneral.Dock = DockStyle.Fill;
+            //    lblHide.BackColor = Color.White;
+            //    lblShow.BackColor = Color.White;
+            //    gpsActive = false;
+
             pnlContent.Controls.Clear();
-            FormGeneral = new General(this);
+            FormOverview = new Overview(this);
             //myForm.TopLevel = false;
-            FormGeneral.AutoScroll = true;
-            pnlContent.Controls.Add(FormGeneral);
+            FormOverview.AutoScroll = true;
+            pnlContent.Controls.Add(FormOverview);
             //myForm.FormBorderStyle = FormBorderStyle.None;
-            FormGeneral.Show();
-            FormGeneral.Dock = DockStyle.Fill;
+            FormOverview.Show();
+            FormOverview.Dock = DockStyle.Fill;
             lblHide.BackColor = Color.White;
             lblShow.BackColor = Color.White;
             gpsActive = false;

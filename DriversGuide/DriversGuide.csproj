@@ -146,6 +146,12 @@
       <DependentUpon>LiveMode.cs</DependentUpon>
     </Compile>
     <Compile Include="MeasurementFile.cs" />
+    <Compile Include="Overview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Overview.Designer.cs">
+      <DependentUpon>Overview.cs</DependentUpon>
+    </Compile>
     <Compile Include="OverviewLive.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -187,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LiveMode.resx">
       <DependentUpon>LiveMode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Overview.resx">
+      <DependentUpon>Overview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OverviewLive.resx">
       <DependentUpon>OverviewLive.cs</DependentUpon>

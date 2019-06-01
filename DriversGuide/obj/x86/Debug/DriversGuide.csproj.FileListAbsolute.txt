@@ -75,3 +75,4 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
+C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Overview.resources
