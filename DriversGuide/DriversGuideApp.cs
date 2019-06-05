@@ -310,8 +310,16 @@ namespace DriversGuide
             //Öffnen des Diagramm-Forms, falls Datatable gefüllt
             else
             {
-                Datenauswahl DataDiagram = new Datenauswahl(this);
-                DataDiagram.Show();
+                //Überprüfung, ob bereits Datenauswahl-Fenster geöffnet
+                if (Application.OpenForms["Datenauswahl"] != null)
+                    {
+                        Application.OpenForms["Datenauswahl"].Activate();
+                    }
+                else
+                {
+                    Datenauswahl DataDiagram = new Datenauswahl(this);
+                    DataDiagram.Show();
+                }
             }
         }
 
@@ -394,9 +402,20 @@ namespace DriversGuide
                 Application.OpenForms["Datenauswahl"].Close();
             }
 
+            string ofs = Application.OpenForms.Count.ToString();   //Anzahl der Geöffneten Forms
+            int of = Convert.ToInt32(ofs);
+
             if (Application.OpenForms["PlotGraphic"] != null)
             {
-                Application.OpenForms["PlotGraphic"].Close();
+                for(int i = 0; i<Convert.ToInt32(Application.OpenForms.Count.ToString()); i++)
+                {
+                    string fc = Application.OpenForms[i].ToString();
+                    if (fc == "DriversGuide.PlotGraphic, Text: PlotGraphic")
+                    {
+                        Application.OpenForms[i].Close();
+                        i -= 1;
+                    }
+                }
             }
         }
 

@@ -63,6 +63,12 @@ namespace DriversGuide
                 lstChooseData.Items.Add(column.ColumnName);
             }
 
+            if (lstChooseData.Items.IndexOf("AcqTime") != null)
+            {
+                lstChooseData.Items.RemoveAt(lstChooseData.Items.IndexOf("AcqTime"));
+            }
+
+
             lstChooseData.SelectedIndex = 0;   //Starteinstellung gewählter Index
             
             //for (int i = 1; i < ColumnHeaders.Columns.Count; i++)   //Füllen der Datenauswahlliste mit Spaltenüberschriften
