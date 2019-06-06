@@ -70,7 +70,7 @@ namespace DriversGuide
            // dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             sr.Close();
             dt.AcceptChanges();
-            return dt;
+            return dt.Copy();
             
         }
         public void CSVToTable()
@@ -141,7 +141,7 @@ namespace DriversGuide
             }
           //  dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             sr.Close();
-            return dt;
+            return dt.Copy();
 
         }
 
@@ -158,12 +158,12 @@ namespace DriversGuide
 
         public DataTable GetMeasurementData()   //Rückgabe der Messdaten
         {
-            return dt;
+            return dt.Copy();
         }
 
         public DataTable GetMeasurementUnits()  //Rücgabe der Einheiten
         {
-            return units;
+            return units.Copy();
         }
 
         /* public List<List<string>> ReadMeasurementFile()

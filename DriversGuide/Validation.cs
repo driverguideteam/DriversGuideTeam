@@ -404,7 +404,7 @@ namespace DriversGuide
         //********************************************************************************************
         public DataTable GetErrors()
         {
-            return errors;
+            return errors.Copy();
         }
 
         //Check if speed criteria are matched

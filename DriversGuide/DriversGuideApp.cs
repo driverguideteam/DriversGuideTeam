@@ -80,32 +80,32 @@ namespace DriversGuide
 
         public DataTable GetCompleteDataTable()
         {
-            return test;
+            return test.Copy();
         }
 
         public DataTable GetUrbanDataTable()
         {
-            return urban;
+            return urban.Copy();
         }
 
         public DataTable GetRuralDataTable()
         {
-            return rural;
+            return rural.Copy();
         }
 
         public DataTable GetMotorwayDataTable()
         {
-            return motorway;
+            return motorway.Copy();
         }
 
         public DataTable GetUnitsDataTable()
         {
-            return units;
+            return units.Copy();
         }
 
         public DataTable GetValuesDataTable()
         {
-            return values;
+            return values.Copy();
         }
 
         public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)

@@ -75,12 +75,12 @@ namespace DriversGuide
 
         public DataTable GetCompleteDataTable()
         {
-            return LiveDataset;
+            return LiveDataset.Copy();
         }
 
         public DataTable GetValuesDataTable()
         {
-            return values;
+            return values.Copy();
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
