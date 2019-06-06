@@ -70,10 +70,12 @@ C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\Driv
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.csprojAssemblyReference.cache
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.LiveMode.resources
 C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.StartScreen.resources
-C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.TestControl.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Overview.resources
 C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Overview.resources
+C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Dynamic.resources
+C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.Overview.resources
+C:\Repositories\DriversGuideTeam\DriversGuide\DriversGuideTeam\DriversGuide\obj\x86\Debug\DriversGuide.OverviewLive.resources

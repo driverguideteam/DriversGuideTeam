@@ -21,7 +21,7 @@ namespace DriversGuide
         Graphics z;
         public bool topBottom = true;
         MeasurementFile LiveDatei;
-        private DataTable Dataset = new DataTable();
+        private DataTable LiveDataset = new DataTable();
         bool inout = false;
         bool gpsActive = false;
         private DataTable values = new DataTable();
@@ -75,7 +75,7 @@ namespace DriversGuide
 
         public DataTable GetCompleteDataTable()
         {
-            return Dataset;
+            return LiveDataset;
         }
 
         public DataTable GetValuesDataTable()
@@ -87,6 +87,7 @@ namespace DriversGuide
         {
             FormStart.Show();
             timer1.Stop();
+            timerSimulation.Stop();
         }
 
         private void btnGPS_Click(object sender, EventArgs e)
@@ -121,8 +122,8 @@ namespace DriversGuide
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Dataset.Clear();
-            Dataset = LiveDatei.ConvertLiveCSVtoDataTable();
+            LiveDataset.Clear();
+            LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
             DoCalculations(false);
         }
 
@@ -146,11 +147,11 @@ namespace DriversGuide
 
             List<string> errors = new List<string>();
 
-            Berechnung.CalcReq(ref Dataset, column_speed, first);
-            Berechnung.SepIntervals(Dataset, column_speed);
+            Berechnung.CalcReq(ref LiveDataset, column_speed, first);
+            Berechnung.SepIntervals(LiveDataset, column_speed);
             Berechnung.CalcDistancesInterval(column_distance);
-            //Gueltigkeit.CheckValidity(Dataset, column_speed, column_time, column_coolant, column_distance);
-            Gueltigkeit.CheckDistributionComplete(Dataset, column_speed, column_distance);
+            //Gueltigkeit.CheckValidity(LiveDataset, column_speed, column_time, column_coolant, column_distance);
+            Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
             Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
 
@@ -158,18 +159,18 @@ namespace DriversGuide
             values.Rows[2]["Verteilung"] = distrRural;
             values.Rows[3]["Verteilung"] = distrMotorway;
 
-            values.Rows[0]["Strecke"] = (double)Dataset.Compute("SUM([" + column_distance + "])", "") / 1000;
+            values.Rows[0]["Strecke"] = (double)LiveDataset.Compute("SUM([" + column_distance + "])", "") / 1000;
             values.Rows[1]["Strecke"] = tripUrban;
             values.Rows[2]["Strecke"] = tripRural;
             values.Rows[3]["Strecke"] = tripMotorway;
 
-            values.Rows[0]["Dauer"] = Convert.ToDouble(Dataset.Rows[Dataset.Rows.Count - 1][column_time]) / 60000d;
+            values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
 
             //PerformMutliplikationOnColumn(ref test, column_acc, 2);
 
-            ///*calc = */Berechnung.CalcAll(Dataset, column_speed, column_acc, column_dynamic, column_distance);
+            ///*calc = */Berechnung.CalcAll(LiveDataset, column_speed, column_acc, column_dynamic, column_distance);
             //Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
-            ///*valid = */Gueltigkeit.CheckValidity(Dataset, column_speed, column_time, column_coolant, column_distance);
+            ///*valid = */Gueltigkeit.CheckValidity(LiveDataset, column_speed, column_time, column_coolant, column_distance);
 
             //errors = Gueltigkeit.GetErrors();
 
@@ -276,7 +277,7 @@ namespace DriversGuide
             if (dr == DialogResult.OK)
             {
                 LiveDatei = new MeasurementFile(ofd.FileName);
-                Dataset = LiveDatei.ConvertCSVtoDataTable();
+                LiveDataset = LiveDatei.ConvertCSVtoDataTable();
 
                 DoCalculations(true);
             }
@@ -520,5 +521,43 @@ namespace DriversGuide
             }
         }
 
+        private void btnSimulation_Click(object sender, EventArgs e)
+        {
+            ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
+            ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
+            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            ofd.Title = "Textdatei öffnen";
+            ofd.FileName = "";
+
+            DialogResult dr = ofd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                LiveDatei = new MeasurementFile(ofd.FileName); // Datatable anlegen
+                LiveDataset = LiveDatei.ConvertCSVtoDataTable(); // Datatable befüllen
+                LiveDataset.Clear();        // Daten aus Table löschen
+                
+                
+             
+
+                //DoCalculations(true);
+            }
+            timerSimulation.Start(); // Simulation starten
+           
+           
+          //BTN_Simulation Click und timerSimulation Tick sind das Problem  
+
+
+        }
+
+        private void timerSimulation_Tick(object sender, EventArgs e)
+        {
+
+
+            DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
+            dr = LiveDatei.AddSimulationRows(); // Reihe aus Live Datei auslesen
+            LiveDataset.Rows.Add(dr);   // Reihe zu LiveDataset hinzufügen
+            DoCalculations(false);
+        }
     }
 }

@@ -13,9 +13,11 @@ namespace DriversGuide
     {
         public string Filename;
 
-        DataTable dt = new DataTable();
+        private DataTable dt = new DataTable();
+        private DataTable LiveSimulation = new DataTable();
         DataTable units = new DataTable();
         DataTable dheaders = new DataTable();
+        int SimualtionRowCount = 0;
        
         /*
          Einlesen des Messfiles + Convertierung in 2 Datentables "dt" und "units"
@@ -65,14 +67,51 @@ namespace DriversGuide
                     //Reihe verwerfen
                 }
             }
-            dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
+           // dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             sr.Close();
+            dt.AcceptChanges();
             return dt;
             
+        }
+        public void CSVToTable()
+        {
+
+            StreamReader sr = new StreamReader(Filename);
+            string[] headers = sr.ReadLine().Split('\t');
+            string[] Units = sr.ReadLine().Split('\t');
+
+
+
+            while (!sr.EndOfStream)
+            {
+                string[] rows = Regex.Split(sr.ReadLine(), "\t"); //",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                DataRow dr = dt.NewRow();
+
+                if ((Convert.ToDouble(rows[0]) % 1000) == 0)
+                {
+
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        dr[i] = Convert.ToDouble(rows[i]);
+                    }
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    //Reihe verwerfen
+                }
+            }
+            //dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
+            sr.Close();
+            dt.AcceptChanges();
+            
+
         }
 
         public DataTable ConvertLiveCSVtoDataTable()
         {
+
 
             StreamReader sr = new StreamReader(Filename);
             string[] headers = sr.ReadLine().Split('\t');
@@ -100,10 +139,21 @@ namespace DriversGuide
                     //Reihe verwerfen
                 }
             }
-            dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
+          //  dt.PrimaryKey = new DataColumn[] { dt.Columns["Time"] };
             sr.Close();
             return dt;
 
+        }
+
+        public DataRow AddSimulationRows()
+        {
+            DataRow drs = dt.NewRow();
+           
+            drs = dt.Rows[SimualtionRowCount];
+            SimualtionRowCount++;
+
+            
+            return drs;
         }
 
         public DataTable GetMeasurementData()   //Rückgabe der Messdaten

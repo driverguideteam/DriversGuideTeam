@@ -42,6 +42,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tmrFade = new System.Windows.Forms.Timer(this.components);
+            this.btnSimulation = new System.Windows.Forms.Button();
+            this.timerSimulation = new System.Windows.Forms.Timer(this.components);
             this.pnlSideBar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             this.pnlTopContent.SuspendLayout();
@@ -52,6 +54,7 @@
             this.pnlSideBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlSideBar.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlSideBar.Controls.Add(this.btnSimulation);
             this.pnlSideBar.Controls.Add(this.btnGPS);
             this.pnlSideBar.Controls.Add(this.btnOverview);
             this.pnlSideBar.Controls.Add(this.btn_Fileauswahl);
@@ -182,6 +185,21 @@
             this.tmrFade.Interval = 1;
             this.tmrFade.Tick += new System.EventHandler(this.tmrFade_Tick);
             // 
+            // btnSimulation
+            // 
+            this.btnSimulation.Location = new System.Drawing.Point(3, 66);
+            this.btnSimulation.Name = "btnSimulation";
+            this.btnSimulation.Size = new System.Drawing.Size(75, 23);
+            this.btnSimulation.TabIndex = 41;
+            this.btnSimulation.Text = "Simulation";
+            this.btnSimulation.UseVisualStyleBackColor = true;
+            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
+            // 
+            // timerSimulation
+            // 
+            this.timerSimulation.Interval = 1000;
+            this.timerSimulation.Tick += new System.EventHandler(this.timerSimulation_Tick);
+            // 
             // LiveMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,5 +237,7 @@
         private System.Windows.Forms.Label lblHide;
         private System.Windows.Forms.Label lblShow;
         private System.Windows.Forms.Timer tmrFade;
+        private System.Windows.Forms.Button btnSimulation;
+        private System.Windows.Forms.Timer timerSimulation;
     }
 }
