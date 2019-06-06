@@ -25,6 +25,22 @@ namespace DriversGuide
         double fasterOnehundred = 0;
         List<string> error = new List<string>();
 
+        DataTable errors = new DataTable();
+
+        private void InitErrorsDt ()
+        {
+            errors.Columns.Add("Distance", typeof(string));
+            errors.Columns.Add("Distribution", typeof(string));
+            errors.Columns.Add("Duration", typeof(string));
+            errors.Columns.Add("Speeds", typeof(string));
+            errors.Columns.Add("ColdStart", typeof(string));
+
+            errors.Rows.Add();
+            errors.Rows.Add();
+            errors.Rows.Add();
+            errors.Rows.Add();
+        }
+
         //Calculate distances drove by interval, return them in array as values in kilometers
         //********************************************************************************************
         /*Parameters:
@@ -150,6 +166,12 @@ namespace DriversGuide
             DataTable motorway = new DataTable();
             double trip = 0;
             double[] distances = new double[3];
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+            bool con4 = false;
+            bool con5 = false;
+            bool con6 = false;
 
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals
@@ -167,11 +189,46 @@ namespace DriversGuide
             distrRural = distances[1] * 100 / trip;
             distrMotorway = distances[2] * 100 / trip;
 
-            //if criteria are matched, return true
-            if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
-                return true;
+            //if criteria are matched, return true, otherwise define errors
+            if (distrUrban >= 29)
+                con1 = true;
             else
-                return false;
+                errors.Rows[0]["Distribution"] = "Stadtanteil zu gering";
+
+            if (distrUrban <= 44)
+                con2 = true;
+            else
+                errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
+
+            if (distrRural >= 23)
+                con3 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+
+            if (distrRural <= 43)
+                con4 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+
+            if (distrMotorway >= 23)
+                con5 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+
+            if (distrMotorway <= 43)
+                con6 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+
+            if (con1 && con2 && con3 && con4 && con5 && con6)
+                return true;
+            else return false;
+
+            //if criteria are matched, return true
+            //if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
+            //    return true;
+            //else
+            //    return false;
         }
 
         //Check the percentage of the distances per interval compared to complete trip
@@ -188,6 +245,12 @@ namespace DriversGuide
         {
             double trip = 0;
             double[] distances = new double[3];
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+            bool con4 = false;
+            bool con5 = false;
+            bool con6 = false;
 
             //Calculate and get the distances driven per interval
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
@@ -200,11 +263,45 @@ namespace DriversGuide
             distrRural = distances[1] * 100 / trip;
             distrMotorway = distances[2] * 100 / trip;
 
-            //if criteria are matched, return true
-            if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
-                return true;
+            //if criteria are matched, return true, otherwise define errors
+            if (distrUrban >= 29)
+                con1 = true;
             else
-                return false;
+                errors.Rows[0]["Distribution"] = "Stadtanteil zu gering";
+
+            if (distrUrban <= 44)
+                con2 = true;
+            else
+                errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
+
+            if (distrRural >= 23)
+                con3 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+
+            if (distrRural <= 43)
+                con4 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+
+            if (distrMotorway >= 23)
+                con5 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+
+            if (distrMotorway <= 43)
+                con6 = true;
+            else
+                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+
+            if (con1 && con2 && con3 && con4 && con5 && con6)
+                return true;
+            else return false;
+
+            //if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
+            //    return true;
+            //else
+            //    return false;
         }
 
         //Get the distribution values per interval
@@ -294,9 +391,20 @@ namespace DriversGuide
          *      - error:            list with error messages
         */
         //********************************************************************************************
-        public List<string> GetErrors()
+        public List<string> GetErrors1()
         {
             return error;
+        }
+
+        //Get dataTable with error messages
+        //********************************************************************************************
+        /*Parameters:
+         *      - errors:           dataTable with error messages
+        */
+        //********************************************************************************************
+        public DataTable GetErrors()
+        {
+            return errors;
         }
 
         //Check if speed criteria are matched
@@ -345,6 +453,8 @@ namespace DriversGuide
         public bool CheckDuration(DataTable dt, string column_time)
         {
             double duration = 0;
+            bool con1 = false;
+            bool con2 = false;
 
             //Sort DataTable by time
             Berechnungen.SortData(ref dt, column_time);
@@ -352,11 +462,26 @@ namespace DriversGuide
             //Calculate the complete trip's duration in minutes
             duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column_time]) / 60000;
 
-            //if critera are matched return true
-            if (duration >= 90 && duration <= 120)
+            //if critera are matched return true, otherwise define error
+            if (duration >= 90)
+                con1 = true;
+            else
+                errors.Rows[0]["Duration"] = "Fahrzeit zu gering";
+
+            if (duration <= 120)
+                con2 = true;
+            else
+                errors.Rows[0]["Duration"] = "Fahrzeit zu lang";
+
+            if (con1 && con2)
                 return true;
             else
                 return false;
+
+            //if (duration >= 90 && duration <= 120)
+            //    return true;
+            //else
+            //    return false;
         }
 
         //Check if distances per interval are greater than 16 kilometers
@@ -374,6 +499,9 @@ namespace DriversGuide
             DataTable rural = new DataTable();
             DataTable motorway = new DataTable();
             double[] distances = new double[3];
+            bool distUrban = false;
+            bool distRural = false;
+            bool distMotorway = false;
 
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals
@@ -383,8 +511,23 @@ namespace DriversGuide
             //Calculate and get the distances driven per interval
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
 
-            //if criteria are matched return true
-            if (distances[0] >= 16 && distances[1] >= 16 && distances[2] >= 16)
+            //if criteria are matched return true, otherwise define error
+            if (distances[0] >= 16)
+                distUrban = true;
+            else
+                errors.Rows[0]["Distance"] = "Strecke Stadt zu gering";
+
+            if (distances[1] >= 16)
+                distRural = true;
+            else
+                errors.Rows[1]["Distance"] = "Strecke Land zu gering";
+
+            if (distances[2] >= 16)
+                distMotorway = true;
+            else
+                errors.Rows[2]["Distance"] = "Strecke Autobahn zu gering";
+
+            if (distUrban && distRural && distMotorway)
                 return true;
             else
                 return false;
@@ -403,12 +546,30 @@ namespace DriversGuide
         public bool CheckDistanceIntervals(DataTable urban, DataTable rural, DataTable motorway, string column_distance)
         {
             double[] distances = new double[3];
+            bool distUrban = false;
+            bool distRural = false;
+            bool distMotorway = false;
 
             //Calculate and get the distances driven per interval
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
 
-            //if criteria are matched return true
-            if (distances[0] >= 16 && distances[1] >= 16 && distances[2] >= 16)
+            //if criteria are matched return true, otherwise define error
+            if (distances[0] >= 16)
+                distUrban = true;
+            else
+                errors.Rows[0]["Distance"] = "Strecke Stadt zu gering";
+
+            if (distances[1] >= 16)
+                distRural = true;
+            else
+                errors.Rows[1]["Distance"] = "Strecke Land zu gering";
+
+            if (distances[2] >= 16)
+                distMotorway = true;
+            else
+                errors.Rows[2]["Distance"] = "Strecke Autobahn zu gering";
+
+            if (distUrban && distRural && distMotorway)
                 return true;
             else
                 return false;
@@ -426,7 +587,12 @@ namespace DriversGuide
         public bool CheckColdStart(DataTable dt, string column_speed, string column_time, string column_coolant)
         {
             DataTable temp = new DataTable();
-            temp = dt.Clone();            
+            temp = dt.Clone();
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+            bool con4 = false;
+            bool con5 = false;
 
             int i = 0;
             double time_start = 0;
@@ -461,13 +627,85 @@ namespace DriversGuide
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
 
             //Calculate hold time in seconds
-            holdTimeCold = (double)(temp.Rows.Count - 1);      
+            holdTimeCold = (double)(temp.Rows.Count - 1);
 
-            //if criteria are matched, return true
-            if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+            //if criteria are matched return true, otherwise define error
+            if (time_start <= 15)
+                con1 = true;
+            else
+                errors.Rows[0]["ColdStart"] = "Zu spaet losgefahren";
+
+            if (holdTimeCold <= 90)
+                con2 = true;
+            else
+                errors.Rows[1]["ColdStart"] = "Standzeit zu lang";
+
+            if (avgSpeedCold >= 15)
+                con3 = true;
+            else
+                errors.Rows[2]["ColdStart"] = "Durchschnittsgeschwindigkeit zu gering";
+
+            if (avgSpeedCold <= 40)
+                con4 = true;
+            else
+                errors.Rows[2]["ColdStart"] = "Durchschnittsgeschwindigkeit zu hoch";
+
+            if (maxSpeedCold <= 60)
+                con5 = true;
+            else
+                errors.Rows[3]["ColdStart"] = "Zu schnell gefahren";
+
+            if (con1 && con2 && con3 && con4 && con5)
                 return true;
             else
                 return false;
+            //if criteria are matched, return true
+            //if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
+            //    return true;
+            //else
+            //    return false;
+        }
+
+        public bool CheckAltitude(ref DataTable dt, string column_altitude, string column_distance, bool init)
+        {
+            double firstVal = Convert.ToDouble(dt.Rows[0][column_altitude]);
+            double lastVal = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column_altitude]);
+            double distBefore = 0;
+            double distAct = 0;
+            double distAfter = 0;
+            double heightBefore = 0;
+            double heightAfter = 0;
+
+            Berechnungen.SortData(ref dt, column_distance);
+
+            int firstRow = 0;
+            int lastRow = dt.Rows.Count - 1;
+
+            if (init)
+            {
+                dt.Columns.Add("hInt", typeof(Double));
+            }
+
+            for (int i = firstRow; i <= lastRow; i++)
+            {
+                distAct += Convert.ToDouble(dt.Rows[i][column_distance]);
+                distBefore = distAct - Convert.ToDouble(dt.Rows[i][column_distance]);
+                if (i < lastRow)
+                {
+                    distAfter = distAct + Convert.ToDouble(dt.Rows[i + 1][column_distance]);
+                    heightAfter = Convert.ToDouble(dt.Rows[i + 1][column_altitude]);
+                }
+                
+                if (i > firstRow)
+                    heightBefore = Convert.ToDouble(dt.Rows[i - 1][column_altitude]);
+
+                dt.Rows[i]["hInt"] = heightBefore + ((heightAfter - heightBefore) / (distAfter - distBefore)) * (distAct - distBefore);              
+            }
+
+            if (Math.Abs(firstVal - lastVal) > 100)
+                return false;
+            else
+                return true;
         }
 
         //One method for checking everything with one call
@@ -494,7 +732,8 @@ namespace DriversGuide
 
             urban = dt.Clone();
             rural = dt.Clone();
-            motorway = dt.Clone();                     
+            motorway = dt.Clone();
+            InitErrorsDt();
 
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals
@@ -565,12 +804,12 @@ namespace DriversGuide
                 error.Add("Cold Start error");
             }
 
+            //CheckAltitude(ref dt, "GPS_Altitude", column_distance, true);
+
             if (stateDistance && stateDistribution && stateDuration && stateSpeed && stateCold)
                 return true;
             else
                 return false;
         }
-
-        //public void CheckAltitude()
     }
 }

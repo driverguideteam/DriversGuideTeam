@@ -37,9 +37,11 @@ namespace DriversGuide
 
             values = MainForm.GetValuesDataTable();
             //ShowData();
+
+            dGV.DataSource = MainForm.errors;
         }
 
-        private void DrawStringBitmap(string content, Color colorCont)
+        private void DrawStringBitmap(string content1, string title1, string content2, string title2, Color colorCont)
         {
             strCont.Clear(picGeneral.BackColor);
 
@@ -55,15 +57,26 @@ namespace DriversGuide
 
             Font typeTitle = new Font("Century Gothic", 16f, FontStyle.Bold);
             Font typeContent = new Font("Century Gothic", 14f);
+            Font typeState = new Font("Century Gothic", 14f, FontStyle.Underline);
             Brush styleTitle = new SolidBrush(Color.Black);
-            Brush styleContent = new SolidBrush(colorCont);
+            Brush styleContent = new SolidBrush(Color.Black);
+            Brush styleContent1 = new SolidBrush(colorCont);
 
             StringFormat sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
             sf.LineAlignment = StringAlignment.Center;
 
-            strCont.DrawString("Dauer: ", typeTitle, styleTitle, 0, 0, sf);
-            strCont.DrawString(content, typeContent, styleContent, 75, 1, sf);
+            strCont.DrawString(title1, typeTitle, styleTitle, 0, -35, sf);
+            strCont.DrawString(content1, typeContent, styleContent1, 90, -34, sf);
+
+            strCont.DrawString(title2, typeTitle, styleTitle, 0, -10, sf);
+            strCont.DrawString(content2, typeContent, styleContent, 90, -9, sf);
+
+            strCont.DrawString("Status: ", typeTitle, styleTitle, 0, 15, sf);
+            if (MainForm.GetValidation())
+                strCont.DrawString("Gueltig!", typeState, new SolidBrush(Color.MediumSeaGreen), 90, 16, sf);
+            else
+                strCont.DrawString("Ungueltig!", typeState, new SolidBrush(Color.IndianRed), 90, 16, sf);
         }
 
         private void DrawBarBitmap(double val1, double val2, double val3, Color clr1, Color clr2, Color clr3, string heading, string unit, float[] borders)
@@ -155,7 +168,7 @@ namespace DriversGuide
             Matrix myMatrix = new Matrix();
             myMatrix.Scale(bmpInfo.Width / breite, bmpInfo.Height / hoehe);
 
-            myMatrix.Translate(10, hoehe / 2 + 1, MatrixOrder.Prepend);
+            myMatrix.Translate(60, hoehe / 2 + 1, MatrixOrder.Prepend);
 
             info.Transform = myMatrix;
 
@@ -240,7 +253,7 @@ namespace DriversGuide
             info.DrawString(names[0], content, style, -2, yVal - 9, sf);
             info.DrawString(names[1], content, style, -2, yVal1 - 9, sf);
             info.DrawString(names[2], content, style, -2, yVal2 - 9, sf);
-            info.DrawString(heading, title, style, 0, -70, sf);
+            info.DrawString(heading, title, style, -30, -85, sf);
         }
 
         private void picDistance_Paint(object sender, PaintEventArgs e)
@@ -284,13 +297,14 @@ namespace DriversGuide
         private void picGeneral_Paint(object sender, PaintEventArgs e)
         {
             double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);
+            double distance = Convert.ToDouble(values.Rows[0]["Strecke"]);
 
             if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Orange);
+                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:",  Color.Orange);
             else if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Red);
+                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:", Color.Red);
             else
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Black);
+                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:", Color.Black);
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);
@@ -323,7 +337,7 @@ namespace DriversGuide
             units[1] = " km/h";
             units[2] = " s";
 
-            DrawInfoBitmap(val, names, max, borders, "Test", units);
+            DrawInfoBitmap(val, names, max, borders, "Kaltstart - Phase", units);
             Graphics g = e.Graphics;
             g.DrawImage(bmpInfo, 0, 0);
         }

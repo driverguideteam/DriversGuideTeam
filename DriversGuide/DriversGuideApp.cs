@@ -29,7 +29,7 @@ namespace DriversGuide
         Color enabled = Color.Teal;
         Color disabled = Color.Gray;
 
-        public List<string> errors = new List<string>();
+        public DataTable errors = new DataTable();
 
         MeasurementFile Datei;
         Calculations Berechnung;

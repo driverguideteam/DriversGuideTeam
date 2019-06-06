@@ -59,19 +59,17 @@
             this.pnlSideBar.Controls.Add(this.btnReadFile);
             this.pnlSideBar.Controls.Add(this.pnlLogo);
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
-            this.pnlSideBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlSideBar.Name = "pnlSideBar";
-            this.pnlSideBar.Size = new System.Drawing.Size(259, 554);
+            this.pnlSideBar.Size = new System.Drawing.Size(194, 450);
             this.pnlSideBar.TabIndex = 31;
             // 
             // btnShowDynamic
             // 
             this.btnShowDynamic.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnShowDynamic.Enabled = false;
-            this.btnShowDynamic.Location = new System.Drawing.Point(0, 367);
-            this.btnShowDynamic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnShowDynamic.Location = new System.Drawing.Point(0, 298);
             this.btnShowDynamic.Name = "btnShowDynamic";
-            this.btnShowDynamic.Size = new System.Drawing.Size(259, 37);
+            this.btnShowDynamic.Size = new System.Drawing.Size(194, 30);
             this.btnShowDynamic.TabIndex = 44;
             this.btnShowDynamic.Click += new System.EventHandler(this.btnShowDynamic_Click);
             this.btnShowDynamic.Paint += new System.Windows.Forms.PaintEventHandler(this.btnShowDynamic_Paint);
@@ -83,10 +81,9 @@
             // 
             this.btnOverview.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnOverview.Enabled = false;
-            this.btnOverview.Location = new System.Drawing.Point(0, 322);
-            this.btnOverview.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnOverview.Location = new System.Drawing.Point(0, 262);
             this.btnOverview.Name = "btnOverview";
-            this.btnOverview.Size = new System.Drawing.Size(259, 37);
+            this.btnOverview.Size = new System.Drawing.Size(194, 30);
             this.btnOverview.TabIndex = 43;
             this.btnOverview.Click += new System.EventHandler(this.btnOverview_Click);
             this.btnOverview.Paint += new System.Windows.Forms.PaintEventHandler(this.btnOverview_Paint);
@@ -98,10 +95,9 @@
             // 
             this.btnGPS.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnGPS.Enabled = false;
-            this.btnGPS.Location = new System.Drawing.Point(0, 278);
-            this.btnGPS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGPS.Location = new System.Drawing.Point(0, 226);
             this.btnGPS.Name = "btnGPS";
-            this.btnGPS.Size = new System.Drawing.Size(259, 37);
+            this.btnGPS.Size = new System.Drawing.Size(194, 30);
             this.btnGPS.TabIndex = 42;
             this.btnGPS.Click += new System.EventHandler(this.btnGPS_Click);
             this.btnGPS.Paint += new System.Windows.Forms.PaintEventHandler(this.btnGPS_Paint);
@@ -113,10 +109,9 @@
             // 
             this.btnGraphic.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnGraphic.Enabled = false;
-            this.btnGraphic.Location = new System.Drawing.Point(0, 234);
-            this.btnGraphic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGraphic.Location = new System.Drawing.Point(0, 190);
             this.btnGraphic.Name = "btnGraphic";
-            this.btnGraphic.Size = new System.Drawing.Size(259, 37);
+            this.btnGraphic.Size = new System.Drawing.Size(194, 30);
             this.btnGraphic.TabIndex = 41;
             this.btnGraphic.Click += new System.EventHandler(this.btnGraphic_Click);
             this.btnGraphic.Paint += new System.Windows.Forms.PaintEventHandler(this.btnGraphic_Paint);
@@ -127,10 +122,9 @@
             // btnReadFile
             // 
             this.btnReadFile.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.btnReadFile.Location = new System.Drawing.Point(0, 191);
-            this.btnReadFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnReadFile.Location = new System.Drawing.Point(0, 155);
             this.btnReadFile.Name = "btnReadFile";
-            this.btnReadFile.Size = new System.Drawing.Size(259, 37);
+            this.btnReadFile.Size = new System.Drawing.Size(194, 30);
             this.btnReadFile.TabIndex = 40;
             this.btnReadFile.Click += new System.EventHandler(this.btnReadFile_Click);
             this.btnReadFile.Paint += new System.Windows.Forms.PaintEventHandler(this.btnReadFile_Paint);
@@ -143,9 +137,8 @@
             this.pnlLogo.BackColor = System.Drawing.Color.LightBlue;
             this.pnlLogo.Controls.Add(this.label1);
             this.pnlLogo.Location = new System.Drawing.Point(0, 0);
-            this.pnlLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(259, 85);
+            this.pnlLogo.Size = new System.Drawing.Size(194, 69);
             this.pnlLogo.TabIndex = 38;
             // 
             // label1
@@ -153,10 +146,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(3, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(2, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 36);
+            this.label1.Size = new System.Drawing.Size(173, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Drivers Guide";
             // 
@@ -167,10 +159,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlContent.Controls.Add(this.lblHide);
             this.pnlContent.Controls.Add(this.lblShow);
-            this.pnlContent.Location = new System.Drawing.Point(259, 0);
-            this.pnlContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlContent.Location = new System.Drawing.Point(194, 0);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1067, 554);
+            this.pnlContent.Size = new System.Drawing.Size(800, 450);
             this.pnlContent.TabIndex = 32;
             // 
             // lblHide
@@ -178,10 +169,9 @@
             this.lblHide.AutoSize = true;
             this.lblHide.BackColor = System.Drawing.Color.Transparent;
             this.lblHide.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHide.Location = new System.Drawing.Point(267, 11);
-            this.lblHide.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHide.Location = new System.Drawing.Point(200, 9);
             this.lblHide.Name = "lblHide";
-            this.lblHide.Size = new System.Drawing.Size(17, 17);
+            this.lblHide.Size = new System.Drawing.Size(14, 13);
             this.lblHide.TabIndex = 36;
             this.lblHide.Text = "<";
             this.lblHide.Click += new System.EventHandler(this.lblHide_Click);
@@ -191,10 +181,9 @@
             this.lblShow.AutoSize = true;
             this.lblShow.BackColor = System.Drawing.Color.Transparent;
             this.lblShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShow.Location = new System.Drawing.Point(8, 11);
-            this.lblShow.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblShow.Location = new System.Drawing.Point(6, 9);
             this.lblShow.Name = "lblShow";
-            this.lblShow.Size = new System.Drawing.Size(17, 17);
+            this.lblShow.Size = new System.Drawing.Size(14, 13);
             this.lblShow.TabIndex = 37;
             this.lblShow.Text = ">";
             this.lblShow.Visible = false;
@@ -211,15 +200,14 @@
             // 
             // DriversGuideApp
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1325, 554);
+            this.ClientSize = new System.Drawing.Size(994, 450);
             this.Controls.Add(this.pnlSideBar);
             this.Controls.Add(this.pnlContent);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DriversGuideApp";
-            this.Text = "+";
+            this.Text = "Auswertung";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriversGuideApp_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DriversGuideApp_FormClosed);
             this.Resize += new System.EventHandler(this.DriversGuideApp_Resize);
