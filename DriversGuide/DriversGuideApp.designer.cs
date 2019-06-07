@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DriversGuideApp));
             this.pnlSideBar = new System.Windows.Forms.Panel();
             this.btnShowDynamic = new System.Windows.Forms.Panel();
             this.btnOverview = new System.Windows.Forms.Panel();
@@ -206,6 +207,8 @@
             this.ClientSize = new System.Drawing.Size(994, 450);
             this.Controls.Add(this.pnlSideBar);
             this.Controls.Add(this.pnlContent);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(1010, 489);
             this.Name = "DriversGuideApp";
             this.Text = "Auswertung";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriversGuideApp_FormClosing);

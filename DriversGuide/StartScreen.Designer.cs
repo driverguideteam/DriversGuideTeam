@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartScreen));
             this.btnEval = new System.Windows.Forms.Button();
             this.btnLive = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -74,6 +75,7 @@
             this.ClientSize = new System.Drawing.Size(560, 241);
             this.Controls.Add(this.btnLive);
             this.Controls.Add(this.btnEval);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(576, 280);
             this.MinimumSize = new System.Drawing.Size(576, 280);

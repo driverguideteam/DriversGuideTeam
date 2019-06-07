@@ -124,7 +124,7 @@ namespace DriversGuide
         {
             LiveDataset.Clear();
             LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
-            DoCalculations(false);
+            //DoCalculations(true);
         }
 
         private void DoCalculations(bool first)
@@ -223,7 +223,7 @@ namespace DriversGuide
             //lblShow.BackColor = Color.White;
             //calcDone = true;
 
-            Stopwatch stopwatch = new Stopwatch();
+           // Stopwatch stopwatch = new Stopwatch();
             
             // Write result.
             
@@ -241,7 +241,7 @@ namespace DriversGuide
                 lblHide.BackColor = FormLiveOverview.BackColor;
 
 
-                stopwatch.Start();
+                //stopwatch.Start();
 
                 topBottom = false;
                 pnlBottomContent.Controls.Clear();
@@ -256,8 +256,8 @@ namespace DriversGuide
                 gpsActive = true;
 
                 // Stop timing.
-                stopwatch.Stop();
-                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+                //stopwatch.Stop();
+                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
 
             btnGPS.Enabled = true;
@@ -324,7 +324,7 @@ namespace DriversGuide
             z.SmoothingMode = SmoothingMode.AntiAlias;
 
             float breite = 109;
-            float hoehe = 100;
+            float hoehe = 75;
 
             Matrix myMatrix = new Matrix();
             myMatrix.Scale(bmp.Width / breite, bmp.Height / hoehe);
@@ -411,6 +411,40 @@ namespace DriversGuide
             btnGPS.Invalidate();
         }
 
+        private void btnSimulation_MouseLeave(object sender, EventArgs e)
+        {
+            btnSimulation.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnSimulation_MouseEnter(object sender, EventArgs e)
+        {
+            btnSimulation.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnSimulation_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnSimulation.Enabled)
+            {
+                DrawInBitmap(btnSimulation, "Simulation", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnSimulation, "Simulation", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnSimulation_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnSimulation.ClientSize.Width, btnSimulation.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnSimulation.Invalidate();
+        }
+
         private void lblHide_Click(object sender, EventArgs e)
         {
             //pnlSideBar.Hide();
@@ -488,9 +522,13 @@ namespace DriversGuide
         {
             int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
 
-            btn_Fileauswahl.Top = half - 170;
-            btnOverview.Top = half - 50;
-            btnGPS.Top = half + 70;
+            //btn_Fileauswahl.Top = half - 170;
+            //btnOverview.Top = half - 50;
+            //btnGPS.Top = half + 70;
+            btn_Fileauswahl.Top = half - 175;
+            btnSimulation.Top = half - 83;
+            btnOverview.Top = half + 8;
+            btnGPS.Top = half + 100;            
         }
 
         private void btnOverview_Click(object sender, EventArgs e)

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveMode));
             this.pnlSideBar = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Panel();
             this.btnOverview = new System.Windows.Forms.Panel();
@@ -42,8 +43,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tmrFade = new System.Windows.Forms.Timer(this.components);
-            this.btnSimulation = new System.Windows.Forms.Button();
             this.timerSimulation = new System.Windows.Forms.Timer(this.components);
+            this.btnSimulation = new System.Windows.Forms.Panel();
             this.pnlSideBar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             this.pnlTopContent.SuspendLayout();
@@ -67,9 +68,9 @@
             // btnGPS
             // 
             this.btnGPS.Enabled = false;
-            this.btnGPS.Location = new System.Drawing.Point(0, 325);
+            this.btnGPS.Location = new System.Drawing.Point(0, 358);
             this.btnGPS.Name = "btnGPS";
-            this.btnGPS.Size = new System.Drawing.Size(109, 100);
+            this.btnGPS.Size = new System.Drawing.Size(109, 75);
             this.btnGPS.TabIndex = 2;
             this.btnGPS.Click += new System.EventHandler(this.btnGPS_Click);
             this.btnGPS.Paint += new System.Windows.Forms.PaintEventHandler(this.btnGPS_Paint);
@@ -80,9 +81,9 @@
             // btnOverview
             // 
             this.btnOverview.Enabled = false;
-            this.btnOverview.Location = new System.Drawing.Point(0, 208);
+            this.btnOverview.Location = new System.Drawing.Point(0, 269);
             this.btnOverview.Name = "btnOverview";
-            this.btnOverview.Size = new System.Drawing.Size(109, 100);
+            this.btnOverview.Size = new System.Drawing.Size(109, 75);
             this.btnOverview.TabIndex = 1;
             this.btnOverview.Click += new System.EventHandler(this.btnOverview_Click);
             this.btnOverview.Paint += new System.Windows.Forms.PaintEventHandler(this.btnOverview_Paint);
@@ -92,9 +93,9 @@
             // 
             // btn_Fileauswahl
             // 
-            this.btn_Fileauswahl.Location = new System.Drawing.Point(0, 92);
+            this.btn_Fileauswahl.Location = new System.Drawing.Point(0, 86);
             this.btn_Fileauswahl.Name = "btn_Fileauswahl";
-            this.btn_Fileauswahl.Size = new System.Drawing.Size(109, 100);
+            this.btn_Fileauswahl.Size = new System.Drawing.Size(109, 75);
             this.btn_Fileauswahl.TabIndex = 0;
             this.btn_Fileauswahl.Click += new System.EventHandler(this.btn_Fileauswahl_Click);
             this.btn_Fileauswahl.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Fileauswahl_Paint);
@@ -185,20 +186,22 @@
             this.tmrFade.Interval = 1;
             this.tmrFade.Tick += new System.EventHandler(this.tmrFade_Tick);
             // 
-            // btnSimulation
-            // 
-            this.btnSimulation.Location = new System.Drawing.Point(3, 66);
-            this.btnSimulation.Name = "btnSimulation";
-            this.btnSimulation.Size = new System.Drawing.Size(75, 23);
-            this.btnSimulation.TabIndex = 41;
-            this.btnSimulation.Text = "Simulation";
-            this.btnSimulation.UseVisualStyleBackColor = true;
-            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
-            // 
             // timerSimulation
             // 
             this.timerSimulation.Interval = 1000;
             this.timerSimulation.Tick += new System.EventHandler(this.timerSimulation_Tick);
+            // 
+            // btnSimulation
+            // 
+            this.btnSimulation.Location = new System.Drawing.Point(0, 178);
+            this.btnSimulation.Name = "btnSimulation";
+            this.btnSimulation.Size = new System.Drawing.Size(109, 75);
+            this.btnSimulation.TabIndex = 3;
+            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
+            this.btnSimulation.Paint += new System.Windows.Forms.PaintEventHandler(this.btnSimulation_Paint);
+            this.btnSimulation.MouseEnter += new System.EventHandler(this.btnSimulation_MouseEnter);
+            this.btnSimulation.MouseLeave += new System.EventHandler(this.btnSimulation_MouseLeave);
+            this.btnSimulation.Resize += new System.EventHandler(this.btnSimulation_Resize);
             // 
             // LiveMode
             // 
@@ -209,6 +212,8 @@
             this.Controls.Add(this.pnlBottomContent);
             this.Controls.Add(this.pnlTopContent);
             this.Controls.Add(this.pnlSideBar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(1010, 489);
             this.Name = "LiveMode";
             this.Text = "LiveMode";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LiveMode_FormClosed);
@@ -237,7 +242,7 @@
         private System.Windows.Forms.Label lblHide;
         private System.Windows.Forms.Label lblShow;
         private System.Windows.Forms.Timer tmrFade;
-        private System.Windows.Forms.Button btnSimulation;
         private System.Windows.Forms.Timer timerSimulation;
+        private System.Windows.Forms.Panel btnSimulation;
     }
 }

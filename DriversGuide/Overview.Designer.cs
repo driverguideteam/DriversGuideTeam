@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.picGeneral = new System.Windows.Forms.PictureBox();
             this.picDistribution = new System.Windows.Forms.PictureBox();
             this.picDistance = new System.Windows.Forms.PictureBox();
@@ -82,9 +83,28 @@
             // 
             // dGV
             // 
+            this.dGV.AllowUserToAddRows = false;
+            this.dGV.AllowUserToDeleteRows = false;
+            this.dGV.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.dGV.BackgroundColor = System.Drawing.Color.White;
+            this.dGV.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.Format = "N2";
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dGV.DefaultCellStyle = dataGridViewCellStyle1;
             this.dGV.Location = new System.Drawing.Point(270, 228);
             this.dGV.Name = "dGV";
+            this.dGV.ReadOnly = true;
+            this.dGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dGV.RowHeadersVisible = false;
             this.dGV.Size = new System.Drawing.Size(526, 200);
             this.dGV.TabIndex = 52;
             // 
@@ -92,6 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.dGV);
             this.Controls.Add(this.picColdStart);
             this.Controls.Add(this.picGeneral);
