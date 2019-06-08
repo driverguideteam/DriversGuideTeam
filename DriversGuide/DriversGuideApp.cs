@@ -27,9 +27,7 @@ namespace DriversGuide
         bool valid = false;
         bool calcDone = false;
         Color enabled = Color.Teal;
-        Color disabled = Color.Gray;
-
-        public DataTable errors = new DataTable();
+        Color disabled = Color.Gray;        
 
         MeasurementFile Datei;
         Calculations Berechnung;
@@ -40,6 +38,7 @@ namespace DriversGuide
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
         private DataTable values = new DataTable();
+        private DataTable errors = new DataTable();
         public DataTable ColumnHeaders;   //Datatable für Spaltenüberschriften
         //DataSet dx = new DataSet();
 
@@ -108,10 +107,21 @@ namespace DriversGuide
             return values.Copy();
         }
 
+        public DataTable GetErrorsDataTable()
+        {
+            return errors.Copy();
+        }
+
         public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
         {
             if (calcDone)
                 Berechnung.GetPercentiles(ref percentileUrban, ref percentileRural, ref percentileMotorway);
+        }
+
+        public void GetPercentileBorders(ref double borderUrban, ref double borderRural, ref double borderMotorway)
+        {
+            if (calcDone)
+                Berechnung.GetPercentileBorders(ref borderUrban, ref borderRural, ref borderMotorway);
         }
 
         public bool GetValidation()
@@ -166,6 +176,7 @@ namespace DriversGuide
             DataTable urban_temp = new DataTable();
             DataTable rural_temp = new DataTable();
             DataTable motorway_temp = new DataTable();
+            string[] errorMess = new string[3];
 
             //List<string> errors = new List<string>();
 
@@ -176,6 +187,11 @@ namespace DriversGuide
             valid = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 
             errors = Gueltigkeit.GetErrors();
+            errorMess = Berechnung.GetErrors();
+
+            errors.Rows[0]["Other"] = errorMess[0];
+            errors.Rows[1]["Other"] = errorMess[1];
+            errors.Rows[2]["Other"] = errorMess[2];
 
             Berechnung.SepIntervals(test, column_speed);
             Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);

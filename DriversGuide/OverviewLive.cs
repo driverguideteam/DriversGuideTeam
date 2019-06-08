@@ -118,19 +118,19 @@ namespace DriversGuide
             sf.Alignment = StringAlignment.Near;
 
             if (2 * borders[1] > width1)
-                bar.DrawString(val1.ToString("#.0") + unit, content, style, 2 * borders[1] - 25, -31, sf);
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, 2 * borders[1] - 25, -31, sf);
             else
-                bar.DrawString(val1.ToString("#.0") + unit, content, style, width1 - 25, -31, sf);
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, width1 - 25, -31, sf);
 
             if (2 * borders[3] > width2)
-                bar.DrawString(val2.ToString("#.0") + unit, content, style, 2 * borders[3] - 25, -1, sf);
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, 2 * borders[3] - 25, -1, sf);
             else
-                bar.DrawString(val2.ToString("#.0") + unit, content, style, width2 - 25, -1, sf);
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, width2 - 25, -1, sf);
 
             if (2 * borders[5] > width3)
-                bar.DrawString(val3.ToString("#.0") + unit, content, style, 2 * borders[5] - 25, 29, sf);
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, 2 * borders[5] - 25, 29, sf);
             else
-                bar.DrawString(val3.ToString("#.0") + unit, content, style, width3 - 25, 29, sf);
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, width3 - 25, 29, sf);
 
             sf.Alignment = StringAlignment.Center;
 
@@ -200,11 +200,11 @@ namespace DriversGuide
             double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);
 
             if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Orange);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Orange);
             else if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Red);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Red);
             else
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", Color.Black);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Black);
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);

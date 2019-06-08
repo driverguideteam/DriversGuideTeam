@@ -27,13 +27,14 @@ namespace DriversGuide
 
         DataTable errors = new DataTable();
 
-        private void InitErrorsDt ()
+        public void InitErrorsDt ()
         {
             errors.Columns.Add("Distance", typeof(string));
             errors.Columns.Add("Distribution", typeof(string));
             errors.Columns.Add("Duration", typeof(string));
             errors.Columns.Add("Speeds", typeof(string));
             errors.Columns.Add("ColdStart", typeof(string));
+            errors.Columns.Add("Other", typeof(string));
 
             errors.Rows.Add();
             errors.Rows.Add();
@@ -208,17 +209,17 @@ namespace DriversGuide
             if (distrRural <= 43)
                 con4 = true;
             else
-                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+                errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
             if (distrMotorway >= 23)
                 con5 = true;
             else
-                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+                errors.Rows[2]["Distribution"] = "Autobahnanteil zu gering";
 
             if (distrMotorway <= 43)
                 con6 = true;
             else
-                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+                errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;
@@ -282,17 +283,17 @@ namespace DriversGuide
             if (distrRural <= 43)
                 con4 = true;
             else
-                errors.Rows[1]["Distribution"] = "Landanteil zu gering";
+                errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
             if (distrMotorway >= 23)
                 con5 = true;
             else
-                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+                errors.Rows[2]["Distribution"] = "Autobahnanteil zu gering";
 
             if (distrMotorway <= 43)
                 con6 = true;
             else
-                errors.Rows[1]["Distribution"] = "Autobahnanteil zu gering";
+                errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;

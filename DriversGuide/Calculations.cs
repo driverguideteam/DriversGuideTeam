@@ -18,6 +18,8 @@ namespace DriversGuide
         private double perUrban, perRural, perMotorway;
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
+        private double borderUrban, borderRural, borderMotorway;
+        private string[] errors = new string[3];
         private DataTable urban;
         private DataTable rural;
         private DataTable motorway;        
@@ -45,15 +47,28 @@ namespace DriversGuide
         //if any of these criteria is not matched by the interval this method returns false
         //********************************************************************************************
         /*Parameters:
-         *      - column_distance:   string with the name of the distance column    
+         *      - column_distance:   string with the name of the distance column
+         *      - dt_interval:       DataTable which includes the interval data
+         *      - avg_speed:         Average speed for this interval
+         *      - percentileNF:      Ninetyfive Percentile for this interval
+         *      - RPA_interval:      Relative Pos. Acc. value for this interval
+         *      - border:            the border which isn't allowed to be passed
         */
         //********************************************************************************************
-        private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval)
+        private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval, ref double border)
         {
+            border = 0;
+
             if (avg_speed <= 74.6 && percentileNF > (0.136 * avg_speed + 14.44))
+            {
+                border = (0.136 * avg_speed + 14.44);
                 return false;
+            }
             else if (avg_speed > 74.6 && percentileNF > (0.0742 * avg_speed + 18.966))
+            {
+                border = (0.0742 * avg_speed + 18.966);
                 return false;
+            }
             else if (avg_speed <= 94.05 && RPA_interval < ((-0.0016 * avg_speed + 0.1755) / 3.6))
                 return false;
             else if (avg_speed > 94.05 && RPA_interval < 0.025)
@@ -70,16 +85,47 @@ namespace DriversGuide
         //********************************************************************************************
         private bool CheckCriteria (DataTable urban, DataTable rural, DataTable motorway)
         {
-            //If every interval matches criteria .. 
-            if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban) &&
-                CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural) &&
-                CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway))
-            {
-                // .. return true
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+
+            //If every interval matches criteria ..
+            if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban, ref borderUrban))
+                con1 = true;
+            else if (borderUrban != 0)
+                errors[0] = "Perzentil Stadt überschritten";
+            else
+                errors[0] = "RPA Stadt nicht erfüllt";
+
+            if (CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural, ref borderRural))
+                con2 = true;
+            else if (borderRural != 0)
+                errors[1] = "Perzentil Land überschritten";
+            else
+                errors[1] = "RPA Land nicht erfüllt";
+
+            if (CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway, ref borderMotorway))
+                con3 = true;
+            else if (borderMotorway != 0)
+                errors[2] = "Perzentil Autobahn überschritten";
+            else
+                errors[2] = "RPA Autobahn nicht erfüllt";
+
+            if (con1 && con2 && con3)
                 return true;
-            }
             else
                 return false;
+
+            //If every interval matches criteria .. 
+            //if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban, ref borderUrban) &&
+            //    CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural, ref borderRural) &&
+            //    CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway, ref borderMotorway))
+            //{
+            //    // .. return true
+            //    return true;
+            //}
+            //else
+            //    return false;
         }
 
         //Calculate the average speeds per interval
@@ -297,6 +343,32 @@ namespace DriversGuide
             urban_data = urban.Copy();
             rural_data = rural.Copy();
             motorway_data = motorway.Copy();
+        }
+
+        //Return the 95 Percentile borders
+        //********************************************************************************************
+        /*Parameters:
+         *      - bordUrban:        Variable to store urban border to
+         *      - bordRural:        Variable to store rural border to
+         *      - bordMotorway:     Variable to store motorway border to
+        */
+        //********************************************************************************************
+        public void GetPercentileBorders(ref double bordUrban, ref double bordRural, ref double bordMotorway)
+        {
+            bordUrban = borderUrban;
+            bordRural = borderRural;
+            bordMotorway = borderMotorway;
+        }
+
+        //Return the error messages
+        //********************************************************************************************
+        /*Parameters:
+         *      - errors:            String arraywith error messages
+        */
+        //********************************************************************************************
+        public string[] GetErrors()
+        {
+            return errors;
         }
 
         //Calculate the percentile of each interval

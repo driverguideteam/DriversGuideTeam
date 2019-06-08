@@ -25,6 +25,9 @@ namespace DriversGuide
         bool inout = false;
         bool gpsActive = false;
         private DataTable values = new DataTable();
+        bool calc = false;
+        bool valid = false;
+        bool calcDone = false;
 
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -81,6 +84,18 @@ namespace DriversGuide
         public DataTable GetValuesDataTable()
         {
             return values.Copy();
+        }
+
+        public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
+        {
+            if (calcDone)
+                Berechnung.GetPercentiles(ref percentileUrban, ref percentileRural, ref percentileMotorway);
+        }
+
+        public void GetPercentileBorders(ref double borderUrban, ref double borderRural, ref double borderMotorway)
+        {
+            if (calcDone)
+                Berechnung.GetPercentileBorders(ref borderUrban, ref borderRural, ref borderMotorway);
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
@@ -150,6 +165,7 @@ namespace DriversGuide
             Berechnung.CalcReq(ref LiveDataset, column_speed, first);
             Berechnung.SepIntervals(LiveDataset, column_speed);
             Berechnung.CalcDistancesInterval(column_distance);
+            Gueltigkeit.InitErrorsDt();
             //Gueltigkeit.CheckValidity(LiveDataset, column_speed, column_time, column_coolant, column_distance);
             Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
@@ -221,7 +237,7 @@ namespace DriversGuide
             //btnShowDynamic.Enabled = true;
             //lblHide.BackColor = Color.White;
             //lblShow.BackColor = Color.White;
-            //calcDone = true;
+            calcDone = true;
 
            // Stopwatch stopwatch = new Stopwatch();
             
@@ -281,7 +297,7 @@ namespace DriversGuide
 
                 DoCalculations(true);
             }
-            timer1.Start();
+            //timer1.Start();
         }
 
         private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)

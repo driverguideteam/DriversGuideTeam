@@ -38,7 +38,7 @@ namespace DriversGuide
             values = MainForm.GetValuesDataTable();
             //ShowData();
 
-            dGV.DataSource = MainForm.errors;
+            dGV.DataSource = MainForm.GetErrorsDataTable();
         }
 
         private void DrawStringBitmap(string content1, string title1, string content2, string title2, Color colorCont)
@@ -134,19 +134,19 @@ namespace DriversGuide
             sf.Alignment = StringAlignment.Near;
 
             if (2 * borders[1] > width1)
-                bar.DrawString(val1.ToString("#.0") + unit, content, style, 2 * borders[1] - 25, -31, sf);
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, 2 * borders[1] - 25, -31, sf);
             else
-                bar.DrawString(val1.ToString("#.0") + unit, content, style, width1 - 25, -31, sf);
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, width1 - 25, -31, sf);
 
             if (2 * borders[3] > width2)
-                bar.DrawString(val2.ToString("#.0") + unit, content, style, 2 * borders[3] - 25, -1, sf);
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, 2 * borders[3] - 25, -1, sf);
             else
-                bar.DrawString(val2.ToString("#.0") + unit, content, style, width2 - 25, -1, sf);
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, width2 - 25, -1, sf);
 
             if (2 * borders[5] > width3)
-                bar.DrawString(val3.ToString("#.0") + unit, content, style, 2 * borders[5] - 25, 29, sf);
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, 2 * borders[5] - 25, 29, sf);
             else
-                bar.DrawString(val3.ToString("#.0") + unit, content, style, width3 - 25, 29, sf);
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, width3 - 25, 29, sf);
 
             sf.Alignment = StringAlignment.Center;
 
@@ -211,7 +211,7 @@ namespace DriversGuide
                 info.DrawLine(pBorder, borders[1] * max / maxVal[0] + 1, yVal - 2, borders[1] * max / maxVal[0] + 1, yVal + 17);
                 info.DrawString(borders[1].ToString("#"), fBord, stBord, borders[1] * max / maxVal[0] + 1, yVal + 23, sfBord);
             }
-            info.DrawString(val[0].ToString("#.00") + units[0], fBord, stBord, 75, yVal);
+            info.DrawString(val[0].ToString("0.00") + units[0], fBord, stBord, 75, yVal);
 
             if (val[1] <= maxVal[1])
                 info.FillRectangle(new SolidBrush(clr[1]), 1, yVal1 + 1, (float)val[1] * max / maxVal[1], 14);
@@ -225,7 +225,7 @@ namespace DriversGuide
                 info.DrawLine(pBorder, borders[3] * max / maxVal[1] + 1, yVal1 - 2, borders[3] * max / maxVal[1] + 1, yVal1 + 17);
                 info.DrawString(borders[3].ToString("#"), fBord, stBord, borders[3] * max / maxVal[1] + 1, yVal1 + 23, sfBord);
             }
-            info.DrawString(val[1].ToString("#.00") + units[1], fBord, stBord, 75, yVal1);
+            info.DrawString(val[1].ToString("0.00") + units[1], fBord, stBord, 75, yVal1);
 
             if (val[2] <= maxVal[2])
                 info.FillRectangle(new SolidBrush(clr[2]), 1, yVal2 + 1, (float)val[2] * max / maxVal[2], 14);
@@ -239,7 +239,7 @@ namespace DriversGuide
                 info.DrawLine(pBorder, borders[5] * max / maxVal[2] + 1, yVal2 - 2, borders[5] * max / maxVal[2] + 1, yVal2 + 17);
                 info.DrawString(borders[5].ToString("#"), fBord, stBord, borders[5] * max / maxVal[2] + 1, yVal2 + 23, sfBord);
             }
-            info.DrawString(val[2].ToString("#.00") + units[2], fBord, stBord, 75, yVal2);
+            info.DrawString(val[2].ToString("0.00") + units[2], fBord, stBord, 75, yVal2);
 
 
             Font title = new Font("Century Gothic", 16f, FontStyle.Bold);
@@ -300,11 +300,11 @@ namespace DriversGuide
             double distance = Convert.ToDouble(values.Rows[0]["Strecke"]);
 
             if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:",  Color.Orange);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:",  Color.Orange);
             else if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:", Color.Red);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Red);
             else
-                DrawStringBitmap(timeElapsed.ToString("#.00") + " min", "Dauer: ", distance.ToString("#.00") + " km", "Strecke:", Color.Black);
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Black);
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);
