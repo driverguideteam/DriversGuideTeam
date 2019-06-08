@@ -39,7 +39,7 @@ namespace DriversGuide
         public string[] GetUnits(string xGewDat, string GewDaten)   //liefert StringArray mit x- u. y-Einheiten
         {
             DataTable units = MainForm.GetUnitsDataTable();
-            
+
             string xUnit = Convert.ToString((units.Rows[0][xGewDat]));   //liefert Einheit der x-Achse
             string yUnit = Convert.ToString((units.Rows[0][GewDaten]));   //liefert Einheit der y-Achse
 
@@ -47,7 +47,6 @@ namespace DriversGuide
 
             return xyUnits;   //liefert StingArray zurück
         }
-
 
         private void Dynamic_Load(object sender, EventArgs e)
         {
@@ -75,7 +74,7 @@ namespace DriversGuide
             double rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
             double mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
 
-            double ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax)+3) / 5.0) );  //Max-Wert a*v auf nächste 5 aufgerundet
+            double ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v auf nächste 5 aufgerundet
 
             SetChAxes(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
             SetChAxes(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
@@ -87,9 +86,22 @@ namespace DriversGuide
 
             MainForm.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
 
-            Draw95PLine(ChUrb, ymax, purb);   //Zeichnen der 95%-Linie
-            Draw95PLine(ChRur, ymax, prur);   //Zeichnen der 95%-Linie
-            Draw95PLine(ChMw, ymax, pmw);   //Zeichnen der 95%-Linie
+            double borderUrb = 0;
+            double borderRur = 0;
+            double borderMw = 0;
+
+            MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
+
+            Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
+            Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
+            Draw95PLine(ChMw, ymax, pmw);               //Zeichnen der 95%-Linie
+            DrawPerzentilValue(ChUrb, ymax, purb);      //Zeichnen des Perzentilwertes bei 95 %
+            DrawPerzentilValue(ChRur, ymax, prur);      //Zeichnen des Perzentilwertes bei 95 %
+            DrawPerzentilValue(ChMw, ymax, pmw);        //Zeichnen des Perzentilwertes bei 95 %
+            DrawDynamicLimit(ChUrb, ymax, borderUrb);   //Zeichnen des Perzentilgrenzwertes
+            DrawDynamicLimit(ChRur, ymax, borderRur);   //Zeichnen des Perzentilgrenzwertes
+            DrawDynamicLimit(ChMw, ymax, borderMw);     //Zeichnen des Perzentilgrenzwertes
+
 
             ChUrb.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
             ChRur.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
@@ -128,7 +140,7 @@ namespace DriversGuide
             Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;                 //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
 
             Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0][xGewDat]);                 //Festlegung x-Achsen-Minimum
-            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count-1][xGewDat]);   //Festlegung x-Achsen-Maximum
+            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1][xGewDat]);   //Festlegung x-Achsen-Maximum
             Chart1.AxisX.Interval = 20;                                                  //Festlegung x-Achsen-Intervall
 
             Chart1.AxisY.Minimum = 0;                       //Festlegung y-Achsen-Minimum
@@ -145,11 +157,11 @@ namespace DriversGuide
             ChRur.Location = new Point(ChUrb.Width, 0);   //Positionierung u. Größeneinstellung Chart
             ChRur.Width = this.Width / 3;
             ChRur.Height = this.Height;
-            ChMw.Location = new Point(ChUrb.Width+ChRur.Width, 0);   //Positionierung u. Größeneinstellung Chart
+            ChMw.Location = new Point(ChUrb.Width + ChRur.Width, 0);   //Positionierung u. Größeneinstellung Chart
             ChMw.Width = this.Width / 3;
             ChMw.Height = this.Height;
 
-            lblUrb.Location = new Point(ChUrb.Location.X + ChUrb.Width/4*3, ChUrb.Height - 40);   //Positionierung Label
+            lblUrb.Location = new Point(ChUrb.Location.X + ChUrb.Width / 4 * 3, ChUrb.Height - 40);   //Positionierung Label
             lblRur.Location = new Point(ChRur.Location.X + ChRur.Width / 4 * 3, ChRur.Height - 40);   //Positionierung Label
             lblMw.Location = new Point(ChMw.Location.X + ChMw.Width / 4 * 3, ChMw.Height - 40);      //Positionierung Label
         }
@@ -175,7 +187,7 @@ namespace DriversGuide
             //lblPos.BackColor = Color.White;
         }
 
-        private void Draw95PLine(Chart chartname, double ymax, double perzval)   //Zeichnen der 95%-Linie und des Perzentilwertes
+        private void Draw95PLine(Chart chartname, double ymax, double perzval)   //Zeichnen der 95%-Linie
         {
             chartname.Series.Add("95PLine");       //Hinzufügen der 95%-Linie
             for (int i = 0; i <= ymax; i += 1)   //füllen Datenpunke-Serie
@@ -187,18 +199,6 @@ namespace DriversGuide
             //chartname.Series["95PLine"].AxisLabel = "Test";
             chartname.Series["95PLine"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line)
             chartname.Series["95PLine"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-
-            chartname.Series.Add("PerzVal");       //Hinzufügen des Perzentilwertes
-            for (int b = 0; b <=95; b += 1)   //füllen Datenpunke-Serie
-            {
-                chartname.Series["PerzVal"].Points.AddXY(b, perzval);
-                //erzeugt Serie von Punkten mit denen gezeichnet wird
-            }
-            chartname.Series["PerzVal"].Color = Color.Red;
-            //chartname.Series["PerzVal"].AxisLabel = "Test";
-            chartname.Series["PerzVal"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
-            chartname.Series["PerzVal"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-            chartname.Invalidate();
 
             chartname.Series.Add("95pLbl");                                  //Hinzufügen  Punkt für 95 % Label
             chartname.Series["95pLbl"].Points.AddXY(92, 2);
@@ -217,13 +217,30 @@ namespace DriversGuide
             chartname.Series["95pLbl"].Font = new System.Drawing.Font("Arial", 10);
             chartname.Series["95pLbl"]["LabelStyle"] = "Center";
 
+            chartname.Invalidate();
+        }
+
+        private void DrawPerzentilValue(Chart chartname, double ymax, double perzval)   //Zeichnen des Perzentilwertes bei 95 %
+        {
+            chartname.Series.Add("PerzVal");       //Hinzufügen des Perzentilwertes
+            for (int i = 0; i <= 95; i += 1)   //füllen Datenpunke-Serie
+            {
+                chartname.Series["PerzVal"].Points.AddXY(i, perzval);
+                //erzeugt Serie von Punkten mit denen gezeichnet wird
+            }
+            chartname.Series["PerzVal"].Color = Color.Red;
+            //chartname.Series["PerzVal"].AxisLabel = "Test";
+            chartname.Series["PerzVal"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
+            chartname.Series["PerzVal"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
+            chartname.Invalidate();
+
             chartname.Series.Add("PerzVLbl");                                  //Hinzufügen Punkt für Perzentilwert Label
-            chartname.Series["PerzVLbl"].Points.AddXY(0, perzval+1);
+            chartname.Series["PerzVLbl"].Points.AddXY(0, perzval + 1);
             chartname.Series["PerzVLbl"].Color = Color.White;
             //chartname.Series["95pLbl"].AxisLabel = "Test";
             chartname.Series["PerzVLbl"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["PerzVLbl"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
-            chartname.Series["PerzVLbl"].Label = Math.Round(perzval,1).ToString() + " m^2/s^3";
+            chartname.Series["PerzVLbl"].Label = Math.Round(perzval, 1).ToString() + " m²/s³";
             chartname.Series["PerzVLbl"].LabelForeColor = Color.Red;
             chartname.Series["PerzVLbl"].LabelBackColor = Color.White;
             chartname.Series["PerzVLbl"].LabelAngle = 0;
@@ -234,6 +251,43 @@ namespace DriversGuide
             chartname.Series["PerzVLbl"].IsValueShownAsLabel = true;
             chartname.Series["PerzVLbl"].Font = new System.Drawing.Font("Arial", 10);
             chartname.Series["PerzVLbl"]["LabelStyle"] = "Right";
+
+            chartname.Invalidate();
+        }
+
+        private void DrawDynamicLimit(Chart chartname, double ymax, double dynborder)   //Zeichnen der 95%-Linie und des Perzentilwertes
+        {
+            chartname.Series.Add("DynLim");       //Hinzufügen des Perzentilwertes
+
+            for (int i = 0; i <= 95; i += 1)   //füllen Datenpunke-Serie
+            {
+                chartname.Series["DynLim"].Points.AddXY(i, dynborder);
+                //erzeugt Serie von Punkten mit denen gezeichnet wird
+            }
+
+            chartname.Series["DynLim"].Color = Color.Red;
+            //chartname.Series["DynLim"].AxisLabel = "Test";
+            chartname.Series["DynLim"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
+            chartname.Series["DynLim"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
+            chartname.Invalidate();
+
+            chartname.Series.Add("DynLimLbl");                                  //Hinzufügen Punkt für Perzentilwert Label
+            chartname.Series["DynLimLbl"].Points.AddXY(0, dynborder + 1);
+            chartname.Series["DynLimLbl"].Color = Color.White;
+            //chartname.Series["DynLimLbl"].AxisLabel = "Test";
+            chartname.Series["DynLimLbl"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
+            chartname.Series["DynLimLbl"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
+            chartname.Series["DynLimLbl"].Label = Math.Round(dynborder, 1).ToString() + " m²/s³";
+            chartname.Series["DynLimLbl"].LabelForeColor = Color.Red;
+            chartname.Series["DynLimLbl"].LabelBackColor = Color.White;
+            chartname.Series["DynLimLbl"].LabelAngle = 0;
+            chartname.Series["DynLimLbl"].SmartLabelStyle.Enabled = false;
+            chartname.Series["DynLimLbl"].ChartType = SeriesChartType.Column;
+            chartname.Series["DynLimLbl"]["LabelStyle"] = "Center";
+            chartname.Series["DynLimLbl"]["PointWidth"] = "0.7";
+            chartname.Series["DynLimLbl"].IsValueShownAsLabel = true;
+            chartname.Series["DynLimLbl"].Font = new System.Drawing.Font("Arial", 10);
+            chartname.Series["DynLimLbl"]["LabelStyle"] = "Right";
 
             chartname.Invalidate();
         }
