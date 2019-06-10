@@ -610,8 +610,8 @@ namespace DriversGuide
 
             DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
             dr = LiveDatei.AddSimulationRows(); // Reihe aus Live Datei auslesen
-            LiveDataset.Rows.Add(dr);   // Reihe zu LiveDataset hinzufügen
-            DoCalculations(false);
+            LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
+           // DoCalculations(false);
         }
     }
 }
