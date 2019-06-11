@@ -136,9 +136,20 @@ namespace DriversGuide
         //********************************************************************************************
         public void CalcDistancesInterval (string column_distance)
         {
-            distUrban = (double)urban.Compute("SUM([" + column_distance + "])", "");
-            distRural = (double)rural.Compute("SUM([" + column_distance + "])", "");
-            distMotorway = (double)motorway.Compute("SUM([" + column_distance + "])", "");
+            if (urban.Rows.Count != 0)
+                distUrban = (double)urban.Compute("SUM([" + column_distance + "])", "");
+            else
+                distUrban = 0;
+
+            if (rural.Rows.Count != 0)
+                distRural = (double)rural.Compute("SUM([" + column_distance + "])", "");
+            else
+                distRural = 0;
+
+            if (motorway.Rows.Count != 0)
+                distMotorway = (double)motorway.Compute("SUM([" + column_distance + "])", "");
+            else
+                distMotorway = 0;
         }
 
         private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
@@ -185,24 +196,27 @@ namespace DriversGuide
                 dt.Rows[i]["di"] = strecke;               
                  
                 //Calculate acceleration by derivation
-                if (i == firstRow)
+                if (lastRow > 1)
                 {
-                    beschl = Convert.ToDouble(dt.Rows[i + 1][column_speed]) / (2 * 3.6);
-                }
-                else if (i == lastRow - 1)
-                {
-                    beschl = -Convert.ToDouble(dt.Rows[i - 1][column_speed]) / (2 * 3.6);
-                }
-                else
-                {
-                    beschl = (Convert.ToDouble(dt.Rows[i + 1][column_speed]) - Convert.ToDouble(dt.Rows[i - 1][column_speed])) / (2 * 3.6);
-                }           
+                    if (i == firstRow)
+                    {
+                        beschl = Convert.ToDouble(dt.Rows[i + 1][column_speed]) / (2 * 3.6);
+                    }
+                    else if (i == lastRow - 1)
+                    {
+                        beschl = -Convert.ToDouble(dt.Rows[i - 1][column_speed]) / (2 * 3.6);
+                    }
+                    else
+                    {
+                        beschl = (Convert.ToDouble(dt.Rows[i + 1][column_speed]) - Convert.ToDouble(dt.Rows[i - 1][column_speed])) / (2 * 3.6);
+                    }
 
-                dt.Rows[i]["ai"] = beschl;
+                    dt.Rows[i]["ai"] = beschl;
 
-                //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
-                dynamik = Convert.ToDouble(dt.Rows[i][column_speed]) * Convert.ToDouble(dt.Rows[i]["ai"])/ 3.6;
-                dt.Rows[i]["a*v"] = dynamik;                
+                    //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                    dynamik = Convert.ToDouble(dt.Rows[i][column_speed]) * Convert.ToDouble(dt.Rows[i]["ai"]) / 3.6;
+                    dt.Rows[i]["a*v"] = dynamik;
+                }                         
             }
         }
 
@@ -246,9 +260,29 @@ namespace DriversGuide
         public void SepIntervals (DataTable dt, string column_speed)
         {
             //Seperate DataTable dt into three intervals according to the speed values
-            urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
-            rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
-            motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
+            DataRow[] drU = dt.Select("[" + column_speed + "] <=  60");
+            DataRow[] drR = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90");
+            DataRow[] drM = dt.Select("[" + column_speed + "] >  90");
+            if (drU.Length != 0)
+                urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
+            else
+                urban = dt.Clone();
+
+            if (drR.Length != 0)
+                rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
+            else
+                rural = dt.Clone();
+
+            if (drM.Length != 0)
+                motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
+            else
+                motorway = dt.Clone();
+
+
+            //Seperate DataTable dt into three intervals according to the speed values
+            //urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
+            //rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
+            //motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
         }
 
         //Call method makePosCheckCount(...) and check if every interval has more than 100 entries

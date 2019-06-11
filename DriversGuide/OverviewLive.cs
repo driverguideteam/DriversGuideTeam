@@ -36,6 +36,14 @@ namespace DriversGuide
             topBottomSave = FormLive.topBottom;
         }
 
+        public void RefreshData()
+        {
+            values = FormLive.GetValuesDataTable();
+            picDistance.Invalidate();
+            picDistribution.Invalidate();
+            picGeneral.Invalidate();
+        }
+
         private void DrawStringBitmap(string content, Color colorCont)
         {
             strCont.Clear(picGeneral.BackColor);
@@ -70,6 +78,8 @@ namespace DriversGuide
             float breite = picDistance.ClientSize.Width;
             float hoehe = picDistance.ClientSize.Height;
             float offsetLeft = -29;
+            float max = 110;
+            float maxVal = 60;
 
             float width1 = 2f * (float)val1;
             float width2 = 2f * (float)val2;
@@ -87,21 +97,35 @@ namespace DriversGuide
 
             bar.DrawLine(pLine, -30, -50, -30, 50);
 
-            bar.FillRectangle(new SolidBrush(clr1), offsetLeft, -40, width1, 20);
-            bar.FillRectangle(new SolidBrush(clr2), offsetLeft, -10, width2, 20);
-            bar.FillRectangle(new SolidBrush(clr3), offsetLeft, 20, width3, 20);
+            if (val1 <= maxVal)
+                bar.FillRectangle(new SolidBrush(clr1), offsetLeft, -40, (float)val1 * max / maxVal, 20);
+            else
+                bar.FillRectangle(new SolidBrush(clr1), offsetLeft, -40, max, 20);
 
-            bar.DrawLine(pBorder, 2 * borders[0] + offsetLeft, -42, 2 * borders[0] - 29, -18);
+            if (val2 <= maxVal)
+                bar.FillRectangle(new SolidBrush(clr2), offsetLeft, -10, (float)val2 * max / maxVal, 20);
+            else
+                bar.FillRectangle(new SolidBrush(clr2), offsetLeft, -10, max, 20);
+
+            if (val3 <= maxVal)
+                bar.FillRectangle(new SolidBrush(clr3), offsetLeft, 20, (float)val3 * max / maxVal, 20);
+            else
+                bar.FillRectangle(new SolidBrush(clr3), offsetLeft, 20, max, 20);
+            ////bar.FillRectangle(new SolidBrush(clr1), offsetLeft, -40, width1, 20);           
+            //bar.FillRectangle(new SolidBrush(clr2), offsetLeft, -10, width2, 20);
+            //bar.FillRectangle(new SolidBrush(clr3), offsetLeft, 20, width3, 20);
+
+            bar.DrawLine(pBorder, borders[0] * max / maxVal + offsetLeft, -42, borders[0] * max / maxVal + offsetLeft, -18);
             if (borders[1] != 0)
-                bar.DrawLine(pBorder, 2 * borders[1] + offsetLeft, -42, 2 * borders[1] - 29, -18);
+                bar.DrawLine(pBorder, borders[1] * max / maxVal + offsetLeft, -42, borders[1] * max / maxVal + offsetLeft, -18);
 
-            bar.DrawLine(pBorder, 2 * borders[2] + offsetLeft, -12, 2 * borders[2] - 29, 12);
+            bar.DrawLine(pBorder, borders[2] * max / maxVal + offsetLeft, -12, borders[2] * max / maxVal + offsetLeft, 12);
             if (borders[3] != 0)
-                bar.DrawLine(pBorder, 2 * borders[3] + offsetLeft, -12, 2 * borders[3] - 29, 12);
+                bar.DrawLine(pBorder, borders[3] * max / maxVal + offsetLeft, -12, borders[3] * max / maxVal + offsetLeft, 12);
 
-            bar.DrawLine(pBorder, 2 * borders[4] + offsetLeft, 18, 2 * borders[4] - 29, 42);
+            bar.DrawLine(pBorder, borders[4] * max / maxVal + offsetLeft, 18, borders[4] * max / maxVal + offsetLeft, 42);
             if (borders[5] != 0)
-                bar.DrawLine(pBorder, 2 * borders[5] + offsetLeft, 18, 2 * borders[5] - 29, 42);
+                bar.DrawLine(pBorder, borders[5] * max / maxVal + offsetLeft, 18, borders[5] * max / maxVal + offsetLeft, 42);
 
             Font content = new Font("Century Gothic", 8f, FontStyle.Bold);
             Brush style = new SolidBrush(Color.Black);
@@ -117,20 +141,26 @@ namespace DriversGuide
 
             sf.Alignment = StringAlignment.Near;
 
-            if (2 * borders[1] > width1)
-                bar.DrawString(val1.ToString("0.0") + unit, content, style, 2 * borders[1] - 25, -31, sf);
+            if (borders[0] > val1)
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, borders[0] * max / maxVal - 25, -31, sf);
+            else if (val1 <= maxVal)
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, (float)val1 * max / maxVal - 25, -31, sf);
             else
-                bar.DrawString(val1.ToString("0.0") + unit, content, style, width1 - 25, -31, sf);
+                bar.DrawString(val1.ToString("0.0") + unit, content, style, max - 25, -31, sf);
 
-            if (2 * borders[3] > width2)
-                bar.DrawString(val2.ToString("0.0") + unit, content, style, 2 * borders[3] - 25, -1, sf);
+            if (borders[2] > val2)
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, borders[2] * max / maxVal - 25, -1, sf);
+            else if (val2 <= maxVal)
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, (float)val2 * max / maxVal - 25, -1, sf);
             else
-                bar.DrawString(val2.ToString("0.0") + unit, content, style, width2 - 25, -1, sf);
+                bar.DrawString(val2.ToString("0.0") + unit, content, style, max - 25, -1, sf);
 
-            if (2 * borders[5] > width3)
-                bar.DrawString(val3.ToString("0.0") + unit, content, style, 2 * borders[5] - 25, 29, sf);
+            if (borders[4] > val3)
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, borders[4] * max / maxVal - 25, 29, sf);
+            else if (val3 <= maxVal)
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, (float)val3 * max / maxVal - 25, 29, sf);
             else
-                bar.DrawString(val3.ToString("0.0") + unit, content, style, width3 - 25, 29, sf);
+                bar.DrawString(val3.ToString("0.0") + unit, content, style, max - 25, 29, sf);            
 
             sf.Alignment = StringAlignment.Center;
 
@@ -163,12 +193,12 @@ namespace DriversGuide
             double distrMotorway = Convert.ToDouble(values.Rows[3]["Verteilung"]);
             float[] borders = new float[6];
 
-            borders[0] = 29;
-            borders[1] = 44;
-            borders[2] = 23;
-            borders[3] = 43;
-            borders[4] = 23;
-            borders[5] = 43;
+            borders[0] = 44;
+            borders[1] = 29;
+            borders[2] = 43;
+            borders[3] = 23;
+            borders[4] = 43;
+            borders[5] = 23;
 
             DrawBarBitmap(distrUrban, distrRural, distrMotorway, Color.IndianRed, Color.MediumSeaGreen, Color.LightSkyBlue, "Proz. Verteilung", "%", borders);
             Graphics g = e.Graphics;
@@ -199,10 +229,10 @@ namespace DriversGuide
         {
             double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);
 
-            if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Orange);
-            else if (timeElapsed < 90 || timeElapsed > 120)
+            if (timeElapsed < 90 || timeElapsed > 120)
                 DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Red);
+            else if (timeElapsed <= 95 || timeElapsed >= 115)
+                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Orange);
             else
                 DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Black);
 

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveMode));
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.btnSimulation = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Panel();
             this.btnOverview = new System.Windows.Forms.Panel();
             this.btn_Fileauswahl = new System.Windows.Forms.Panel();
@@ -44,7 +45,6 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tmrFade = new System.Windows.Forms.Timer(this.components);
             this.timerSimulation = new System.Windows.Forms.Timer(this.components);
-            this.btnSimulation = new System.Windows.Forms.Panel();
             this.pnlSideBar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             this.pnlTopContent.SuspendLayout();
@@ -64,6 +64,18 @@
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(109, 450);
             this.pnlSideBar.TabIndex = 32;
+            // 
+            // btnSimulation
+            // 
+            this.btnSimulation.Location = new System.Drawing.Point(0, 178);
+            this.btnSimulation.Name = "btnSimulation";
+            this.btnSimulation.Size = new System.Drawing.Size(109, 75);
+            this.btnSimulation.TabIndex = 3;
+            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
+            this.btnSimulation.Paint += new System.Windows.Forms.PaintEventHandler(this.btnSimulation_Paint);
+            this.btnSimulation.MouseEnter += new System.EventHandler(this.btnSimulation_MouseEnter);
+            this.btnSimulation.MouseLeave += new System.EventHandler(this.btnSimulation_MouseLeave);
+            this.btnSimulation.Resize += new System.EventHandler(this.btnSimulation_Resize);
             // 
             // btnGPS
             // 
@@ -188,20 +200,8 @@
             // 
             // timerSimulation
             // 
-            this.timerSimulation.Interval = 1000;
+            this.timerSimulation.Interval = 1;
             this.timerSimulation.Tick += new System.EventHandler(this.timerSimulation_Tick);
-            // 
-            // btnSimulation
-            // 
-            this.btnSimulation.Location = new System.Drawing.Point(0, 178);
-            this.btnSimulation.Name = "btnSimulation";
-            this.btnSimulation.Size = new System.Drawing.Size(109, 75);
-            this.btnSimulation.TabIndex = 3;
-            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
-            this.btnSimulation.Paint += new System.Windows.Forms.PaintEventHandler(this.btnSimulation_Paint);
-            this.btnSimulation.MouseEnter += new System.EventHandler(this.btnSimulation_MouseEnter);
-            this.btnSimulation.MouseLeave += new System.EventHandler(this.btnSimulation_MouseLeave);
-            this.btnSimulation.Resize += new System.EventHandler(this.btnSimulation_Resize);
             // 
             // LiveMode
             // 

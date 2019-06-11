@@ -52,11 +52,22 @@ namespace DriversGuide
          *      - distances:        double array for storing and handing back distance values
         */
         //********************************************************************************************
-        private void CalcDistances (DataTable urban, DataTable rural, DataTable motorway, string column_distance, ref double[] distances)
+        private void CalcDistances(DataTable urban, DataTable rural, DataTable motorway, string column_distance, ref double[] distances)
         {
-            distances[0] = (double)urban.Compute("SUM([" + column_distance + "])", "") / 1000;           
-            distances[1] = (double)rural.Compute("SUM([" + column_distance + "])", "") / 1000;
-            distances[2] = (double)motorway.Compute("SUM([" + column_distance + "])", "") / 1000;
+            if (urban.Rows.Count != 0)
+                distances[0] = (double)urban.Compute("SUM([" + column_distance + "])", "") / 1000;
+            else
+                distances[0] = 0;
+
+            if (rural.Rows.Count != 0)
+                distances[1] = (double)rural.Compute("SUM([" + column_distance + "])", "") / 1000;
+            else
+                distances[1] = 0;
+
+            if (motorway.Rows.Count != 0)
+                distances[2] = (double)motorway.Compute("SUM([" + column_distance + "])", "") / 1000;
+            else
+                distances[2] = 0;
         }
 
         //Check if urban criteria are matched
@@ -183,7 +194,10 @@ namespace DriversGuide
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
 
             //Calculate distance of complete trip
-            trip = (double)dt.Compute("SUM([" + column_distance + "])", "") / 1000;
+            if (dt.Rows.Count != 0)
+                trip = (double)dt.Compute("SUM([" + column_distance + "])", "") / 1000;
+            else
+                trip = 0;
 
             //Calculate percentage per interval compared to complete trip
             distrUrban = distances[0] * 100 / trip;

@@ -89,8 +89,8 @@
 
         #endregion
 
+        private System.Windows.Forms.PictureBox picDistance;
         private System.Windows.Forms.PictureBox picGeneral;
         private System.Windows.Forms.PictureBox picDistribution;
-        private System.Windows.Forms.PictureBox picDistance;
     }
 }

@@ -139,7 +139,7 @@ namespace DriversGuide
         {
             LiveDataset.Clear();
             LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
-            //DoCalculations(true);
+            DoCalculations(true);
         }
 
         private void DoCalculations(bool first)
@@ -175,12 +175,22 @@ namespace DriversGuide
             values.Rows[2]["Verteilung"] = distrRural;
             values.Rows[3]["Verteilung"] = distrMotorway;
 
-            values.Rows[0]["Strecke"] = (double)LiveDataset.Compute("SUM([" + column_distance + "])", "") / 1000;
+            if (LiveDataset.Rows.Count != 0)
+            {
+                values.Rows[0]["Strecke"] = (double)LiveDataset.Compute("SUM([" + column_distance + "])", "") / 1000;
+                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+            }
+            else
+            {
+                values.Rows[0]["Strecke"] = 0;
+                values.Rows[0]["Dauer"] = 0;
+            }
+
             values.Rows[1]["Strecke"] = tripUrban;
             values.Rows[2]["Strecke"] = tripRural;
             values.Rows[3]["Strecke"] = tripMotorway;
 
-            values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+            
 
             //PerformMutliplikationOnColumn(ref test, column_acc, 2);
 
@@ -259,17 +269,17 @@ namespace DriversGuide
 
                 //stopwatch.Start();
 
-                topBottom = false;
-                pnlBottomContent.Controls.Clear();
-                FormGPS = new GPS(this);
-                //myForm.TopLevel = false;
-                FormGPS.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormGPS);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormGPS.BackColor;
-                gpsActive = true;
+                //topBottom = false;
+                //pnlBottomContent.Controls.Clear();
+                //FormGPS = new GPS(this);
+                ////myForm.TopLevel = false;
+                //FormGPS.AutoScroll = true;
+                //pnlBottomContent.Controls.Add(FormGPS);
+                ////myForm.FormBorderStyle = FormBorderStyle.None;
+                //FormGPS.Show();
+                //FormGPS.Dock = DockStyle.Fill;
+                //lblHide.BackColor = FormGPS.BackColor;
+                //gpsActive = true;
 
                 // Stop timing.
                 //stopwatch.Stop();
@@ -594,7 +604,7 @@ namespace DriversGuide
                 
              
 
-                //DoCalculations(true);
+                DoCalculations(true);
             }
             timerSimulation.Start(); // Simulation starten
            
@@ -606,12 +616,12 @@ namespace DriversGuide
 
         private void timerSimulation_Tick(object sender, EventArgs e)
         {
-
-
             DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
             dr = LiveDatei.AddSimulationRows(); // Reihe aus Live Datei auslesen
             LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
-           // DoCalculations(false);
-        }
+            DoCalculations(false);
+            
+            FormLiveOverview.RefreshData();
+        }        
     }
 }
