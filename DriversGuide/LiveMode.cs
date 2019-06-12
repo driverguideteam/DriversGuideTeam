@@ -618,8 +618,15 @@ namespace DriversGuide
         {
             DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
             dr = LiveDatei.AddSimulationRows(); // Reihe aus Live Datei auslesen
-            LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
-            DoCalculations(false);
+            if (!dr.IsNull(0))
+            {
+                LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
+                DoCalculations(false);
+            }
+            else
+            {
+                timerSimulation.Stop();
+            }
             
             FormLiveOverview.RefreshData();
         }        

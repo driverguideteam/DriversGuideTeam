@@ -148,10 +148,13 @@ namespace DriversGuide
         public DataRow AddSimulationRows()
         {
             DataRow drs = dt.NewRow();
-           
-            drs = dt.Rows[SimualtionRowCount];
-            SimualtionRowCount++;
 
+            if (SimualtionRowCount < dt.Rows.Count)
+            {
+                drs = dt.Rows[SimualtionRowCount];
+                SimualtionRowCount++;
+            }
+            
             
             return drs;
         }
