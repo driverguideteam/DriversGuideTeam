@@ -305,7 +305,11 @@ namespace DriversGuide
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable();
 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 DoCalculations(true);
+                stopwatch.Stop();
+                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
             //timer1.Start();
         }
@@ -629,6 +633,7 @@ namespace DriversGuide
             }
             
             FormLiveOverview.RefreshData();
+            //FormGPS.RefreshMap();
         }        
     }
 }

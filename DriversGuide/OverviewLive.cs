@@ -44,9 +44,11 @@ namespace DriversGuide
             picGeneral.Invalidate();
         }
 
-        private void DrawStringBitmap(string content, Color colorCont)
+        private void DrawStringBitmap(double content, Color colorCont)
         {
             strCont.Clear(picGeneral.BackColor);
+            string minutes;
+            string seconds;
 
             float breite = picGeneral.ClientSize.Width;
             float hoehe = picGeneral.ClientSize.Height;
@@ -67,8 +69,11 @@ namespace DriversGuide
             sf.Alignment = StringAlignment.Near;
             sf.LineAlignment = StringAlignment.Center;
 
+            minutes = Math.Truncate(content).ToString("#00");
+            seconds = ((content - Convert.ToDouble(minutes))* 60).ToString("00");
+
             strCont.DrawString("Dauer: ", typeTitle, styleTitle, 0, 0, sf);
-            strCont.DrawString(content, typeContent, styleContent, 75, 1, sf);
+            strCont.DrawString(minutes + ":" + seconds + " min", typeContent, styleContent, 75, 1, sf);            
         }
 
         private void DrawBarBitmap(double val1, double val2, double val3, Color clr1, Color clr2, Color clr3, string heading, string unit, float[] borders)
@@ -230,11 +235,11 @@ namespace DriversGuide
             double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);
 
             if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Red);
+                DrawStringBitmap(timeElapsed, Color.Red);
             else if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Orange);
+                DrawStringBitmap(timeElapsed, Color.Orange);
             else
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", Color.Black);
+                DrawStringBitmap(timeElapsed, Color.Black);
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);

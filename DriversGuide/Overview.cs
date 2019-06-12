@@ -41,12 +41,14 @@ namespace DriversGuide
             dGV.DataSource = MainForm.GetErrorsDataTable();
         }
 
-        private void DrawStringBitmap(string content1, string title1, string content2, string title2, Color colorCont)
+        private void DrawStringBitmap(double content1, string title1, string content2, string title2, Color colorCont)
         {
             strCont.Clear(picGeneral.BackColor);
 
             float breite = picGeneral.ClientSize.Width;
             float hoehe = picGeneral.ClientSize.Height;
+            string minutes;
+            string seconds;
 
             Matrix myMatrix = new Matrix();
             myMatrix.Scale(bmpStrCont.Width / breite, bmpStrCont.Height / hoehe);
@@ -66,8 +68,11 @@ namespace DriversGuide
             sf.Alignment = StringAlignment.Near;
             sf.LineAlignment = StringAlignment.Center;
 
+            minutes = Math.Truncate(content1).ToString("#00");
+            seconds = ((content1 - Convert.ToDouble(minutes)) * 60).ToString("00");
+
             strCont.DrawString(title1, typeTitle, styleTitle, 0, -35, sf);
-            strCont.DrawString(content1, typeContent, styleContent1, 90, -34, sf);
+            strCont.DrawString(minutes + ":" + seconds + " min", typeContent, styleContent1, 90, -34, sf);
 
             strCont.DrawString(title2, typeTitle, styleTitle, 0, -10, sf);
             strCont.DrawString(content2, typeContent, styleContent, 90, -9, sf);
@@ -300,11 +305,11 @@ namespace DriversGuide
             double distance = Convert.ToDouble(values.Rows[0]["Strecke"]);
 
             if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:",  Color.Orange);
+                DrawStringBitmap(timeElapsed, "Dauer: ", distance.ToString("0.00") + " km", "Strecke:",  Color.Orange);
             else if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Red);
+                DrawStringBitmap(timeElapsed, "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Red);
             else
-                DrawStringBitmap(timeElapsed.ToString("0.00") + " min", "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Black);
+                DrawStringBitmap(timeElapsed, "Dauer: ", distance.ToString("0.00") + " km", "Strecke:", Color.Black);
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);

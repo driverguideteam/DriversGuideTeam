@@ -57,15 +57,26 @@ namespace DriversGuide
             dataset = LiveForm.GetCompleteDataTable();
             InitializeComponent();
             InitMap();
+            live = true;
             CenterMap(lat, lon);
             AddRoute(lat, lon, speed, time);
             gMap.ContextMenuStrip = conMenMap;
 
             gMap.Overlays.Add(markers);
-            gMap.Zoom = ZoomLive;
-            live = true;
+            gMap.Zoom = ZoomLive;           
 
             topBottomSave = LiveForm.topBottom;
+        }
+
+        public void RefreshMap()
+        {
+            if (live)
+                dataset = LiveForm.GetCompleteDataTable();
+            else
+                dataset = MainForm.GetCompleteDataTable();
+
+            CenterMap(lat, lon);
+            AddRoute(lat, lon, speed, time);
         }
 
         private void InitMap()
@@ -89,14 +100,28 @@ namespace DriversGuide
             double maxLat, maxLon, minLat, minLon;
             double centerLat, centerLon;
 
-            maxLat = (double)dataset.Compute("MAX([" + column_latitude + "])", "");
-            minLat = (double)dataset.Compute("MIN([" + column_latitude + "])", "");
+            if (dataset.Rows.Count <= 0)
+            {
+                centerLat = 47.07995;
+                centerLon = 15.9152;
+            }
+            else if (live)
+            {
+                centerLat = (double)dataset.Rows[dataset.Rows.Count-1][column_latitude];
+                centerLon = (double)dataset.Rows[dataset.Rows.Count - 1][column_longitude];
+            }
+            else
+            {
+                maxLat = (double)dataset.Compute("MAX([" + column_latitude + "])", "");
+                minLat = (double)dataset.Compute("MIN([" + column_latitude + "])", "");
 
-            maxLon = (double)dataset.Compute("MAX([" + column_longitude + "])", "");
-            minLon = (double)dataset.Compute("MIN([" + column_longitude + "])", "");
+                maxLon = (double)dataset.Compute("MAX([" + column_longitude + "])", "");
+                minLon = (double)dataset.Compute("MIN([" + column_longitude + "])", "");
 
-            centerLat = (maxLat - minLat) / 2 + minLat;
-            centerLon = (maxLon - minLon) / 2 + minLon;
+                centerLat = (maxLat - minLat) / 2 + minLat;
+                centerLon = (maxLon - minLon) / 2 + minLon;
+            }
+                                          
 
             gMap.Position = new PointLatLng(centerLat, centerLon);
         }
@@ -113,6 +138,8 @@ namespace DriversGuide
             DataTable rural = new DataTable();
             DataTable motorway = new DataTable();
             DataTable dt = new DataTable();
+
+            DataRow[] dr;
 
             Berechnungen.SepIntervals(dataset, column_speed);
             Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
@@ -169,8 +196,12 @@ namespace DriversGuide
                     points.Add(new PointLatLng(Convert.ToDouble(rural.Rows[i][column_latitude]), Convert.ToDouble(rural.Rows[i][column_longitude])));
                 }
             }
-            dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[rural.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
-            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+            //dr = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[rural.Rows.Count - 1][column_time]) + 1000));
+            if (rural.Rows.Count > 0)
+            {
+                dt = urban.Select("[" + column_time + "] = " + (Convert.ToInt32(rural.Rows[rural.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+                points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+            }
 
             GMapRoute routeB = new GMapRoute(points, "Rural");
             routeB.Stroke = new Pen(Color.MediumSeaGreen, 4);
@@ -197,8 +228,12 @@ namespace DriversGuide
                     points.Add(new PointLatLng(Convert.ToDouble(motorway.Rows[i][column_latitude]), Convert.ToDouble(motorway.Rows[i][column_longitude])));
                 }
             }
-            dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[motorway.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
-            points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+            //dr = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[motorway.Rows.Count - 1][column_time]) + 1000));
+            if (motorway.Rows.Count > 0)
+            {
+                dt = rural.Select("[" + column_time + "] = " + (Convert.ToInt32(motorway.Rows[motorway.Rows.Count - 1][column_time]) + 1000)).CopyToDataTable();
+                points.Add(new PointLatLng(Convert.ToDouble(dt.Rows[0][column_latitude]), Convert.ToDouble(dt.Rows[0][column_longitude])));
+            }
 
             GMapRoute routeC = new GMapRoute(points, "Motorway");
             routeC.Stroke = new Pen(Color.LightSkyBlue, 4);
