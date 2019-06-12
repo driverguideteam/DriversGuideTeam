@@ -269,17 +269,17 @@ namespace DriversGuide
 
                 //stopwatch.Start();
 
-                //topBottom = false;
-                //pnlBottomContent.Controls.Clear();
-                //FormGPS = new GPS(this);
-                ////myForm.TopLevel = false;
-                //FormGPS.AutoScroll = true;
-                //pnlBottomContent.Controls.Add(FormGPS);
-                ////myForm.FormBorderStyle = FormBorderStyle.None;
-                //FormGPS.Show();
-                //FormGPS.Dock = DockStyle.Fill;
-                //lblHide.BackColor = FormGPS.BackColor;
-                //gpsActive = true;
+                topBottom = false;
+                pnlBottomContent.Controls.Clear();
+                FormGPS = new GPS(this);
+                //myForm.TopLevel = false;
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormGPS.BackColor;
+                gpsActive = true;
 
                 // Stop timing.
                 //stopwatch.Stop();
@@ -633,7 +633,7 @@ namespace DriversGuide
             }
             
             FormLiveOverview.RefreshData();
-            //FormGPS.RefreshMap();
+            FormGPS.RefreshMap();
         }        
     }
 }

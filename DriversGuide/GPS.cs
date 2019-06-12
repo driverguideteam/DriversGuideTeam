@@ -28,7 +28,10 @@ namespace DriversGuide
         double ZoomLive = 10;
         double ZoomNormal = 11;
         bool live = false;
-        bool topBottomSave;
+        bool topBottomSave;       
+
+        private GMapOverlay Live = new GMapOverlay("routeLive");
+        private GMapRoute routeLive = new GMapRoute("Live");
 
         GMapOverlay markers = new GMapOverlay("markers");
         GMapMarker currPos;
@@ -59,7 +62,9 @@ namespace DriversGuide
             InitMap();
             live = true;
             CenterMap(lat, lon);
-            AddRoute(lat, lon, speed, time);
+            AddRouteLive(lat, lon, speed);
+            //AddRoute(lat, lon, speed, time);
+            gMap.Overlays.Add(Live);
             gMap.ContextMenuStrip = conMenMap;
 
             gMap.Overlays.Add(markers);
@@ -76,6 +81,11 @@ namespace DriversGuide
                 dataset = MainForm.GetCompleteDataTable();
 
             CenterMap(lat, lon);
+            AddRouteLive(lat, lon, speed);
+        }
+
+        public void AddMap()
+        {
             AddRoute(lat, lon, speed, time);
         }
 
@@ -126,6 +136,36 @@ namespace DriversGuide
             gMap.Position = new PointLatLng(centerLat, centerLon);
         }
 
+        private void AddRouteLive(string column_latitude, string column_longitude, string column_speed)
+        {
+            PointLatLng data = new PointLatLng();            
+
+            if (dataset.Rows.Count > 0)
+            {
+                //data.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 2][column_latitude]), Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 2][column_longitude])));
+                data.Lat = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_latitude]);
+                data.Lng = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_longitude]);
+                routeLive.Points.Add(data);
+                //routeLive.Points.Add(data[1]);
+
+                if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_speed]) <= 60)
+                {
+                    routeLive.Stroke = new Pen(Color.IndianRed, 4);
+                }
+                else if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_speed]) <= 90)
+                {
+                    routeLive.Stroke = new Pen(Color.MediumSeaGreen, 4);
+                }
+                else
+                {
+                    routeLive.Stroke = new Pen(Color.LightSkyBlue, 4);
+                }
+
+                Live.Clear();
+                Live.Routes.Add(routeLive);                      
+            }            
+        }
+
         private void AddRoute(string column_latitude, string column_longitude, string column_speed, string column_time)
         {
             GMapOverlay routes = new GMapOverlay("routes");
@@ -139,7 +179,7 @@ namespace DriversGuide
             DataTable motorway = new DataTable();
             DataTable dt = new DataTable();
 
-            DataRow[] dr;
+            //DataRow[] dr;
 
             Berechnungen.SepIntervals(dataset, column_speed);
             Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
@@ -170,7 +210,7 @@ namespace DriversGuide
 
             GMapRoute routeA = new GMapRoute(points, "Urban");
             routeA.Stroke = new Pen(Color.IndianRed, 4);
-            routes.Routes.Add(routeA);
+            routes.Routes.Add(routeA);           
 
             points.Clear();
 

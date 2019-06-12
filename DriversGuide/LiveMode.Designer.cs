@@ -200,7 +200,7 @@
             // 
             // timerSimulation
             // 
-            this.timerSimulation.Interval = 10;
+            this.timerSimulation.Interval = 1;
             this.timerSimulation.Tick += new System.EventHandler(this.timerSimulation_Tick);
             // 
             // LiveMode
