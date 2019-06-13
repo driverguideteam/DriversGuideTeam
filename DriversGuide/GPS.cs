@@ -31,7 +31,21 @@ namespace DriversGuide
         bool topBottomSave;       
 
         private GMapOverlay Live = new GMapOverlay("routeLive");
-        private GMapRoute routeLive = new GMapRoute("Live");
+        private GMapRoute routeLiveUrban = new GMapRoute("LiveUrban");
+        private GMapRoute routeLiveRural = new GMapRoute("LiveRural");
+        private GMapRoute routeLiveMotorway = new GMapRoute("LiveMotorway");
+        GMapOverlay temp = new GMapOverlay("temp");
+        List<PointLatLng> dataPoints = new List<PointLatLng>();
+        double lastUrban = 0;
+        double countUrban = 0;
+        double lastRural = 0;
+        double countRural = 0;
+        double lastMotorway = 0;
+        double countMotorway = 0;
+
+        Pen colorUrban = new Pen(Color.IndianRed, 4);
+        Pen colorRural = new Pen(Color.MediumSeaGreen, 4);
+        Pen colorMotorway = new Pen(Color.LightSkyBlue, 4);
 
         GMapOverlay markers = new GMapOverlay("markers");
         GMapMarker currPos;
@@ -62,7 +76,10 @@ namespace DriversGuide
             InitMap();
             live = true;
             CenterMap(lat, lon);
-            AddRouteLive(lat, lon, speed);
+            routeLiveUrban.Stroke = colorUrban;
+            routeLiveRural.Stroke = colorRural;
+            routeLiveMotorway.Stroke = colorMotorway;
+            AddRouteLive(lat, lon, speed, time);
             //AddRoute(lat, lon, speed, time);
             gMap.Overlays.Add(Live);
             gMap.ContextMenuStrip = conMenMap;
@@ -81,7 +98,7 @@ namespace DriversGuide
                 dataset = MainForm.GetCompleteDataTable();
 
             CenterMap(lat, lon);
-            AddRouteLive(lat, lon, speed);
+            AddRouteLive(lat, lon, speed, time);
         }
 
         public void AddMap()
@@ -109,7 +126,7 @@ namespace DriversGuide
         {
             double maxLat, maxLon, minLat, minLon;
             double centerLat, centerLon;
-
+            
             if (dataset.Rows.Count <= 0)
             {
                 centerLat = 47.07995;
@@ -136,33 +153,85 @@ namespace DriversGuide
             gMap.Position = new PointLatLng(centerLat, centerLon);
         }
 
-        private void AddRouteLive(string column_latitude, string column_longitude, string column_speed)
+        private void AddRouteLive(string column_latitude, string column_longitude, string column_speed, string column_time)
         {
-            PointLatLng data = new PointLatLng();            
+            PointLatLng data = new PointLatLng();
 
             if (dataset.Rows.Count > 0)
             {
                 //data.Add(new PointLatLng(Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 2][column_latitude]), Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 2][column_longitude])));
                 data.Lat = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_latitude]);
                 data.Lng = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_longitude]);
-                routeLive.Points.Add(data);
+                //routeLive.Points.Add(data);
                 //routeLive.Points.Add(data[1]);
 
                 if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_speed]) <= 60)
                 {
-                    routeLive.Stroke = new Pen(Color.IndianRed, 4);
+                    if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]) - 1000 == lastUrban)
+                    {
+                        routeLiveUrban.Points.Add(data);
+                        dataPoints.Add(data);
+                    }
+                    else
+                    {
+                        temp.Routes.Add(new GMapRoute(dataPoints, "Urban" + countUrban.ToString()));
+                        temp.Routes[temp.Routes.Count - 1].Stroke = colorUrban;
+                        routeLiveUrban.Clear();
+                        routeLiveUrban.Name = "LiveUrban" + countUrban.ToString();
+                        dataPoints.Clear();
+                        countUrban++;
+                    }
+                    lastUrban = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]);
                 }
                 else if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_speed]) <= 90)
                 {
-                    routeLive.Stroke = new Pen(Color.MediumSeaGreen, 4);
+                    if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]) - 1000 == lastRural)
+                    {
+                        routeLiveRural.Points.Add(data);
+                        dataPoints.Add(data);
+                    }
+                    else
+                    {
+                        temp.Routes.Add(new GMapRoute(dataPoints, "Rural" + countRural.ToString()));
+                        temp.Routes[temp.Routes.Count - 1].Stroke = colorRural;
+                        routeLiveRural.Clear();
+                        routeLiveRural.Name = "LiveUrban" + countRural.ToString();
+                        dataPoints.Clear();
+                        countRural++;
+                    }
+
+                    lastRural = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]);
                 }
                 else
                 {
-                    routeLive.Stroke = new Pen(Color.LightSkyBlue, 4);
+                    if (Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]) - 1000 == lastMotorway)
+                    {
+                        routeLiveMotorway.Points.Add(data);
+                        dataPoints.Add(data);
+                    }
+                    else
+                    {
+                        temp.Routes.Add(new GMapRoute(dataPoints, "Motorway" + countMotorway.ToString()));
+                        temp.Routes[temp.Routes.Count - 1].Stroke = colorMotorway;
+                        routeLiveMotorway.Clear();
+                        routeLiveMotorway.Name = "LiveMotorway" + countMotorway.ToString();
+                        dataPoints.Clear();
+                        countMotorway++;
+                    }
+
+                    lastMotorway = Convert.ToDouble(dataset.Rows[dataset.Rows.Count - 1][column_time]);
                 }
 
                 Live.Clear();
-                Live.Routes.Add(routeLive);                      
+                //Live = temp;
+                //for (int i = 0; i < routeList.Count; i++)
+                //    Live.Routes.Add(routeList[i]);
+              
+                Live.Routes.Add(routeLiveUrban);
+                Live.Routes.Add(routeLiveRural);
+                Live.Routes.Add(routeLiveMotorway);
+                for (int i = 0; i < temp.Routes.Count; i++)
+                    Live.Routes.Add(temp.Routes[i]);                
             }            
         }
 
