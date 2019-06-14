@@ -317,7 +317,7 @@ namespace DriversGuide
             //    return true;
             //else
             //    return false;
-        }
+        }             
 
         //Get the distribution values per interval
         //********************************************************************************************

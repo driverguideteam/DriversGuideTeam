@@ -28,6 +28,7 @@ namespace DriversGuide
         double ZoomLive = 10;
         double ZoomNormal = 11;
         bool live = false;
+        bool liveRun = false;
         bool topBottomSave;       
 
         private GMapOverlay Live = new GMapOverlay("routeLive");
@@ -48,10 +49,7 @@ namespace DriversGuide
         Pen colorMotorway = new Pen(Color.LightSkyBlue, 4);
 
         GMapOverlay markers = new GMapOverlay("markers");
-        GMapMarker currPos;
-        //    new PointLatLng(Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_latitude]), Convert.ToDouble(motorway.Rows[motorway.Rows.Count - 1][column_longitude])),
-        //    GMarkerGoogleType.blue_pushpin);
-        //markers.Markers.Add(marker);        
+        GMapMarker currPos;      
 
         public GPS(DriversGuideApp caller)
         {
@@ -68,7 +66,7 @@ namespace DriversGuide
             live = false;
         }
 
-        public GPS(LiveMode caller)
+        public GPS(LiveMode caller, bool liveRunning)
         {
             LiveForm = caller;            
             dataset = LiveForm.GetCompleteDataTable();
@@ -76,13 +74,19 @@ namespace DriversGuide
             InitMap();
             live = true;
             CenterMap(lat, lon);
-            routeLiveUrban.Stroke = colorUrban;
-            routeLiveRural.Stroke = colorRural;
-            routeLiveMotorway.Stroke = colorMotorway;
-            AddRouteLive(lat, lon, speed, time);
-            //AddRoute(lat, lon, speed, time);
-            gMap.Overlays.Add(Live);
-            gMap.Overlays.Add(driven);
+            if (liveRunning)
+            {
+                liveRun = true;
+                routeLiveUrban.Stroke = colorUrban;
+                routeLiveRural.Stroke = colorRural;
+                routeLiveMotorway.Stroke = colorMotorway;
+                AddRouteLive(lat, lon, speed, time);
+                gMap.Overlays.Add(Live);
+                gMap.Overlays.Add(driven);
+            }
+            else
+                AddRoute(lat, lon, speed, time);
+            
             gMap.ContextMenuStrip = conMenMap;
 
             gMap.Overlays.Add(markers);
@@ -133,7 +137,7 @@ namespace DriversGuide
                 centerLat = 47.07995;
                 centerLon = 15.9152;
             }
-            else if (live)
+            else if (liveRun)
             {
                 centerLat = (double)dataset.Rows[dataset.Rows.Count-1][column_latitude];
                 centerLon = (double)dataset.Rows[dataset.Rows.Count - 1][column_longitude];

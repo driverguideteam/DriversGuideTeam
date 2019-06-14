@@ -18,6 +18,7 @@ namespace DriversGuide
         private double perUrban, perRural, perMotorway;
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
+        private double distrUrban, distrRural, distrMotorway;
         private double borderUrban, borderRural, borderMotorway;
         private string[] errors = new string[3];
         private DataTable urban;
@@ -220,6 +221,59 @@ namespace DriversGuide
             }
         }
 
+        //Calculation of the required values for distance optimized for LiveMode
+        //Values are added to the DataTable dt as new columns
+        //********************************************************************************************
+        /*Parameters:
+         *      - dt:             DataTable which contains complete dataset for calculations
+         *      - column_speed:   string with the name of the column by which the calculations are done
+        */
+        //********************************************************************************************
+        public void CalcReqLive(ref DataTable dt, string column_speed, bool init)
+        {
+            int lastRow = dt.Rows.Count;
+            double strecke;            
+
+            //Add the new column 
+            if (init)
+                dt.Columns.Add("di", typeof(Double));
+
+            //Calculation of distance
+            if (lastRow > 0)
+            {
+                double speed = Convert.ToDouble(dt.Rows[lastRow - 1][column_speed]);
+
+                strecke = speed / 3.6;
+                dt.Rows[lastRow - 1]["di"] = strecke;
+
+                //Add distance to according interval
+                if (speed <= 60)
+                    distUrban += strecke;
+                else if (speed <= 90)
+                    distRural += strecke;
+                else
+                    distMotorway += strecke;
+            }
+        }
+
+        //Calc the percentage of the distances per interval compared to complete trip
+        //Input only complete dataset, optimized for LiveMode
+        //********************************************************************************************
+        /*Parameters:
+         *      - tripUrban:        double with the distance in urban interval
+         *      - tripRural:        double with the distance in rural interval
+         *      - tripMotorway:     double with the distance in motorway interval4
+         *      - tripComplete:     double with the distance of the complete trip
+        */
+        //********************************************************************************************
+        public void CalcDistributionLive(double tripUrban, double tripRural, double tripMotorway, double tripComplete)
+        {
+            //Calculate percentage per interval compared to complete trip
+            distrUrban = tripUrban * 100 / tripComplete;
+            distrRural = tripRural * 100 / tripComplete;
+            distrMotorway = tripMotorway * 100 / tripComplete;
+        }
+
         //Sort Data in DataTable according to a specific column by ascending order
         //********************************************************************************************
         /*Parameters:
@@ -403,6 +457,21 @@ namespace DriversGuide
         public string[] GetErrors()
         {
             return errors;
+        }
+
+        //Get the distribution values per interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - urban:            Distribution in percent for the urban interval        
+         *      - rural:            Distribution in percent for the rural interval
+         *      - motorway:         Distribution in percent for the motorway interval
+        */
+        //********************************************************************************************
+        public void GetDistribution (ref double urban, ref double rural, ref double motorway)
+        {
+            urban = distrUrban;
+            rural = distrRural;
+            motorway = distrMotorway;
         }
 
         //Calculate the percentile of each interval

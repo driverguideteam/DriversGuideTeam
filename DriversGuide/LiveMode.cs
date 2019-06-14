@@ -28,6 +28,7 @@ namespace DriversGuide
         bool calc = false;
         bool valid = false;
         bool calcDone = false;
+        bool live = false;
 
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -110,7 +111,7 @@ namespace DriversGuide
             if (topBottom)
             {
                 pnlTopContent.Controls.Clear();
-                FormGPS = new GPS(this);
+                FormGPS = new GPS(this, live);
                 //myForm.TopLevel = false;
                 FormGPS.AutoScroll = true;
                 pnlTopContent.Controls.Add(FormGPS);
@@ -123,7 +124,7 @@ namespace DriversGuide
             else
             {
                 pnlBottomContent.Controls.Clear();
-                FormGPS = new GPS(this);
+                FormGPS = new GPS(this, live);
                 //myForm.TopLevel = false;
                 FormGPS.AutoScroll = true;
                 pnlBottomContent.Controls.Add(FormGPS);
@@ -140,36 +141,94 @@ namespace DriversGuide
             LiveDataset.Clear();
             LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
             DoCalculations(true);
-        }
+        }        
 
         private void DoCalculations(bool first)
         {
-            //InitValueData();
+            if (first)
+                Berechnung = new Calculations();
+           
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";            
+            string column_time = "Time";
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0, tripComplete = 0;
+            DataTable urban_temp = new DataTable();
+            DataTable rural_temp = new DataTable();
+            DataTable motorway_temp = new DataTable();
+
+            Berechnung.CalcReqLive(ref LiveDataset, column_speed, first);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            tripComplete = tripUrban + tripRural + tripMotorway;
+            Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
+            Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+            
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            if (LiveDataset.Rows.Count != 0)
+            {
+                values.Rows[0]["Strecke"] = tripComplete;
+                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+            }
+            else
+            {
+                values.Rows[0]["Strecke"] = 0;
+                values.Rows[0]["Dauer"] = 0;
+            }
+
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+            
+
+            if (first)
+            {
+                live = true;
+                pnlTopContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this);                
+                FormLiveOverview.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormLiveOverview);
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+                topBottom = false;
+                pnlBottomContent.Controls.Clear();
+
+                FormGPS = new GPS(this, live);
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormGPS.BackColor;
+                gpsActive = true;
+                
+                btnGPS.Enabled = true;
+                btnOverview.Enabled = true;
+                calcDone = true;
+            }            
+        }
+
+        private void DoCalculationsStatic(bool first)
+        {
             Berechnung = new Calculations();
             Gueltigkeit = new Validation();
-            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
-            string column_acc = "ai";
-            string column_dynamic = "a*v";
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";            
             string column_distance = "di";
             string column_time = "Time";
-            string column_coolant = "OBD_Engine_Coolant_Temperature_(PID_5)";
-            double avgUrban = 0, avgRural = 0, avgMotorway = 0;
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
             double tripUrban = 0, tripRural = 0, tripMotorway = 0;
             DataTable urban_temp = new DataTable();
             DataTable rural_temp = new DataTable();
             DataTable motorway_temp = new DataTable();
 
-            List<string> errors = new List<string>();
-
             Berechnung.CalcReq(ref LiveDataset, column_speed, first);
             Berechnung.SepIntervals(LiveDataset, column_speed);
             Berechnung.CalcDistancesInterval(column_distance);
-            Gueltigkeit.InitErrorsDt();
-            //Gueltigkeit.CheckValidity(LiveDataset, column_speed, column_time, column_coolant, column_distance);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);     
+            Gueltigkeit.InitErrorsDt();            
             Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
 
             values.Rows[1]["Verteilung"] = distrUrban;
             values.Rows[2]["Verteilung"] = distrRural;
@@ -177,7 +236,7 @@ namespace DriversGuide
 
             if (LiveDataset.Rows.Count != 0)
             {
-                values.Rows[0]["Strecke"] = (double)LiveDataset.Compute("SUM([" + column_distance + "])", "") / 1000;
+                values.Rows[0]["Strecke"] = tripUrban + tripRural + tripMotorway;
                 values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
             }
             else
@@ -190,104 +249,31 @@ namespace DriversGuide
             values.Rows[2]["Strecke"] = tripRural;
             values.Rows[3]["Strecke"] = tripMotorway;
 
-            
-
-            //PerformMutliplikationOnColumn(ref test, column_acc, 2);
-
-            ///*calc = */Berechnung.CalcAll(LiveDataset, column_speed, column_acc, column_dynamic, column_distance);
-            //Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
-            ///*valid = */Gueltigkeit.CheckValidity(LiveDataset, column_speed, column_time, column_coolant, column_distance);
-
-            //errors = Gueltigkeit.GetErrors();
-
-            //Berechnung.SepIntervals(test, column_speed);
-            //Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);
-            //Berechnung.AddUnits(units);
-
-            //Berechnung.GetAvgSpeed(ref avgUrban, ref avgRural, ref avgMotorway);
-            //Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
-            //Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-
-            //values.Rows[1]["Geschwindigkeit"] = avgUrban;
-            //values.Rows[2]["Geschwindigkeit"] = avgRural;
-            //values.Rows[3]["Geschwindigkeit"] = avgMotorway;
-
-            //values.Rows[1]["Verteilung"] = distrUrban;
-            //values.Rows[2]["Verteilung"] = distrRural;
-            //values.Rows[3]["Verteilung"] = distrMotorway;
-
-            //values.Rows[0]["Strecke"] = (double)test.Compute("SUM([" + column_distance + "])", "") / 1000;
-            //values.Rows[1]["Strecke"] = tripUrban;
-            //values.Rows[2]["Strecke"] = tripRural;
-            //values.Rows[3]["Strecke"] = tripMotorway;
-
-            //values.Rows[0]["Dauer"] = Convert.ToDouble(test.Rows[test.Rows.Count - 1][column_time]) / 60000d;
-            //values.Rows[0]["Haltezeit"] = Gueltigkeit.GetHoldDurtation();
-            //values.Rows[0]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeed();
-            //values.Rows[0]["Kaltstart Hoechstgeschwindigkeit"] = Gueltigkeit.GetMaxSpeedCold();
-            //values.Rows[0]["Kaltstart Durchschnittsgeschwindigkeit"] = Gueltigkeit.GetAvgSpeedCold();
-            //values.Rows[0]["Kaltstart Haltezeit"] = Gueltigkeit.GetTimeHoldCold();
-
-            //values.Rows[3]["Hoechstgeschwindigkeit"] = Gueltigkeit.GetTimeFasterHundred();
-
-            ////grafikToolStripMenuItem.Enabled = true;
-            ////txtMeasurement.Text = "Berechnung durchgeführt!";
-            ////MessageBox.Show("Berechnung durchgeführt!");
-            //pnlContent.Controls.Clear();
-            //FormGeneral = new General(this);
-            ////myForm.TopLevel = false;
-            //FormGeneral.AutoScroll = true;
-            //pnlContent.Controls.Add(FormGeneral);
-            ////myForm.FormBorderStyle = FormBorderStyle.None;
-            //FormGeneral.Show();
-            //FormGeneral.Dock = DockStyle.Fill;
-            //btnGraphic.Enabled = true;
-            //btnGPS.Enabled = true;
-            //btnOverview.Enabled = true;
-            //btnShowDynamic.Enabled = true;
-            //lblHide.BackColor = Color.White;
-            //lblShow.BackColor = Color.White;
-            calcDone = true;
-
-           // Stopwatch stopwatch = new Stopwatch();
-            
-            // Write result.
-            
-
             if (first)
-            {               
+            {
+                live = false;
                 pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this);
-                //myForm.TopLevel = false;
+                FormLiveOverview = new OverviewLive(this);                
                 FormLiveOverview.AutoScroll = true;
                 pnlTopContent.Controls.Add(FormLiveOverview);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
                 FormLiveOverview.Show();
                 FormLiveOverview.Dock = DockStyle.Fill;
                 lblHide.BackColor = FormLiveOverview.BackColor;
-
-
-                //stopwatch.Start();
-
+                
                 topBottom = false;
                 pnlBottomContent.Controls.Clear();
-                FormGPS = new GPS(this);
-                //myForm.TopLevel = false;
+                FormGPS = new GPS(this, live);
                 FormGPS.AutoScroll = true;
                 pnlBottomContent.Controls.Add(FormGPS);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
                 FormGPS.Show();
                 FormGPS.Dock = DockStyle.Fill;
                 lblHide.BackColor = FormGPS.BackColor;
                 gpsActive = true;
-
-                // Stop timing.
-                //stopwatch.Stop();
-                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+                
+                btnGPS.Enabled = true;
+                btnOverview.Enabled = true;
+                calcDone = true;
             }
-
-            btnGPS.Enabled = true;
-            btnOverview.Enabled = true;
         }
 
         private void btn_Fileauswahl_Click(object sender, EventArgs e)
@@ -305,11 +291,11 @@ namespace DriversGuide
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable();
 
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                DoCalculations(true);
-                stopwatch.Stop();
-                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+                //Stopwatch stopwatch = new Stopwatch();
+                //stopwatch.Start();
+                //DoCalculationsStatic(true);
+                //stopwatch.Stop();
+                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
             //timer1.Start();
         }
