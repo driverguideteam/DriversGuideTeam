@@ -13,23 +13,37 @@ namespace DriversGuide
 {
     public partial class Dynamic : UserControl
     {
-        LiveMode FormLive;
+        private LiveMode FormLive;
         private DriversGuideApp MainForm;
         GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
         PlotGraphic PlotCopy;
+        bool live = false;
+        bool liveRun = false;
 
-        public Dynamic(LiveMode caller)
+
+        public Dynamic(LiveMode caller, bool liveRunning)
         {
             FormLive = caller;
-
             InitializeComponent();
+            live = true;
+            if (liveRunning)
+            {
+                liveRun = true;
+
+            }
+            else
+            {
+                //???
+            }
         }
 
         public Dynamic(DriversGuideApp caller2)
         {
             MainForm = caller2;
             InitializeComponent();
+            live = false;
         }
+    
 
         public void GetChosenData(PlotGraphic ConnectForm)
         {
@@ -58,11 +72,32 @@ namespace DriversGuide
             lblRur.Visible = false;
             lblMw.Visible = false;
 
-            DataTable dturb = MainForm.GetUrbanDataTable();
-            DataTable dtrur = MainForm.GetRuralDataTable();
-            DataTable dtmw = MainForm.GetMotorwayDataTable();
-            DataTable units = MainForm.GetUnitsDataTable();
+            if (live == false)
+            {
+                DataTable dturb = MainForm.GetUrbanDataTable();
+                DataTable dtrur = MainForm.GetRuralDataTable();
+                DataTable dtmw = MainForm.GetMotorwayDataTable();
+                DataTable units = MainForm.GetUnitsDataTable();
 
+                double purb = 0;   //Perzentilwert Stadt
+                double prur = 0;   //Perzentilwert Land
+                double pmw = 0;    //Perzentilwert Autobahn
+
+                MainForm.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
+
+                double borderUrb = 0;
+                double borderRur = 0;
+                double borderMw = 0;
+
+                MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
+
+                DrawDynamic(dturb, dtrur, dtmw, units, purb, prur, pmw, borderUrb, borderRur, borderMw);
+            }
+
+        }
+
+        private void DrawDynamic(DataTable dturb, DataTable dtrur, DataTable dtmw, DataTable units, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
+        {
             newchart.SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", PlotCopy);
             ChUrb.Titles.Add("Dynamik Stadt").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
             newchart.SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", PlotCopy);
@@ -79,18 +114,6 @@ namespace DriversGuide
             SetChAxes(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
             SetChAxes(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
             SetChAxes(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
-
-            double purb = 0;   //Perzentilwert Stadt
-            double prur = 0;   //Perzentilwert Land
-            double pmw = 0;    //Perzentilwert Autobahn
-
-            MainForm.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
-
-            double borderUrb = 0;
-            double borderRur = 0;
-            double borderMw = 0;
-
-            MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
 
             Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
             Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
@@ -342,6 +365,65 @@ namespace DriversGuide
         {
             SetStartScale(ChMw, "a*v");
         }
+
+        //private void DrawLive(object sender, EventArgs e)
+        //{
+        //    lblUrb.Visible = false;
+        //    lblRur.Visible = false;
+        //    lblMw.Visible = false;
+
+        //    DataTable dturb = FormLive.GetUrbanDataTable();
+        //    DataTable dtrur = FormLive.GetRuralDataTable();
+        //    DataTable dtmw = FormLive.GetMotorwayDataTable();
+        //    DataTable units = FormLive.GetUnitsDataTable();
+
+        //    newchart.SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", PlotCopy);
+        //    ChUrb.Titles.Add("Dynamik Stadt").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
+        //    newchart.SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", PlotCopy);
+        //    ChRur.Titles.Add("Dynamik Freiland").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
+        //    newchart.SetChartProperties(ref ChMw, dtmw, "Perzentil", "a*v", PlotCopy);
+        //    ChMw.Titles.Add("Dynamik Autobahn").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
+
+        //    double urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
+        //    double rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
+        //    double mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
+
+        //    double ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v auf nächste 5 aufgerundet
+
+        //    SetChAxes(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
+        //    SetChAxes(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
+        //    SetChAxes(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
+
+        //    double purb = 0;   //Perzentilwert Stadt
+        //    double prur = 0;   //Perzentilwert Land
+        //    double pmw = 0;    //Perzentilwert Autobahn
+
+        //    FormLive.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
+
+        //    double borderUrb = 0;
+        //    double borderRur = 0;
+        //    double borderMw = 0;
+
+        //    FormLive.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
+
+        //    Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
+        //    Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
+        //    Draw95PLine(ChMw, ymax, pmw);               //Zeichnen der 95%-Linie
+        //    DrawPerzentilValue(ChUrb, ymax, purb);      //Zeichnen des Perzentilwertes bei 95 %
+        //    DrawPerzentilValue(ChRur, ymax, prur);      //Zeichnen des Perzentilwertes bei 95 %
+        //    DrawPerzentilValue(ChMw, ymax, pmw);        //Zeichnen des Perzentilwertes bei 95 %
+        //    DrawDynamicLimit(ChUrb, ymax, borderUrb);   //Zeichnen des Perzentilgrenzwertes
+        //    DrawDynamicLimit(ChRur, ymax, borderRur);   //Zeichnen des Perzentilgrenzwertes
+        //    DrawDynamicLimit(ChMw, ymax, borderMw);     //Zeichnen des Perzentilgrenzwertes
+
+
+        //    ChUrb.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
+        //    ChRur.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
+        //    ChMw.Series[0].IsVisibleInLegend = false;    //Ausblenden Chartseries-Name
+        //    DeactSV(ChUrb, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+        //    DeactSV(ChRur, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+        //    DeactSV(ChMw, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+        //}
     }
 }
 

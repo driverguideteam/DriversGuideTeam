@@ -149,3 +149,8 @@ C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\Driv
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.OverviewLive.resources
 C:\Users\david\OneDrive\Studium\2.Semester\PP\Repositories\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.StartScreen.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Dynamic.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.LiveMode.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.Overview.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.OverviewLive.resources
+C:\Users\Josef\Documents\GitHub\DriversGuideTeam\DriversGuide\obj\Debug\DriversGuide.StartScreen.resources

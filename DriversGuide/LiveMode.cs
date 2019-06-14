@@ -16,6 +16,7 @@ namespace DriversGuide
     {
         StartScreen FormStart;
         GPS FormGPS;
+        Dynamic FormDynamic;
         OverviewLive FormLiveOverview;             
         Bitmap bmp;
         Graphics z;
@@ -620,6 +621,33 @@ namespace DriversGuide
             
             FormLiveOverview.RefreshData();
             FormGPS.RefreshMap();
-        }        
+        }
+
+        private void btnDyn_Click(object sender, EventArgs e)
+        {
+            if (topBottom)
+            {
+                pnlTopContent.Controls.Clear();
+                FormDynamic = new Dynamic(this, live);
+                FormDynamic.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormDynamic);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormDynamic.Show();
+                FormDynamic.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormDynamic.BackColor;
+            }
+            else
+            {
+                pnlBottomContent.Controls.Clear();
+                FormDynamic = new Dynamic(this, live);
+                //myForm.TopLevel = false;
+                FormDynamic.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormDynamic);
+                //myForm.FormBorderStyle = FormBorderStyle.None;
+                FormDynamic.Show();
+                FormDynamic.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormDynamic.BackColor;
+            }
+        }
     }
 }
