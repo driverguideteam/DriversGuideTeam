@@ -20,11 +20,12 @@ namespace DriversGuide
         Bitmap bmpStrCont;
         DataTable values;
         private bool topBottomSave;
+        private bool liveRunning = false;
 
-        public OverviewLive(LiveMode caller)
+        public OverviewLive(LiveMode caller, bool running)
         {
             FormLive = caller;
-
+            liveRunning = running;
             InitializeComponent();
 
             barBmp = new Bitmap(picDistance.ClientSize.Width, picDistance.ClientSize.Height);
@@ -74,6 +75,44 @@ namespace DriversGuide
 
             strCont.DrawString("Dauer: ", typeTitle, styleTitle, 0, 0, sf);
             strCont.DrawString(minutes + ":" + seconds + " min", typeContent, styleContent, 75, 1, sf);            
+        }
+
+        private void DrawStringBitmapExt(double content, double content2, Color colorCont)
+        {
+            strCont.Clear(picGeneral.BackColor);
+            string minutes;
+            string seconds;
+
+            float breite = picGeneral.ClientSize.Width;
+            float hoehe = picGeneral.ClientSize.Height;
+
+            Matrix myMatrix = new Matrix();
+            myMatrix.Scale(bmpStrCont.Width / breite, bmpStrCont.Height / hoehe);
+
+            myMatrix.Translate(0, hoehe / 2 + 1, MatrixOrder.Prepend);
+
+            strCont.Transform = myMatrix;
+
+            Font typeTitle = new Font("Century Gothic", 16f, FontStyle.Bold);
+            Font typeContent = new Font("Century Gothic", 14f);
+            Brush styleTitle = new SolidBrush(Color.Black);
+            Brush styleContent = new SolidBrush(colorCont);
+
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Center;
+
+            minutes = Math.Truncate(content).ToString("#00");
+            seconds = ((content - Convert.ToDouble(minutes)) * 60).ToString("00");
+
+            strCont.DrawString("Dauer: ", typeTitle, styleTitle, 0, -14, sf);
+            strCont.DrawString(minutes + ":" + seconds + " min", typeContent, styleContent, 100, -13, sf);
+            
+            strCont.DrawString("Geschw.: ", typeTitle, styleTitle, 0, 10, sf);
+            if (content2 < 100)
+                strCont.DrawString(content2.ToString("#00.00") + " km/h", typeContent, styleTitle, 100, 11, sf);            
+            else
+                strCont.DrawString(content2.ToString("#00.0") + " km/h", typeContent, styleTitle, 100, 11, sf);
         }
 
         private void DrawBarBitmap(double val1, double val2, double val3, Color clr1, Color clr2, Color clr3, string heading, string unit, float[] borders)
@@ -232,14 +271,28 @@ namespace DriversGuide
 
         private void picGeneral_Paint(object sender, PaintEventArgs e)
         {
-            double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);
+            double timeElapsed = Convert.ToDouble(values.Rows[0]["Dauer"]);            
 
-            if (timeElapsed < 90 || timeElapsed > 120)
-                DrawStringBitmap(timeElapsed, Color.Red);
-            else if (timeElapsed <= 95 || timeElapsed >= 115)
-                DrawStringBitmap(timeElapsed, Color.Orange);
+            if (liveRunning)
+            {
+                double speed = Convert.ToDouble(values.Rows[0]["Geschwindigkeit"]);
+
+                if (timeElapsed < 90 || timeElapsed > 120)
+                    DrawStringBitmapExt(timeElapsed, speed, Color.Red);
+                else if (timeElapsed <= 95 || timeElapsed >= 115)
+                    DrawStringBitmapExt(timeElapsed, speed, Color.Orange);
+                else
+                    DrawStringBitmapExt(timeElapsed, speed, Color.Black);
+            }
             else
-                DrawStringBitmap(timeElapsed, Color.Black);
+            {
+                if (timeElapsed < 90 || timeElapsed > 120)
+                    DrawStringBitmap(timeElapsed, Color.Red);
+                else if (timeElapsed <= 95 || timeElapsed >= 115)
+                    DrawStringBitmap(timeElapsed, Color.Orange);
+                else
+                    DrawStringBitmap(timeElapsed, Color.Black);
+            }
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);

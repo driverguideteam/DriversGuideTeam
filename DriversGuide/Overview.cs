@@ -19,9 +19,14 @@ namespace DriversGuide
         Bitmap barBmp;
         Graphics strCont;
         Bitmap bmpStrCont;
+        Graphics strShortCont;
+        Bitmap bmpShortStrCont;
         Graphics info;
         Bitmap bmpInfo;
         DataTable values;
+        DataTable errors;
+        List<string> columns = new List<string> {"Distance", "Distribution", "Duration", "Speeds", "ColdStart", "Other"};
+        List<string> errorsList = new List<string>();
 
         public Overview(DriversGuideApp caller)
         {
@@ -32,13 +37,16 @@ namespace DriversGuide
             bar = Graphics.FromImage(barBmp);
             bmpStrCont = new Bitmap(picGeneral.ClientSize.Width, picGeneral.ClientSize.Height);
             strCont = Graphics.FromImage(bmpStrCont);
+            bmpShortStrCont = new Bitmap(picHeadingError.ClientSize.Width, picHeadingError.ClientSize.Height);
+            strShortCont = Graphics.FromImage(bmpShortStrCont);
             bmpInfo = new Bitmap(picColdStart.ClientSize.Width, picColdStart.ClientSize.Height);
             info = Graphics.FromImage(bmpInfo);
 
             values = MainForm.GetValuesDataTable();
             //ShowData();
-
-            dGV.DataSource = MainForm.GetErrorsDataTable();
+            errors = MainForm.GetErrorsDataTable();            
+            GetMessages();            
+            listBoxErrors.DataSource = errorsList;          
         }
 
         private void DrawStringBitmap(double content1, string title1, string content2, string title2, Color colorCont)
@@ -82,6 +90,30 @@ namespace DriversGuide
                 strCont.DrawString("Gueltig!", typeState, new SolidBrush(Color.MediumSeaGreen), 90, 16, sf);
             else
                 strCont.DrawString("Ungueltig!", typeState, new SolidBrush(Color.IndianRed), 90, 16, sf);
+        }
+
+        private void DrawShortStringBitmap(string heading)
+        {
+            strShortCont.Clear(picHeadingError.BackColor);
+
+            float breite = picHeadingError.ClientSize.Width;
+            float hoehe = picHeadingError.ClientSize.Height;            
+
+            Matrix myMatrix = new Matrix();
+            myMatrix.Scale(bmpShortStrCont.Width / breite, bmpShortStrCont.Height / hoehe);
+
+            myMatrix.Translate(0, hoehe / 2 + 1, MatrixOrder.Prepend);
+
+            strShortCont.Transform = myMatrix;
+
+            Font typeTitle = new Font("Century Gothic", 16f, FontStyle.Bold);            
+            Brush styleTitle = new SolidBrush(Color.Black);
+            
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Center;
+
+            strShortCont.DrawString(heading, typeTitle, styleTitle, 0, -5, sf);         
         }
 
         private void DrawBarBitmap(double val1, double val2, double val3, Color clr1, Color clr2, Color clr3, string heading, string unit, float[] borders)
@@ -261,6 +293,18 @@ namespace DriversGuide
             info.DrawString(heading, title, style, -30, -85, sf);
         }
 
+        private void GetMessages ()
+        {
+            for (int i = 0; i < columns.Count; i++)
+            {
+                for (int j = 0; j < errors.Rows.Count; j++)
+                {
+                    if (errors.Rows[j][i].ToString() != "")
+                        errorsList.Add(errors.Rows[j][i].ToString());
+                }
+            }
+        }
+
         private void picDistance_Paint(object sender, PaintEventArgs e)
         {
             double distUrban = Convert.ToDouble(values.Rows[1]["Strecke"]);
@@ -345,6 +389,22 @@ namespace DriversGuide
             DrawInfoBitmap(val, names, max, borders, "Kaltstart - Phase", units);
             Graphics g = e.Graphics;
             g.DrawImage(bmpInfo, 0, 0);
+        }
+
+        private void picHeadingError_Paint(object sender, PaintEventArgs e)
+        {
+            DrawShortStringBitmap("Ungueltig weil:");
+
+            Graphics g = e.Graphics;
+            g.DrawImage(bmpShortStrCont, 0, 0);
+        }
+
+        private void picHeadingTip_Paint(object sender, PaintEventArgs e)
+        {
+            DrawShortStringBitmap("Grenzwertig:");
+
+            Graphics g = e.Graphics;
+            g.DrawImage(bmpShortStrCont, 0, 0);
         }
     }
 }

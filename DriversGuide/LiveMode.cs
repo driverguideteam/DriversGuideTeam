@@ -198,23 +198,25 @@ namespace DriversGuide
             {
                 values.Rows[0]["Strecke"] = tripComplete;
                 values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+                values.Rows[0]["Geschwindigkeit"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_speed]);
             }
             else
             {
                 values.Rows[0]["Strecke"] = 0;
                 values.Rows[0]["Dauer"] = 0;
+                values.Rows[0]["Geschwindigkeit"] = 0;
             }
 
             values.Rows[1]["Strecke"] = tripUrban;
             values.Rows[2]["Strecke"] = tripRural;
-            values.Rows[3]["Strecke"] = tripMotorway;
-            
+            values.Rows[3]["Strecke"] = tripMotorway;           
+
 
             if (first)
             {
                 live = true;
                 pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this);                
+                FormLiveOverview = new OverviewLive(this, true);                
                 FormLiveOverview.AutoScroll = true;
                 pnlTopContent.Controls.Add(FormLiveOverview);
                 FormLiveOverview.Show();
@@ -281,7 +283,7 @@ namespace DriversGuide
             {
                 live = false;
                 pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this);                
+                FormLiveOverview = new OverviewLive(this, false);                
                 FormLiveOverview.AutoScroll = true;
                 pnlTopContent.Controls.Add(FormLiveOverview);
                 FormLiveOverview.Show();
@@ -580,7 +582,7 @@ namespace DriversGuide
             if (topBottom)
             {
                 pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this);
+                FormLiveOverview = new OverviewLive(this, live);
                 //myForm.TopLevel = false;
                 FormLiveOverview.AutoScroll = true;
                 pnlTopContent.Controls.Add(FormLiveOverview);
@@ -592,7 +594,7 @@ namespace DriversGuide
             else
             {
                 pnlBottomContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this);
+                FormLiveOverview = new OverviewLive(this, live);
                 //myForm.TopLevel = false;
                 FormLiveOverview.AutoScroll = true;
                 pnlBottomContent.Controls.Add(FormLiveOverview);

@@ -28,17 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.picGeneral = new System.Windows.Forms.PictureBox();
             this.picDistribution = new System.Windows.Forms.PictureBox();
             this.picDistance = new System.Windows.Forms.PictureBox();
             this.picColdStart = new System.Windows.Forms.PictureBox();
-            this.dGV = new System.Windows.Forms.DataGridView();
+            this.listBoxErrors = new System.Windows.Forms.ListBox();
+            this.picHeadingError = new System.Windows.Forms.PictureBox();
+            this.picHeadingTip = new System.Windows.Forms.PictureBox();
+            this.listBoxTip = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.picGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDistribution)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picColdStart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dGV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHeadingError)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHeadingTip)).BeginInit();
             this.SuspendLayout();
             // 
             // picGeneral
@@ -81,39 +84,63 @@
             this.picColdStart.TabStop = false;
             this.picColdStart.Paint += new System.Windows.Forms.PaintEventHandler(this.picColdStart_Paint);
             // 
-            // dGV
+            // listBoxErrors
             // 
-            this.dGV.AllowUserToAddRows = false;
-            this.dGV.AllowUserToDeleteRows = false;
-            this.dGV.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.dGV.BackgroundColor = System.Drawing.Color.White;
-            this.dGV.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.Format = "N2";
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dGV.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dGV.Location = new System.Drawing.Point(270, 228);
-            this.dGV.Name = "dGV";
-            this.dGV.ReadOnly = true;
-            this.dGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dGV.RowHeadersVisible = false;
-            this.dGV.Size = new System.Drawing.Size(526, 200);
-            this.dGV.TabIndex = 52;
+            this.listBoxErrors.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.listBoxErrors.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxErrors.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.listBoxErrors.FormattingEnabled = true;
+            this.listBoxErrors.ItemHeight = 19;
+            this.listBoxErrors.Location = new System.Drawing.Point(536, 276);
+            this.listBoxErrors.Name = "listBoxErrors";
+            this.listBoxErrors.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxErrors.Size = new System.Drawing.Size(260, 152);
+            this.listBoxErrors.Sorted = true;
+            this.listBoxErrors.TabIndex = 1;
+            // 
+            // picHeadingError
+            // 
+            this.picHeadingError.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.picHeadingError.Location = new System.Drawing.Point(536, 228);
+            this.picHeadingError.Name = "picHeadingError";
+            this.picHeadingError.Size = new System.Drawing.Size(260, 42);
+            this.picHeadingError.TabIndex = 52;
+            this.picHeadingError.TabStop = false;
+            this.picHeadingError.Paint += new System.Windows.Forms.PaintEventHandler(this.picHeadingError_Paint);
+            // 
+            // picHeadingTip
+            // 
+            this.picHeadingTip.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.picHeadingTip.Location = new System.Drawing.Point(270, 228);
+            this.picHeadingTip.Name = "picHeadingTip";
+            this.picHeadingTip.Size = new System.Drawing.Size(260, 42);
+            this.picHeadingTip.TabIndex = 53;
+            this.picHeadingTip.TabStop = false;
+            this.picHeadingTip.Paint += new System.Windows.Forms.PaintEventHandler(this.picHeadingTip_Paint);
+            // 
+            // listBoxTip
+            // 
+            this.listBoxTip.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.listBoxTip.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxTip.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.listBoxTip.FormattingEnabled = true;
+            this.listBoxTip.ItemHeight = 19;
+            this.listBoxTip.Location = new System.Drawing.Point(270, 276);
+            this.listBoxTip.Name = "listBoxTip";
+            this.listBoxTip.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxTip.Size = new System.Drawing.Size(260, 152);
+            this.listBoxTip.Sorted = true;
+            this.listBoxTip.TabIndex = 54;
             // 
             // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.dGV);
+            this.Controls.Add(this.listBoxTip);
+            this.Controls.Add(this.picHeadingTip);
+            this.Controls.Add(this.picHeadingError);
+            this.Controls.Add(this.listBoxErrors);
             this.Controls.Add(this.picColdStart);
             this.Controls.Add(this.picGeneral);
             this.Controls.Add(this.picDistribution);
@@ -124,7 +151,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.picDistribution)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picColdStart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dGV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHeadingError)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHeadingTip)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -135,6 +163,9 @@
         private System.Windows.Forms.PictureBox picDistribution;
         private System.Windows.Forms.PictureBox picDistance;
         private System.Windows.Forms.PictureBox picColdStart;
-        private System.Windows.Forms.DataGridView dGV;
+        private System.Windows.Forms.ListBox listBoxErrors;
+        private System.Windows.Forms.PictureBox picHeadingError;
+        private System.Windows.Forms.PictureBox picHeadingTip;
+        private System.Windows.Forms.ListBox listBoxTip;
     }
 }

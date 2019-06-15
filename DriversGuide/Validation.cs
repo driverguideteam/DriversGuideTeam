@@ -23,9 +23,9 @@ namespace DriversGuide
         double avgSpeedCold = 0;
         double holdTimeCold = 0;
         double fasterOnehundred = 0;
-        List<string> error = new List<string>();
 
         DataTable errors = new DataTable();
+        DataTable tips = new DataTable();
 
         public void InitErrorsDt ()
         {
@@ -399,18 +399,7 @@ namespace DriversGuide
         {
             return fasterOnehundred;
         }
-
-        //Get list of error messages
-        //********************************************************************************************
-        /*Parameters:
-         *      - error:            list with error messages
-        */
-        //********************************************************************************************
-        public List<string> GetErrors1()
-        {
-            return error;
-        }
-
+        
         //Get dataTable with error messages
         //********************************************************************************************
         /*Parameters:
@@ -648,27 +637,27 @@ namespace DriversGuide
             if (time_start <= 15)
                 con1 = true;
             else
-                errors.Rows[0]["ColdStart"] = "Zu spaet losgefahren";
+                errors.Rows[0]["ColdStart"] = "Kaltstart: Zu spaet losgefahren";
 
             if (holdTimeCold <= 90)
                 con2 = true;
             else
-                errors.Rows[1]["ColdStart"] = "Standzeit zu lang";
+                errors.Rows[1]["ColdStart"] = "Kaltstart: Standzeit zu lang";
 
             if (avgSpeedCold >= 15)
                 con3 = true;
             else
-                errors.Rows[2]["ColdStart"] = "Durchschnittsgeschwindigkeit zu gering";
+                errors.Rows[2]["ColdStart"] = "Kaltstart: Durchschnittsgeschwindigkeit zu gering";
 
             if (avgSpeedCold <= 40)
                 con4 = true;
             else
-                errors.Rows[2]["ColdStart"] = "Durchschnittsgeschwindigkeit zu hoch";
+                errors.Rows[2]["ColdStart"] = "Kaltstart: Durchschnittsgeschwindigkeit zu hoch";
 
             if (maxSpeedCold <= 60)
                 con5 = true;
             else
-                errors.Rows[3]["ColdStart"] = "Zu schnell gefahren";
+                errors.Rows[3]["ColdStart"] = "Kaltstart: Zu schnell gefahren";
 
             if (con1 && con2 && con3 && con4 && con5)
                 return true;
@@ -770,54 +759,29 @@ namespace DriversGuide
             //    return false;
 
             if (CheckDistanceComplete(dt, column_speed, column_distance))
-            {
                 stateDistance = true;
-            }
             else
-            {
                 stateDistance = false;
-                error.Add("Distance error");
-            }
 
             if (CheckDistributionComplete(dt, column_speed, column_distance))
-            {
                 stateDistribution = true;
-            }
             else
-            {
                 stateDistribution = false;
-                error.Add("Distribution error");
-            }
 
             if (CheckDuration(dt, column_time))
-            {
                 stateDuration = true;
-            }
             else
-            {
                 stateDuration = false;
-                error.Add("Duration error");
-            }
 
             if (CheckSpeeds(urban, motorway, column_speed, column_time))
-            {
                 stateSpeed = true;
-            }
             else
-            {
-                stateSpeed = false;
-                error.Add("Speed error");
-            }
+                stateSpeed = false; 
 
             if (CheckColdStart(dt, column_speed, column_time, column_coolant))
-            {
-                stateCold = true;
-            }
+                stateCold = true;            
             else
-            {
-                stateCold = false;
-                error.Add("Cold Start error");
-            }
+                 stateCold = false;                
 
             //CheckAltitude(ref dt, "GPS_Altitude", column_distance, true);
 
