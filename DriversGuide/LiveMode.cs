@@ -22,7 +22,15 @@ namespace DriversGuide
         Graphics z;
         public bool topBottom = true;
         MeasurementFile LiveDatei;
-        private DataTable LiveDataset = new DataTable();
+        private DataTable LiveDataset = new DataTable();       
+        private DataTable urban = new DataTable();
+        private DataTable rural = new DataTable();
+        private DataTable motorway = new DataTable();
+
+        private double perUrban;
+        private double perRural;
+        private double perMotorway;
+
         bool inout = false;
         bool gpsActive = false;
         private DataTable values = new DataTable();
@@ -36,6 +44,9 @@ namespace DriversGuide
 
         Color enabled = Color.Teal;
         Color disabled = Color.Gray;
+
+
+        Stopwatch stopwatch = new Stopwatch();
 
         public LiveMode(StartScreen caller)
         {
@@ -88,6 +99,21 @@ namespace DriversGuide
             return values.Copy();
         }
 
+        public DataTable GetUrbanDataTable()
+        {
+            return urban.Copy();
+        }
+
+        public DataTable GetRuralDataTable()
+        {
+            return rural.Copy();
+        }
+
+        public DataTable GetMotorwayDataTable()
+        {
+            return motorway.Copy();
+        }
+
         public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
         {
             if (calcDone)
@@ -97,7 +123,7 @@ namespace DriversGuide
         public void GetPercentileBorders(ref double borderUrban, ref double borderRural, ref double borderMotorway)
         {
             if (calcDone)
-                Berechnung.GetPercentileBorders(ref borderUrban, ref borderRural, ref borderMotorway);
+                Berechnung.GetRPA(ref borderUrban, ref borderRural, ref borderMotorway);
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
@@ -162,6 +188,7 @@ namespace DriversGuide
             tripComplete = tripUrban + tripRural + tripMotorway;
             Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
             Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+            Berechnung.GetPercentiles(ref perUrban, ref perRural, ref perMotorway);
             
             values.Rows[1]["Verteilung"] = distrUrban;
             values.Rows[2]["Verteilung"] = distrRural;
@@ -294,7 +321,7 @@ namespace DriversGuide
 
                 //Stopwatch stopwatch = new Stopwatch();
                 //stopwatch.Start();
-                //DoCalculationsStatic(true);
+                DoCalculationsStatic(true);
                 //stopwatch.Stop();
                 //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
@@ -591,10 +618,9 @@ namespace DriversGuide
                 LiveDatei = new MeasurementFile(ofd.FileName); // Datatable anlegen
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable(); // Datatable befüllen
                 LiveDataset.Clear();        // Daten aus Table löschen
+                                                                          
+                stopwatch.Start();
                 
-                
-             
-
                 DoCalculations(true);
             }
             timerSimulation.Start(); // Simulation starten
@@ -617,8 +643,16 @@ namespace DriversGuide
             else
             {
                 timerSimulation.Stop();
+                Berechnung.SepIntervals(LiveDataset, "OBD_Vehicle_Speed_(PID_13)");
+                Berechnung.PosCheck("ai");
+                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+                perUrban = Berechnung.CalcPercentile_Interval(ref urban, "a*v");
+                perRural = Berechnung.CalcPercentile_Interval(ref rural, "a*v");
+                perMotorway = Berechnung.CalcPercentile_Interval(ref motorway, "a*v");                
+                stopwatch.Stop();
+                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
-            
+
             FormLiveOverview.RefreshData();
             FormGPS.RefreshMap();
         }

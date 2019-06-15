@@ -19,11 +19,12 @@ namespace DriversGuide
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
         private double distrUrban, distrRural, distrMotorway;
-        private double borderUrban, borderRural, borderMotorway;
         private string[] errors = new string[3];
         private DataTable urban;
         private DataTable rural;
-        private DataTable motorway;        
+        private DataTable motorway;
+
+        double count = 0;
 
         //Delete every entry in DataTable < 0.1 and return number of remaining entries
         //********************************************************************************************
@@ -56,20 +57,12 @@ namespace DriversGuide
          *      - border:            the border which isn't allowed to be passed
         */
         //********************************************************************************************
-        private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval, ref double border)
+        private bool CheckCritInterval (DataTable dt_interval, double avg_speed, double percentileNF, double RPA_interval)
         {
-            border = 0;
-
             if (avg_speed <= 74.6 && percentileNF > (0.136 * avg_speed + 14.44))
-            {
-                border = (0.136 * avg_speed + 14.44);
-                return false;
-            }
-            else if (avg_speed > 74.6 && percentileNF > (0.0742 * avg_speed + 18.966))
-            {
-                border = (0.0742 * avg_speed + 18.966);
-                return false;
-            }
+                return false;            
+            else if (avg_speed > 74.6 && percentileNF > (0.0742 * avg_speed + 18.966))                
+                return false;            
             else if (avg_speed <= 94.05 && RPA_interval < ((-0.0016 * avg_speed + 0.1755) / 3.6))
                 return false;
             else if (avg_speed > 94.05 && RPA_interval < 0.025)
@@ -91,26 +84,26 @@ namespace DriversGuide
             bool con3 = false;
 
             //If every interval matches criteria ..
-            if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban, ref borderUrban))
+            if (CheckCritInterval(urban, avgSpeed_urban, perUrban, RPAUrban))
                 con1 = true;
-            else if (borderUrban != 0)
-                errors[0] = "Perzentil Stadt überschritten";
-            else
-                errors[0] = "RPA Stadt nicht erfüllt";
+            //else if (borderUrban != 0)
+            //    errors[0] = "Perzentil Stadt überschritten";
+            //else
+            //    errors[0] = "RPA Stadt nicht erfüllt";
 
-            if (CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural, ref borderRural))
+            if (CheckCritInterval(rural, avgSpeed_rural, perRural, RPARural))
                 con2 = true;
-            else if (borderRural != 0)
-                errors[1] = "Perzentil Land überschritten";
-            else
-                errors[1] = "RPA Land nicht erfüllt";
+            //else if (borderRural != 0)
+            //    errors[1] = "Perzentil Land überschritten";
+            //else
+            //    errors[1] = "RPA Land nicht erfüllt";
 
-            if (CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway, ref borderMotorway))
+            if (CheckCritInterval(motorway, avgSpeed_motorway, perMotorway, RPAMotorway))
                 con3 = true;
-            else if (borderMotorway != 0)
-                errors[2] = "Perzentil Autobahn überschritten";
-            else
-                errors[2] = "RPA Autobahn nicht erfüllt";
+            //else if (borderMotorway != 0)
+            //    errors[2] = "Perzentil Autobahn überschritten";
+            //else
+            //    errors[2] = "RPA Autobahn nicht erfüllt";
 
             if (con1 && con2 && con3)
                 return true;
@@ -227,16 +220,23 @@ namespace DriversGuide
         /*Parameters:
          *      - dt:             DataTable which contains complete dataset for calculations
          *      - column_speed:   string with the name of the column by which the calculations are done
+         *      - init:           bool to determine if live Mode is running
         */
         //********************************************************************************************
         public void CalcReqLive(ref DataTable dt, string column_speed, bool init)
         {
             int lastRow = dt.Rows.Count;
-            double strecke;            
+            double strecke;
+            string column_dynamic = "a*v";
+            string column_acc = "ai";
 
-            //Add the new column 
+            //Add the new columns 
             if (init)
+            {
                 dt.Columns.Add("di", typeof(Double));
+                dt.Columns.Add("ai", typeof(Double));
+                dt.Columns.Add("a*v", typeof(Double));
+            }
 
             //Calculation of distance
             if (lastRow > 0)
@@ -254,7 +254,108 @@ namespace DriversGuide
                 else
                     distMotorway += strecke;
             }
+
+            if (lastRow > 1)
+            {
+                if (lastRow == 2)
+                {
+                    dt.Rows[lastRow - 2]["ai"] = Convert.ToDouble(dt.Rows[lastRow - 1][column_speed]) / (2 * 3.6);
+
+                    //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                    dt.Rows[lastRow - 2]["a*v"] = Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]) * Convert.ToDouble(dt.Rows[lastRow - 2]["ai"]) / 3.6;
+                }
+                else
+                {
+                    dt.Rows[lastRow - 1]["ai"] = -Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]) / (2 * 3.6);
+
+                    //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                    dt.Rows[lastRow - 1]["a*v"] = Convert.ToDouble(dt.Rows[lastRow - 1][column_speed]) * Convert.ToDouble(dt.Rows[lastRow - 1]["ai"]) / 3.6;
+                }
+
+                if (lastRow > 2)
+                {
+                    dt.Rows[lastRow - 2]["ai"] = (Convert.ToDouble(dt.Rows[lastRow - 1][column_speed]) - Convert.ToDouble(dt.Rows[lastRow - 3][column_speed])) / (2 * 3.6);
+
+                    //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                    dt.Rows[lastRow - 2]["a*v"] = Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]) * Convert.ToDouble(dt.Rows[lastRow - 2]["ai"]) / 3.6;
+                }                
+            }
+
+            if (count == 20)
+            {
+                count = 0;
+                
+                SepIntervals(dt, column_speed);
+                if (urban.Rows.Count > 0)
+                    MakePosCheckCount(ref urban, column_acc);
+
+                if (rural.Rows.Count > 0)
+                    MakePosCheckCount(ref rural, column_acc);
+
+                if (motorway.Rows.Count > 0)
+                    MakePosCheckCount(ref motorway, column_acc);
+                perUrban = CalcPercentile_Interval(ref urban, column_dynamic);
+                perRural = CalcPercentile_Interval(ref rural, column_dynamic);
+                perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
+            }
+            count++;
+            //if (lastRow == 2)
+            //{
+            //    double speed = Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]);
+            //    DataRow currentRow = dt.Rows[lastRow - 2];
+
+            //    if (speed <= 60)
+            //        urban.Rows.Add(currentRow.ItemArray);
+            //    else if (speed <= 90)
+            //        rural.Rows.Add(currentRow.ItemArray);
+            //    else
+            //        motorway.Rows.Add(currentRow.ItemArray);
+            //}
+            //else if (lastRow > 2)
+            //{
+            //    double speed = Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]);
+            //    DataRow currentRow = dt.Rows[lastRow - 2];
+
+            //    if (speed <= 60)
+            //        urban.Rows.Add(currentRow.ItemArray);
+            //    else if (speed <= 90)
+            //        rural.Rows.Add(currentRow.ItemArray);
+            //    else
+            //        motorway.Rows.Add(currentRow.ItemArray);
+            //}
         }
+
+        //Seperate last two rows of dataTable to correct interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - dt:             DataTable which contains complete dataset for calculations
+         *      - column_speed:   string with the name of the column by which the calculations are done
+        */
+        //********************************************************************************************
+        //public void SepLastRowsLive (ref DataTable dt, string column_speed)
+        //{
+        //    int lastRow = dt.Rows.Count;
+
+        //    double speed = Convert.ToDouble(dt.Rows[lastRow - 2][column_speed]);
+        //    DataRow currentRow = dt.Rows[lastRow - 2];
+
+        //    if (speed <= 60)
+        //        urban.Rows.Add(currentRow.ItemArray);
+        //    else if (speed <= 90)
+        //        rural.Rows.Add(currentRow.ItemArray);
+        //    else
+        //        motorway.Rows.Add(currentRow.ItemArray);
+
+        //    speed = Convert.ToDouble(dt.Rows[lastRow - 1][column_speed]);
+        //    currentRow = dt.Rows[lastRow - 1];
+
+        //    if (speed <= 60)
+        //        urban.Rows.Add(currentRow.ItemArray);
+        //    else if (speed <= 90)
+        //        rural.Rows.Add(currentRow.ItemArray);
+        //    else
+        //        motorway.Rows.Add(currentRow.ItemArray);
+        //}
 
         //Calc the percentage of the distances per interval compared to complete trip
         //Input only complete dataset, optimized for LiveMode
@@ -433,21 +534,6 @@ namespace DriversGuide
             motorway_data = motorway.Copy();
         }
 
-        //Return the 95 Percentile borders
-        //********************************************************************************************
-        /*Parameters:
-         *      - bordUrban:        Variable to store urban border to
-         *      - bordRural:        Variable to store rural border to
-         *      - bordMotorway:     Variable to store motorway border to
-        */
-        //********************************************************************************************
-        public void GetPercentileBorders(ref double bordUrban, ref double bordRural, ref double bordMotorway)
-        {
-            bordUrban = borderUrban;
-            bordRural = borderRural;
-            bordMotorway = borderMotorway;
-        }
-
         //Return the error messages
         //********************************************************************************************
         /*Parameters:
@@ -472,6 +558,21 @@ namespace DriversGuide
             urban = distrUrban;
             rural = distrRural;
             motorway = distrMotorway;
+        }
+
+        //Get the RPA values per interval
+        //********************************************************************************************
+        /*Parameters:
+         *      - urban:            RPA for the urban interval        
+         *      - rural:            RPA for the rural interval
+         *      - motorway:         RPA for the motorway interval
+        */
+        //********************************************************************************************
+        public void GetRPA(ref double urban, ref double rural, ref double motorway)
+        {
+            urban = RPAUrban;
+            rural = RPARural;
+            motorway = RPAMotorway;
         }
 
         //Calculate the percentile of each interval
@@ -512,7 +613,7 @@ namespace DriversGuide
                     // .. calculate the exact value of it 
                     dynNF = y1 + (((95 - x1) / (x2 - x1)) * (y2 - y1));
                 }
-                //if one entry mathes exactly 95 percent ..
+                //if one entry matches exactly 95 percent ..
                 else if (Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]) == 95)
                 {
                     // .. write it to the variable
