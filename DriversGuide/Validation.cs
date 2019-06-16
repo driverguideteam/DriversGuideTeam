@@ -35,11 +35,30 @@ namespace DriversGuide
             errors.Columns.Add("Speeds", typeof(string));
             errors.Columns.Add("ColdStart", typeof(string));
             errors.Columns.Add("Other", typeof(string));
+            errors.Columns.Add("Urban", typeof(string));
+            errors.Columns.Add("Motorway", typeof(string));
 
             errors.Rows.Add();
             errors.Rows.Add();
             errors.Rows.Add();
             errors.Rows.Add();
+        }
+
+        public void InitTipsDt()
+        {
+            tips.Columns.Add("Distance", typeof(string));
+            tips.Columns.Add("Distribution", typeof(string));
+            tips.Columns.Add("Duration", typeof(string));
+            tips.Columns.Add("Speeds", typeof(string));
+            tips.Columns.Add("ColdStart", typeof(string));
+            tips.Columns.Add("Other", typeof(string));
+            tips.Columns.Add("Urban", typeof(string));
+            tips.Columns.Add("Motorway", typeof(string));
+
+            tips.Rows.Add();
+            tips.Rows.Add();
+            tips.Rows.Add();
+            tips.Rows.Add();
         }
 
         //Calculate distances drove by interval, return them in array as values in kilometers
@@ -85,6 +104,11 @@ namespace DriversGuide
             duration_hold = 0;
             double duration_ratio = 0;
             int countTime = 1;
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+            bool con4 = false;
+            bool con5 = false;
             
             //Calculate the average speed in the interval and the duration of the trip in minutes
             avgSpeed = (double)dt_urban.Compute("SUM([" + column_speed + "])", "") / dt_urban.Rows.Count;
@@ -110,10 +134,55 @@ namespace DriversGuide
             duration_ratio = duration_hold * 100 / duration_interval;
 
             //if urban criteria matched return true
-            if (avgSpeed >= 15 && avgSpeed <= 40 && duration_ratio >= 6 && duration_ratio <= 30 && countTime <= 120)
+            //if near border give tips
+            if (avgSpeed >= 15)
+                con1 = true;
+            else
+                errors.Rows[0]["Urban"] = "Durschnittsgeschwindigkeit Stadt zu gering";
+
+            if (avgSpeed <= 40)
+                con2 = true;
+            else
+                errors.Rows[0]["Urban"] = "Durschnittsgeschwindigkeit Stadt zu hoch";
+
+            if (avgSpeed >= 15 && avgSpeed <= 19)
+                tips.Rows[0]["Urban"] = "Stadt: Durchschnittsgeschwindigkeit erhöhen";
+            else if (avgSpeed >= 36 && avgSpeed <= 40)
+                tips.Rows[0]["Urban"] = "Stadt: Durchschnittsgeschwindigkeit verringern";
+
+            if (duration_ratio >= 6)
+                con3 = true;
+            else
+                errors.Rows[1]["Urban"] = "Stadt: Prozentueller Anteil Haltezeit zu gering";
+
+            if (duration_ratio <= 30)
+                con4 = true;
+            else
+                errors.Rows[1]["Urban"] = "Stadt: Prozentueller Anteil Haltezeit zu hoch";
+
+            if (duration_ratio >= 6 && duration_ratio <= 10)
+                tips.Rows[1]["Urban"] = "Stadt: Haltezeit erhöhen";
+            else if (duration_ratio >= 26 && duration_ratio <= 30)
+                tips.Rows[1]["Urban"] = "Stadt: Haltezeit verringern";
+
+            if (countTime <= 120)
+                con5 = true;
+            else
+                errors.Rows[2]["Urban"] = "Stadt: Einzelne Haltezeit war zu lang";
+
+            if (countTime >= 110 && countTime <= 120)
+                tips.Rows[2]["Urban"] = "Stadt: Dauer einzelner Haltezeiten verringern";
+
+            if (con1 && con2 && con3 && con4 && con5)
                 return true;
             else
                 return false;
+
+            //if urban criteria matched return true
+            //if (avgSpeed >= 15 && avgSpeed <= 40 && duration_ratio >= 6 && duration_ratio <= 30 && countTime <= 120)
+            //    return true;
+            //else
+            //    return false;
         }
 
         //Check if motorway criteria are matched
@@ -205,15 +274,21 @@ namespace DriversGuide
             distrMotorway = distances[2] * 100 / trip;
 
             //if criteria are matched, return true, otherwise define errors
+            //Give tips when near to border
             if (distrUrban >= 29)
                 con1 = true;
             else
-                errors.Rows[0]["Distribution"] = "Stadtanteil zu gering";
+                errors.Rows[0]["Distribution"] = "Stadtanteil zu gering";          
 
             if (distrUrban <= 44)
                 con2 = true;
             else
                 errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
+
+            if (distrUrban >= 29 && distrUrban <= 34)
+                tips.Rows[0]["Distribution"] = "Stadtanteil erhöhen";
+            else if (distrUrban >= 39 && distrUrban <= 44)
+                tips.Rows[0]["Distribution"] = "Standanteil verringern";
 
             if (distrRural >= 23)
                 con3 = true;
@@ -225,6 +300,11 @@ namespace DriversGuide
             else
                 errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
+            if (distrRural >= 23 && distrRural <= 28)
+                tips.Rows[1]["Distribution"] = "Landanteil erhöhen";
+            else if (distrRural >= 38 && distrRural <= 43)
+                tips.Rows[1]["Distribution"] = "Landanteil verringern";
+
             if (distrMotorway >= 23)
                 con5 = true;
             else
@@ -234,6 +314,11 @@ namespace DriversGuide
                 con6 = true;
             else
                 errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
+
+            if (distrMotorway >= 23 && distrMotorway <= 28)
+                tips.Rows[1]["Distribution"] = "Autobahnanteil erhöhen";
+            else if (distrMotorway >= 38 && distrMotorway <= 43)
+                tips.Rows[1]["Distribution"] = "Autobahnanteil verringern";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;
@@ -279,6 +364,7 @@ namespace DriversGuide
             distrMotorway = distances[2] * 100 / trip;
 
             //if criteria are matched, return true, otherwise define errors
+            //Give tips when near to border
             if (distrUrban >= 29)
                 con1 = true;
             else
@@ -288,6 +374,11 @@ namespace DriversGuide
                 con2 = true;
             else
                 errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
+
+            if (distrUrban >= 29 && distrUrban <= 34)
+                tips.Rows[0]["Distribution"] = "Stadtanteil erhöhen";
+            else if (distrUrban >= 39 && distrUrban <= 44)
+                tips.Rows[0]["Distribution"] = "Standanteil verringern";
 
             if (distrRural >= 23)
                 con3 = true;
@@ -299,6 +390,11 @@ namespace DriversGuide
             else
                 errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
+            if (distrRural >= 23 && distrRural <= 28)
+                tips.Rows[1]["Distribution"] = "Landanteil erhöhen";
+            else if (distrRural >= 38 && distrRural <= 43)
+                tips.Rows[1]["Distribution"] = "Landanteil verringern";
+
             if (distrMotorway >= 23)
                 con5 = true;
             else
@@ -308,6 +404,11 @@ namespace DriversGuide
                 con6 = true;
             else
                 errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
+
+            if (distrMotorway >= 23 && distrMotorway <= 28)
+                tips.Rows[1]["Distribution"] = "Autobahnanteil erhöhen";
+            else if (distrMotorway >= 38 && distrMotorway <= 43)
+                tips.Rows[1]["Distribution"] = "Autobahnanteil verringern";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;
@@ -411,6 +512,17 @@ namespace DriversGuide
             return errors.Copy();
         }
 
+        //Get dataTable with tip messages
+        //********************************************************************************************
+        /*Parameters:
+         *      - tips:             dataTable with tip messages
+        */
+        //********************************************************************************************
+        public DataTable GetTips()
+        {
+            return tips.Copy();
+        }
+
         //Check if speed criteria are matched
         //********************************************************************************************
         /*Parameters:
@@ -467,15 +579,21 @@ namespace DriversGuide
             duration = Convert.ToDouble(dt.Rows[dt.Rows.Count - 1][column_time]) / 60000;
 
             //if critera are matched return true, otherwise define error
+            //Give tips when near borders
             if (duration >= 90)
                 con1 = true;
             else
-                errors.Rows[0]["Duration"] = "Fahrzeit zu gering";
+                errors.Rows[0]["Duration"] = "Fahrzeit zu gering";            
 
             if (duration <= 120)
                 con2 = true;
             else
                 errors.Rows[0]["Duration"] = "Fahrzeit zu lang";
+
+            if (duration >= 90 && duration <= 97)
+                tips.Rows[0]["Duration"] = "Fahrzeit erhöhen";
+            else if (duration >= 113 && duration <= 120)
+                tips.Rows[0]["Duration"] = "Fahrzeit verringern";
 
             if (con1 && con2)
                 return true;
@@ -516,20 +634,30 @@ namespace DriversGuide
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
 
             //if criteria are matched return true, otherwise define error
+            //Give tips when near borders
             if (distances[0] >= 16)
                 distUrban = true;
             else
                 errors.Rows[0]["Distance"] = "Strecke Stadt zu gering";
+
+            if (distances[0] >= 16 && distances[0] <= 20)
+                tips.Rows[0]["Distance"] = "Strecke Stadt erhöhen";
 
             if (distances[1] >= 16)
                 distRural = true;
             else
                 errors.Rows[1]["Distance"] = "Strecke Land zu gering";
 
+            if (distances[1] >= 16 && distances[1] <= 20)
+                tips.Rows[1]["Distance"] = "Strecke Land erhöhen";
+
             if (distances[2] >= 16)
                 distMotorway = true;
             else
                 errors.Rows[2]["Distance"] = "Strecke Autobahn zu gering";
+
+            if (distances[2] >= 16 && distances[2] <= 20)
+                tips.Rows[2]["Distance"] = "Strecke Autobahn erhöhen";
 
             if (distUrban && distRural && distMotorway)
                 return true;
@@ -558,20 +686,30 @@ namespace DriversGuide
             CalcDistances(urban, rural, motorway, column_distance, ref distances);
 
             //if criteria are matched return true, otherwise define error
+            //Give tips when near borders
             if (distances[0] >= 16)
                 distUrban = true;
             else
                 errors.Rows[0]["Distance"] = "Strecke Stadt zu gering";
+
+            if (distances[0] >= 16 && distances[0] <= 20)
+                tips.Rows[0]["Distance"] = "Strecke Stadt erhöhen";
 
             if (distances[1] >= 16)
                 distRural = true;
             else
                 errors.Rows[1]["Distance"] = "Strecke Land zu gering";
 
+            if (distances[1] >= 16 && distances[1] <= 20)
+                tips.Rows[1]["Distance"] = "Strecke Land erhöhen";
+
             if (distances[2] >= 16)
                 distMotorway = true;
             else
                 errors.Rows[2]["Distance"] = "Strecke Autobahn zu gering";
+
+            if (distances[2] >= 16 && distances[2] <= 20)
+                tips.Rows[2]["Distance"] = "Strecke Autobahn erhöhen";
 
             if (distUrban && distRural && distMotorway)
                 return true;
@@ -625,7 +763,7 @@ namespace DriversGuide
                 i++;
 
             //start time in seconds after start
-            time_start = Convert.ToDouble(temp.Rows[i][column_time]) / 1000;        
+            time_start = Convert.ToDouble(temp.Rows[i][column_time]) / 1000;
 
             //Copy only entries with a speed value lower 1 km/h
             temp = temp.Select("[" + column_speed + "]" + " < 1").CopyToDataTable();
@@ -637,12 +775,18 @@ namespace DriversGuide
             if (time_start <= 15)
                 con1 = true;
             else
-                errors.Rows[0]["ColdStart"] = "Kaltstart: Zu spaet losgefahren";
+                errors.Rows[0]["ColdStart"] = "Kaltstart: Zu spät losgefahren";
+
+            if (time_start >= 10 && time_start <= 15)
+                tips.Rows[0]["ColdStart"] = "Kaltstart: Früher losfahren";
 
             if (holdTimeCold <= 90)
                 con2 = true;
             else
                 errors.Rows[1]["ColdStart"] = "Kaltstart: Standzeit zu lang";
+
+            if (holdTimeCold >= 80 && holdTimeCold <= 90)
+                tips.Rows[1]["ColdStart"] = "Kaltstart: Standzeit verringern";
 
             if (avgSpeedCold >= 15)
                 con3 = true;
@@ -654,10 +798,18 @@ namespace DriversGuide
             else
                 errors.Rows[2]["ColdStart"] = "Kaltstart: Durchschnittsgeschwindigkeit zu hoch";
 
+            if (avgSpeedCold >= 15 && avgSpeedCold <= 14)
+                tips.Rows[2]["ColdStart"] = "Kaltstart: Durchschnittsgeschwindigkeit erhöhen";
+            else if (avgSpeedCold >= 36 && avgSpeedCold <= 40)
+                tips.Rows[2]["ColdStart"] = "Kaltstart: Durchschnittsgeschwindigkeit verringern";
+
             if (maxSpeedCold <= 60)
                 con5 = true;
             else
                 errors.Rows[3]["ColdStart"] = "Kaltstart: Zu schnell gefahren";
+
+            if (maxSpeedCold >= 55 && maxSpeed <= 60)
+                tips.Rows[3]["ColdStart"] = "Kaltstart: Höchstgeschwindigkeit verringern";
 
             if (con1 && con2 && con3 && con4 && con5)
                 return true;
@@ -738,6 +890,7 @@ namespace DriversGuide
             rural = dt.Clone();
             motorway = dt.Clone();
             InitErrorsDt();
+            InitTipsDt();
 
             //Seperate DataTable into intervals, using the methods of the Calculations class's object
             //Get the now seperated intervals

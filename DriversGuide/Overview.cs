@@ -25,8 +25,10 @@ namespace DriversGuide
         Bitmap bmpInfo;
         DataTable values;
         DataTable errors;
-        List<string> columns = new List<string> {"Distance", "Distribution", "Duration", "Speeds", "ColdStart", "Other"};
+        DataTable tips;
+        List<string> columns = new List<string> {"Distance", "Distribution", "Duration", "Speeds", "ColdStart", "Other", "Urban", "Motorway"};
         List<string> errorsList = new List<string>();
+        List<string> tipsList = new List<string>();
 
         public Overview(DriversGuideApp caller)
         {
@@ -44,9 +46,14 @@ namespace DriversGuide
 
             values = MainForm.GetValuesDataTable();
             //ShowData();
-            errors = MainForm.GetErrorsDataTable();            
+            errors = MainForm.GetErrorsDataTable();
+            tips = MainForm.GetTipsDataTable();
             GetMessages();            
-            listBoxErrors.DataSource = errorsList;          
+            listBoxErrors.DataSource = errorsList;
+            listBoxTip.DataSource = tipsList;
+
+            if (!MainForm.GetValidation())
+                picHeadingError.Visible = true;
         }
 
         private void DrawStringBitmap(double content1, string title1, string content2, string title2, Color colorCont)
@@ -87,9 +94,9 @@ namespace DriversGuide
 
             strCont.DrawString("Status: ", typeTitle, styleTitle, 0, 15, sf);
             if (MainForm.GetValidation())
-                strCont.DrawString("Gueltig!", typeState, new SolidBrush(Color.MediumSeaGreen), 90, 16, sf);
+                strCont.DrawString("Gültig!", typeState, new SolidBrush(Color.MediumSeaGreen), 90, 16, sf);
             else
-                strCont.DrawString("Ungueltig!", typeState, new SolidBrush(Color.IndianRed), 90, 16, sf);
+                strCont.DrawString("Ungültig!", typeState, new SolidBrush(Color.IndianRed), 90, 16, sf);
         }
 
         private void DrawShortStringBitmap(string heading)
@@ -302,6 +309,12 @@ namespace DriversGuide
                     if (errors.Rows[j][i].ToString() != "")
                         errorsList.Add(errors.Rows[j][i].ToString());
                 }
+
+                for (int j = 0; j < tips.Rows.Count; j++)
+                {
+                    if (tips.Rows[j][i].ToString() != "")
+                        tipsList.Add(tips.Rows[j][i].ToString());
+                }
             }
         }
 
@@ -393,7 +406,7 @@ namespace DriversGuide
 
         private void picHeadingError_Paint(object sender, PaintEventArgs e)
         {
-            DrawShortStringBitmap("Ungueltig weil:");
+            DrawShortStringBitmap("Ungültig weil:");
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpShortStrCont, 0, 0);
@@ -401,7 +414,7 @@ namespace DriversGuide
 
         private void picHeadingTip_Paint(object sender, PaintEventArgs e)
         {
-            DrawShortStringBitmap("Grenzwertig:");
+            DrawShortStringBitmap("Vorschläge:");
 
             Graphics g = e.Graphics;
             g.DrawImage(bmpShortStrCont, 0, 0);

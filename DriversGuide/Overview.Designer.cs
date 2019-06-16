@@ -106,6 +106,7 @@
             this.picHeadingError.Size = new System.Drawing.Size(260, 42);
             this.picHeadingError.TabIndex = 52;
             this.picHeadingError.TabStop = false;
+            this.picHeadingError.Visible = false;
             this.picHeadingError.Paint += new System.Windows.Forms.PaintEventHandler(this.picHeadingError_Paint);
             // 
             // picHeadingTip

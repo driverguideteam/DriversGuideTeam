@@ -39,6 +39,7 @@ namespace DriversGuide
         private DataTable motorway = new DataTable();
         private DataTable values = new DataTable();
         private DataTable errors = new DataTable();
+        private DataTable tips = new DataTable();
         public DataTable ColumnHeaders;   //Datatable für Spaltenüberschriften
         //DataSet dx = new DataSet();
 
@@ -112,6 +113,11 @@ namespace DriversGuide
             return errors.Copy();
         }
 
+        public DataTable GetTipsDataTable()
+        {
+            return tips.Copy();
+        }
+
         public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
         {
             if (calcDone)
@@ -157,7 +163,7 @@ namespace DriversGuide
             values.Rows[1]["Klasse"] = "Stadt";
             values.Rows[2]["Klasse"] = "Land";
             values.Rows[3]["Klasse"] = "Autobahn";
-        }
+        }        
 
         private void DoCalculations()
         {
@@ -187,6 +193,7 @@ namespace DriversGuide
             valid = Gueltigkeit.CheckValidity(test, column_speed, column_time, column_coolant, column_distance);
 
             errors = Gueltigkeit.GetErrors();
+            tips = Gueltigkeit.GetTips();
             errorMess = Berechnung.GetErrors();
 
             errors.Rows[0]["Other"] = errorMess[0];
