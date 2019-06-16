@@ -70,9 +70,9 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(886, 449);
+            this.pictureBox1.Size = new System.Drawing.Size(1181, 553);
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
@@ -93,15 +93,15 @@
             legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
             legend1.Name = "Legend1";
             this.chart2.Legends.Add(legend1);
-            this.chart2.Location = new System.Drawing.Point(452, 0);
-            this.chart2.Margin = new System.Windows.Forms.Padding(2);
+            this.chart2.Location = new System.Drawing.Point(603, 0);
+            this.chart2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart2.Name = "chart2";
             series1.ChartArea = "TestDaten1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series1.Legend = "Legend1";
             series1.Name = "TestDaten1";
             this.chart2.Series.Add(series1);
-            this.chart2.Size = new System.Drawing.Size(435, 223);
+            this.chart2.Size = new System.Drawing.Size(580, 274);
             this.chart2.TabIndex = 5;
             this.chart2.Text = "chart2";
             this.chart2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart2_MouseMove_1);
@@ -125,14 +125,14 @@
             legend2.Name = "Legend1";
             this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(0, 0);
-            this.chart1.Margin = new System.Windows.Forms.Padding(2);
+            this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             series2.ChartArea = "TestDaten1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.Legend = "Legend1";
             series2.Name = "TestDaten1";
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(435, 223);
+            this.chart1.Size = new System.Drawing.Size(580, 274);
             this.chart1.TabIndex = 6;
             this.chart1.Text = "chart1";
             this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove_1);
@@ -154,15 +154,15 @@
             legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
             legend3.Name = "Legend1";
             this.chart3.Legends.Add(legend3);
-            this.chart3.Location = new System.Drawing.Point(0, 226);
-            this.chart3.Margin = new System.Windows.Forms.Padding(2);
+            this.chart3.Location = new System.Drawing.Point(0, 278);
+            this.chart3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart3.Name = "chart3";
             series3.ChartArea = "TestDaten1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series3.Legend = "Legend1";
             series3.Name = "TestDaten1";
             this.chart3.Series.Add(series3);
-            this.chart3.Size = new System.Drawing.Size(435, 223);
+            this.chart3.Size = new System.Drawing.Size(580, 274);
             this.chart3.TabIndex = 9;
             this.chart3.Text = "chart3";
             this.chart3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart3_MouseMove_1);
@@ -184,15 +184,15 @@
             legend4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
             legend4.Name = "Legend1";
             this.chart4.Legends.Add(legend4);
-            this.chart4.Location = new System.Drawing.Point(452, 226);
-            this.chart4.Margin = new System.Windows.Forms.Padding(2);
+            this.chart4.Location = new System.Drawing.Point(603, 278);
+            this.chart4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart4.Name = "chart4";
             series4.ChartArea = "TestDaten1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series4.Legend = "Legend1";
             series4.Name = "TestDaten1";
             this.chart4.Series.Add(series4);
-            this.chart4.Size = new System.Drawing.Size(435, 223);
+            this.chart4.Size = new System.Drawing.Size(580, 274);
             this.chart4.TabIndex = 10;
             this.chart4.Text = "chart4";
             this.chart4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart4_MouseMove_1);
@@ -202,10 +202,9 @@
             this.lblPos1.AutoSize = true;
             this.lblPos1.BackColor = System.Drawing.Color.White;
             this.lblPos1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPos1.Location = new System.Drawing.Point(359, 101);
-            this.lblPos1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPos1.Location = new System.Drawing.Point(479, 124);
             this.lblPos1.Name = "lblPos1";
-            this.lblPos1.Size = new System.Drawing.Size(46, 18);
+            this.lblPos1.Size = new System.Drawing.Size(60, 24);
             this.lblPos1.TabIndex = 11;
             this.lblPos1.Text = "label1";
             // 
@@ -214,10 +213,9 @@
             this.lblPos2.AutoSize = true;
             this.lblPos2.BackColor = System.Drawing.Color.White;
             this.lblPos2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPos2.Location = new System.Drawing.Point(801, 101);
-            this.lblPos2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPos2.Location = new System.Drawing.Point(1068, 124);
             this.lblPos2.Name = "lblPos2";
-            this.lblPos2.Size = new System.Drawing.Size(46, 18);
+            this.lblPos2.Size = new System.Drawing.Size(60, 24);
             this.lblPos2.TabIndex = 12;
             this.lblPos2.Text = "label2";
             // 
@@ -226,10 +224,9 @@
             this.lblPos3.AutoSize = true;
             this.lblPos3.BackColor = System.Drawing.Color.White;
             this.lblPos3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPos3.Location = new System.Drawing.Point(359, 338);
-            this.lblPos3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPos3.Location = new System.Drawing.Point(479, 416);
             this.lblPos3.Name = "lblPos3";
-            this.lblPos3.Size = new System.Drawing.Size(46, 18);
+            this.lblPos3.Size = new System.Drawing.Size(60, 24);
             this.lblPos3.TabIndex = 13;
             this.lblPos3.Text = "label3";
             // 
@@ -238,18 +235,17 @@
             this.lblPos4.AutoSize = true;
             this.lblPos4.BackColor = System.Drawing.Color.White;
             this.lblPos4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPos4.Location = new System.Drawing.Point(801, 338);
-            this.lblPos4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPos4.Location = new System.Drawing.Point(1068, 416);
             this.lblPos4.Name = "lblPos4";
-            this.lblPos4.Size = new System.Drawing.Size(46, 18);
+            this.lblPos4.Size = new System.Drawing.Size(60, 24);
             this.lblPos4.TabIndex = 14;
             this.lblPos4.Text = "label4";
             // 
             // PlotGraphic
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(886, 449);
+            this.ClientSize = new System.Drawing.Size(1181, 553);
             this.Controls.Add(this.lblPos4);
             this.Controls.Add(this.lblPos3);
             this.Controls.Add(this.lblPos2);
@@ -259,11 +255,12 @@
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.chart2);
             this.Controls.Add(this.pictureBox1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "PlotGraphic";
             this.Text = "PlotGraphic";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGraphic_Load);
+            this.SizeChanged += new System.EventHandler(this.PlotGraphic_SizeChanged);
             this.Resize += new System.EventHandler(this.PlotGraphic_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

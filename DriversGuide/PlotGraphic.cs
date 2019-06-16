@@ -30,7 +30,6 @@ namespace DriversGuide
             this.chart2.MouseWheel += chart2_MouseWheel;   //Erstellen MouseWheel-Ereignis
             this.chart3.MouseWheel += chart3_MouseWheel;   //Erstellen MouseWheel-Ereignis
             this.chart4.MouseWheel += chart4_MouseWheel;   //Erstellen MouseWheel-Ereignis
-
         }
 
         public void ConnectToDatenauswahl(Datenauswahl CreateForm)
@@ -235,8 +234,8 @@ namespace DriversGuide
 
         private void SetStartScale(Chart chartname, string GewDatenX)
         {
-            chartname.ChartAreas[GewDatenX].AxisX.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisX.Minimum, chartname.ChartAreas[GewDatenX].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chartname.ChartAreas[GewDatenX].AxisY.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisY.Minimum, chartname.ChartAreas[GewDatenX].AxisY.Maximum);   //Startskalierung der y-Achse
+            chartname.ChartAreas[GewDatenX].AxisY.ScaleView.ZoomReset(0);   //Startskalierung der y-Achse
+            chartname.ChartAreas[GewDatenX].AxisX.ScaleView.ZoomReset(0);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
         }
 
         private void MoveCursor(Chart chartname, Label labelname, MouseEventArgs e, int x)
@@ -396,5 +395,19 @@ namespace DriversGuide
             ChartReady = false;
         }
 
+        private void PlotGraphic_SizeChanged(object sender, EventArgs e)
+        {
+            if (ChartReady == true)
+            {
+                string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
+                string GewDaten1 = GewDatenMZ[0];
+                string GewDaten2 = GewDatenMZ[1];
+                string GewDaten3 = GewDatenMZ[2];
+                string GewDaten4 = GewDatenMZ[3];
+
+                LocateCharts(GewDaten1, GewDaten2, GewDaten3, GewDaten4);
+            }
+            ChartReady = false;
+        }
     }
 }

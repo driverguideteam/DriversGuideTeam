@@ -43,7 +43,7 @@ namespace DriversGuide
             InitializeComponent();
             live = false;
         }
-    
+
 
         public void GetChosenData(PlotGraphic ConnectForm)
         {
@@ -72,6 +72,9 @@ namespace DriversGuide
             lblRur.Visible = false;
             lblMw.Visible = false;
 
+            LocateCharts(ChUrb, ChRur, ChMw);   //Positionierung der charts
+            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw);   //Positionierung der labels
+
             if (live == false)
             {
                 DataTable dturb = MainForm.GetUrbanDataTable();
@@ -91,12 +94,53 @@ namespace DriversGuide
 
                 MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
 
-                DrawDynamic(dturb, dtrur, dtmw, units, purb, prur, pmw, borderUrb, borderRur, borderMw);
+                DrawDynamic(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
             }
+            //if (live == true)
+            //{
+            //    DataTable dturb = FormLive.GetUrbanDataTable();
+            //    DataTable dtrur = FormLive.GetRuralDataTable();
+            //    DataTable dtmw = FormLive.GetMotorwayDataTable();
+            //    //DataTable units = MainForm.GetUnitsDataTable();
+
+            //    double purb = 0;   //Perzentilwert Stadt
+            //    double prur = 0;   //Perzentilwert Land
+            //    double pmw = 0;    //Perzentilwert Autobahn
+
+            //    FormLive.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
+
+            //    double borderUrb = 0;
+            //    double borderRur = 0;
+            //    double borderMw = 0;
+
+            //    FormLive.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
+
+            //    DrawDynamic(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
+            //}
 
         }
 
-        private void DrawDynamic(DataTable dturb, DataTable dtrur, DataTable dtmw, DataTable units, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
+        private void LocateCharts(Chart chartname1, Chart chartname2, Chart chartname3)
+        {   //Positionierung der charts:
+            chartname1.Location = new Point(0, 0);
+            chartname1.Width = this.Width / 3;
+            chartname1.Height = this.Height - 10;
+            chartname2.Location = new Point(chartname1.Width, 0);
+            chartname2.Width = this.Width / 3;
+            chartname2.Height = this.Height - 10;
+            chartname3.Location = new Point(chartname1.Width + chartname2.Width, 0);
+            chartname3.Width = this.Width / 3;
+            chartname3.Height = this.Height - 10;
+        }
+
+        private void LocateLabels(Label labelname1, Label labelname2, Label labelname3, Chart chartname1, Chart chartname2, Chart chartname3)
+        {   //Positionierung der labels:
+            labelname1.Location = new Point(chartname1.Location.X + (chartname1.Width / 2) - 50, chartname1.Height - 10);   //Positionierung Label
+            labelname2.Location = new Point(chartname2.Location.X + (chartname2.Width / 2) - 50, chartname2.Height - 10);   //Positionierung Label
+            labelname3.Location = new Point(chartname3.Location.X + (chartname3.Width / 2) - 50, chartname3.Height - 10);      //Positionierung Label
+        }
+
+        private void DrawDynamic(DataTable dturb, DataTable dtrur, DataTable dtmw, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
         {
             newchart.SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", PlotCopy);
             ChUrb.Titles.Add("Dynamik Stadt").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
@@ -129,16 +173,16 @@ namespace DriversGuide
             ChUrb.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
             ChRur.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
             ChMw.Series[0].IsVisibleInLegend = false;    //Ausblenden Chartseries-Name
-            DeactSV(ChUrb, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-            DeactSV(ChRur, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-            DeactSV(ChMw, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+            //DeactSV(ChUrb, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+            //DeactSV(ChRur, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+            //DeactSV(ChMw, "a*v");  //Deaktiviert Bereichsauswahl in Chart
         }
 
-        private void DeactSV(Chart chartname, string GewDaten)  //Deaktiviert Bereichsauswahl in Chart
-        {
-            chartname.ChartAreas[GewDaten].AxisX.ScaleView.Zoomable = false;
-            chartname.ChartAreas[GewDaten].AxisY.ScaleView.Zoomable = false;
-        }
+        //private void DeactSV(Chart chartname, string GewDaten)  //Deaktiviert Bereichsauswahl in Chart
+        //{
+        //    chartname.ChartAreas[GewDaten].AxisX.ScaleView.Zoomable = false;
+        //    chartname.ChartAreas[GewDaten].AxisY.ScaleView.Zoomable = false;
+        //}
 
         private void SetChAxes(ref Chart chartname, DataTable tt, string xGewDat, string GewDaten, double ymax)
         {
@@ -174,19 +218,8 @@ namespace DriversGuide
 
         private void Dynamic_SizeChanged(object sender, EventArgs e)
         {
-            ChUrb.Location = new Point(0, 0);   //Positionierung u. Größeneinstellung Chart
-            ChUrb.Width = this.Width / 3;
-            ChUrb.Height = this.Height;
-            ChRur.Location = new Point(ChUrb.Width, 0);   //Positionierung u. Größeneinstellung Chart
-            ChRur.Width = this.Width / 3;
-            ChRur.Height = this.Height;
-            ChMw.Location = new Point(ChUrb.Width + ChRur.Width, 0);   //Positionierung u. Größeneinstellung Chart
-            ChMw.Width = this.Width / 3;
-            ChMw.Height = this.Height;
-
-            lblUrb.Location = new Point(ChUrb.Location.X + ChUrb.Width / 4 * 3, ChUrb.Height - 40);   //Positionierung Label
-            lblRur.Location = new Point(ChRur.Location.X + ChRur.Width / 4 * 3, ChRur.Height - 40);   //Positionierung Label
-            lblMw.Location = new Point(ChMw.Location.X + ChMw.Width / 4 * 3, ChMw.Height - 40);      //Positionierung Label
+            LocateCharts(ChUrb, ChRur, ChMw);   //Positionierung der charts
+            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw);   //Positionierung der labels
         }
 
         private void MoveCursor(Chart chartname, Label labelname, MouseEventArgs e, DataTable tt, string xGewDat, string GewDaten, string xunit, string yunit)
@@ -204,8 +237,8 @@ namespace DriversGuide
             chartname.ChartAreas[GewDaten].CursorY.Position = ypos;
 
             labelname.Visible = true;
-            labelname.Text = "x = " + Math.Round(xpos, 1).ToString() + " " + xunit + "\n" +
-                            "y = " + ypos.ToString() + " " + yunit;
+            labelname.Text = "x = " + Math.Round(xpos, 1).ToString() + " " + xunit + "    " +
+                             "y = " + ypos.ToString() + " " + yunit;
 
             //lblPos.BackColor = Color.White;
         }
@@ -347,8 +380,9 @@ namespace DriversGuide
 
         private void SetStartScale(Chart chartname, string GewDatenX)
         {
-            chartname.ChartAreas[GewDatenX].AxisX.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisX.Minimum, chartname.ChartAreas[GewDatenX].AxisX.Maximum);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
-            chartname.ChartAreas[GewDatenX].AxisY.ScaleView.Zoom(chartname.ChartAreas[GewDatenX].AxisY.Minimum, chartname.ChartAreas[GewDatenX].AxisY.Maximum);   //Startskalierung der y-Achse
+            chartname.ChartAreas[GewDatenX].AxisY.ScaleView.ZoomReset(0);   //Startskalierung der y-Achse
+            chartname.ChartAreas[GewDatenX].AxisX.ScaleView.ZoomReset(0);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
+
         }
 
         private void ChUrb_MouseWheel(object sender, MouseEventArgs e)
