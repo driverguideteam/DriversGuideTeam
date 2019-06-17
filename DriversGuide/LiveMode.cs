@@ -39,6 +39,7 @@ namespace DriversGuide
         bool calcDone = false;
         bool live = false;
         int countData = 5;
+        int ElapsedTicks = 0;
 
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -670,6 +671,50 @@ namespace DriversGuide
 
             FormLiveOverview.RefreshData();
             FormGPS.RefreshMap();
+
+            ElapsedTicks += 1;
+            int test = 5 * (int)Math.Round((ElapsedTicks + 2) / 5.0);
+            if (ElapsedTicks == test)
+            {
+                RedrawDynamics();
+            }
+        }
+
+        private void RedrawDynamics()
+        {
+            double urbmax = 0;      //Maximalwert a*v Stadt
+            double rurmax = 0;      //Maximalwert a*v Freiland
+            double mwmax = 0;       //Maximalwert a*v Autobahn
+            double ymax = 0;        //Maximalwert a*v generell
+            double purb = 0;        //Perzentilwert Stadt
+            double prur = 0;        //Perzentilwert Freiland
+            double pmw = 0;         //Perzentilwert Autobahn
+            double borderUrb = 0;   //Perzentilgrenzwert Stadt
+            double borderRur = 0;   //Perzentilgrenzwert Freiland
+            double borderMw = 0;    //Perzentilgrenzwert Autobahn
+
+            DataTable dturb = GetUrbanDataTable();
+            DataTable dtrur = GetRuralDataTable();
+            DataTable dtmw = GetMotorwayDataTable();
+
+            GetPercentiles(ref purb, ref prur, ref pmw);                        //Zuweisung Perzentilwerte
+            GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);   //Zuweisung Perzentilgrenzwerte
+
+            if (dturb.Rows.Count != 0)
+                urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
+            if (dtrur.Rows.Count != 0)
+                rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
+            if (dtmw.Rows.Count != 0)
+                mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
+
+            ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v generell, auf nächste 5 aufgerundet
+            if (FormDynamic != null)
+            {
+                FormDynamic.ClearAndSetChartsLive(ymax);
+                FormDynamic.FillCharts(dturb, dtrur, dtmw, ymax,
+                                       purb, prur, pmw,
+                                       borderUrb, borderRur, borderMw);
+            }
         }
 
         private void btnDyn_Click(object sender, EventArgs e)

@@ -149,7 +149,6 @@ namespace DriversGuide
                                             pictureBox1.Location.Y);
                 DrawChart(chart1, tt, GewDaten1);
                 LocateLabel(chart1, lblPos1);
-                lblPos1.Visible = true;
 
                 chart2.Visible = false;
                 chart3.Visible = false;
@@ -261,7 +260,7 @@ namespace DriversGuide
 
                 labelname.Visible = true;
                 labelname.Text = "x = " + tt.Rows[Convert.ToInt32(xpos)]["TimeFormat"] + "\n" +
-                              "y = " + ypos.ToString() + " " + yUnit;
+                              "y = " + ypos.ToString("F2") + " " + yUnit;
 
                 //lblPos.BackColor = Color.White;
 

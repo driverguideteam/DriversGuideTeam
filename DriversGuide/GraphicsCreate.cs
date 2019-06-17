@@ -58,21 +58,21 @@ namespace DriversGuide
 
             var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
 
-            //Chart1.CursorX.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
+            Chart1.CursorX.IsUserEnabled = true;                 //aktiviert Cursor
             Chart1.CursorX.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
             Chart1.CursorX.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
             Chart1.CursorX.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisX.ScaleView.Zoomable = true;
-            Chart1.CursorX.LineColor = Color.DarkOrange;                //Linienfarbe Cursor
+            Chart1.CursorX.LineColor = Color.DarkOrange;         //Linienfarbe Cursor
             Chart1.CursorX.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorX.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 
-            //Chart1.CursorY.IsUserEnabled = true;               //aktiviert Cursor (roter Strich)
+            Chart1.CursorY.IsUserEnabled = true;                 //aktiviert Cursor
             Chart1.CursorY.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
             Chart1.CursorY.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
             Chart1.CursorY.Interval = 1;                         //Intervall des Cursors
             Chart1.AxisY.ScaleView.Zoomable = true;
-            Chart1.CursorY.LineColor = Color.DarkOrange;                //Linienfarbe Cursor
+            Chart1.CursorY.LineColor = Color.DarkOrange;         //Linienfarbe Cursor
             Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
             Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
 

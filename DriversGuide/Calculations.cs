@@ -396,8 +396,8 @@ namespace DriversGuide
 
             //Add the associated unit to the first row
             units.Rows[0]["di"] = "m";
-            units.Rows[0]["ai"] = "m/s^2";
-            units.Rows[0]["a*v"] = "m^2/s^3";
+            units.Rows[0]["ai"] = "m/s²";
+            units.Rows[0]["a*v"] = "m²/s³";
             units.Rows[0]["Perzentil"] = "%";
         }
 

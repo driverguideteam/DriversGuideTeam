@@ -19,6 +19,21 @@ namespace DriversGuide
         PlotGraphic PlotCopy;
         bool live = false;
         bool liveRun = false;
+        double urbmax = 0;      //Maximalwert a*v Stadt
+        double rurmax = 0;      //Maximalwert a*v Freiland
+        double mwmax = 0;       //Maximalwert a*v Autobahn
+        double ymax = 0;        //Maximalwert a*v generell
+        double purb = 0;        //Perzentilwert Stadt
+        double prur = 0;        //Perzentilwert Freiland
+        double pmw = 0;         //Perzentilwert Autobahn
+        double borderUrb = 0;   //Perzentilgrenzwert Stadt
+        double borderRur = 0;   //Perzentilgrenzwert Freiland
+        double borderMw = 0;    //Perzentilgrenzwert Autobahn
+
+        DataTable dturb;
+        DataTable dtrur;
+        DataTable dtmw;
+        DataTable units;
 
 
         public Dynamic(LiveMode caller, bool liveRunning)
@@ -54,7 +69,7 @@ namespace DriversGuide
         {
             DataTable units = MainForm.GetUnitsDataTable();
 
-            string xUnit = Convert.ToString((units.Rows[0][xGewDat]));   //liefert Einheit der x-Achse
+            string xUnit = Convert.ToString((units.Rows[0][xGewDat]));    //liefert Einheit der x-Achse
             string yUnit = Convert.ToString((units.Rows[0][GewDaten]));   //liefert Einheit der y-Achse
 
             string[] xyUnits = new string[] { xUnit, yUnit };   //erstellt StringArray mit x- u. y-Einheiten
@@ -64,10 +79,6 @@ namespace DriversGuide
 
         private void Dynamic_Load(object sender, EventArgs e)
         {
-            this.ChUrb.MouseWheel += ChUrb_MouseWheel;   //Erstellen MouseWheel-Ereignis
-            this.ChRur.MouseWheel += ChRur_MouseWheel;   //Erstellen MouseWheel-Ereignis
-            this.ChMw.MouseWheel += ChMw_MouseWheel;   //Erstellen MouseWheel-Ereignis
-
             lblUrb.Visible = false;
             lblRur.Visible = false;
             lblMw.Visible = false;
@@ -77,121 +88,97 @@ namespace DriversGuide
 
             if (live == false)
             {
-                DataTable dturb = MainForm.GetUrbanDataTable();
-                DataTable dtrur = MainForm.GetRuralDataTable();
-                DataTable dtmw = MainForm.GetMotorwayDataTable();
-                DataTable units = MainForm.GetUnitsDataTable();
+                this.ChUrb.MouseWheel += ChUrb_MouseWheel;   //Erstellen MouseWheel-Ereignis
+                this.ChRur.MouseWheel += ChRur_MouseWheel;   //Erstellen MouseWheel-Ereignis
+                this.ChMw.MouseWheel += ChMw_MouseWheel;     //Erstellen MouseWheel-Ereignis
 
-                double purb = 0;   //Perzentilwert Stadt
-                double prur = 0;   //Perzentilwert Land
-                double pmw = 0;    //Perzentilwert Autobahn
+                dturb = MainForm.GetUrbanDataTable();
+                dtrur = MainForm.GetRuralDataTable();
+                dtmw = MainForm.GetMotorwayDataTable();
+                units = MainForm.GetUnitsDataTable();
 
-                MainForm.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
+                MainForm.GetPercentiles(ref purb, ref prur, ref pmw);                        //Zuweisung Perzentilwerte
+                MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);   //Zuweisung Perzentilgrenzwerte
 
-                double borderUrb = 0;
-                double borderRur = 0;
-                double borderMw = 0;
-
-                MainForm.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
-
-                DrawDynamic(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
+                DrawCharts(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
+                FillCharts(dturb, dtrur, dtmw, ymax, purb, prur, pmw, borderUrb, borderRur, borderMw);
+                EnableCursor(ref ChUrb, "a*v");
+                EnableCursor(ref ChRur, "a*v");
+                EnableCursor(ref ChMw, "a*v");
             }
-            //if (live == true)
-            //{
-            //    DataTable dturb = FormLive.GetUrbanDataTable();
-            //    DataTable dtrur = FormLive.GetRuralDataTable();
-            //    DataTable dtmw = FormLive.GetMotorwayDataTable();
-            //    //DataTable units = MainForm.GetUnitsDataTable();
+            if (live == true)
+            {
+                dturb = FormLive.GetUrbanDataTable();
+                dtrur = FormLive.GetRuralDataTable();
+                dtmw = FormLive.GetMotorwayDataTable();
+                //units = MainForm.GetUnitsDataTable();
 
-            //    double purb = 0;   //Perzentilwert Stadt
-            //    double prur = 0;   //Perzentilwert Land
-            //    double pmw = 0;    //Perzentilwert Autobahn
+                FormLive.GetPercentiles(ref purb, ref prur, ref pmw);                        //Zuweisung Perzentilwerte
+                FormLive.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);   //Zuweisung Perzentilgrenzwerte
 
-            //    FormLive.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
-
-            //    double borderUrb = 0;
-            //    double borderRur = 0;
-            //    double borderMw = 0;
-
-            //    FormLive.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
-
-            //    DrawDynamic(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
-            //}
-
+                DrawCharts(dturb, dtrur, dtmw, purb, prur, pmw, borderUrb, borderRur, borderMw);
+            }
         }
 
-        private void LocateCharts(Chart chartname1, Chart chartname2, Chart chartname3)
-        {   //Positionierung der charts:
-            chartname1.Location = new Point(0, 0);
-            chartname1.Width = this.Width / 3;
-            chartname1.Height = this.Height - 10;
-            chartname2.Location = new Point(chartname1.Width, 0);
-            chartname2.Width = this.Width / 3;
-            chartname2.Height = this.Height - 10;
-            chartname3.Location = new Point(chartname1.Width + chartname2.Width, 0);
-            chartname3.Width = this.Width / 3;
-            chartname3.Height = this.Height - 10;
-        }
+        private void DrawCharts(DataTable dturb, DataTable dtrur, DataTable dtmw, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
+        {   //Setzt die Grundeinstellungen der Charts, ohne Daten einzuzeichnen
 
-        private void LocateLabels(Label labelname1, Label labelname2, Label labelname3, Chart chartname1, Chart chartname2, Chart chartname3)
-        {   //Positionierung der labels:
-            labelname1.Location = new Point(chartname1.Location.X + (chartname1.Width / 2) - 50, chartname1.Height - 10);   //Positionierung Label
-            labelname2.Location = new Point(chartname2.Location.X + (chartname2.Width / 2) - 50, chartname2.Height - 10);   //Positionierung Label
-            labelname3.Location = new Point(chartname3.Location.X + (chartname3.Width / 2) - 50, chartname3.Height - 10);      //Positionierung Label
-        }
+            if (dturb.Rows.Count != 0)
+                urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
+            if (dtrur.Rows.Count != 0)
+                rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
+            if (dtmw.Rows.Count != 0)
+                mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
 
-        private void DrawDynamic(DataTable dturb, DataTable dtrur, DataTable dtmw, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
-        {
-            newchart.SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", PlotCopy);
+            ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v generell, auf nächste 5 aufgerundet
+
             ChUrb.Titles.Add("Dynamik Stadt").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-            newchart.SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", PlotCopy);
+            SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
+
             ChRur.Titles.Add("Dynamik Freiland").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-            newchart.SetChartProperties(ref ChMw, dtmw, "Perzentil", "a*v", PlotCopy);
+            SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
+
             ChMw.Titles.Add("Dynamik Autobahn").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-
-            double urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
-            double rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
-            double mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
-
-            double ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v auf nächste 5 aufgerundet
-
-            SetChAxes(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
-            SetChAxes(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
-            SetChAxes(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
-
-            Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
-            Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
-            Draw95PLine(ChMw, ymax, pmw);               //Zeichnen der 95%-Linie
-            DrawPerzentilValue(ChUrb, ymax, purb);      //Zeichnen des Perzentilwertes bei 95 %
-            DrawPerzentilValue(ChRur, ymax, prur);      //Zeichnen des Perzentilwertes bei 95 %
-            DrawPerzentilValue(ChMw, ymax, pmw);        //Zeichnen des Perzentilwertes bei 95 %
-            DrawDynamicLimit(ChUrb, ymax, borderUrb);   //Zeichnen des Perzentilgrenzwertes
-            DrawDynamicLimit(ChRur, ymax, borderRur);   //Zeichnen des Perzentilgrenzwertes
-            DrawDynamicLimit(ChMw, ymax, borderMw);     //Zeichnen des Perzentilgrenzwertes
-
-
-            ChUrb.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-            ChRur.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-            ChMw.Series[0].IsVisibleInLegend = false;    //Ausblenden Chartseries-Name
-            //DeactSV(ChUrb, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-            //DeactSV(ChRur, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-            //DeactSV(ChMw, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+            SetChartProperties(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
         }
 
-        //private void DeactSV(Chart chartname, string GewDaten)  //Deaktiviert Bereichsauswahl in Chart
-        //{
-        //    chartname.ChartAreas[GewDaten].AxisX.ScaleView.Zoomable = false;
-        //    chartname.ChartAreas[GewDaten].AxisY.ScaleView.Zoomable = false;
-        //}
-
-        private void SetChAxes(ref Chart chartname, DataTable tt, string xGewDat, string GewDaten, double ymax)
+        public void ClearAndSetChartsLive(double ymax)
         {
-            DataTable units = MainForm.GetUnitsDataTable();
+            SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
+            SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
+            SetChartProperties(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
+        }
+
+        private void SetChartProperties(ref Chart chartname, DataTable tt, string xGewDat, string GewDaten, double ymax)
+        {   //Löschen bestehender und hinzufügen neuer Datenpunktreihe u. Grafikoberfläche
+            chartname.Show();   //Anzeigen der Grafik
+
+            chartname.Series.Clear();       //Löschen evtl. bestehender Datenpunktreihe
+            chartname.ChartAreas.Clear();   //Löschen evtl. bestehender Grafikoberflächen
+
+            chartname.Series.Add(GewDaten);       //Hinzufügen einer neuen Datenpunktreihe
+            chartname.ChartAreas.Add(GewDaten);   //Hinzufügen einer neuen Grafikoberfläche 
+
+            chartname.Series[GewDaten].IsVisibleInLegend = false;   //Ausblenden legende
+
+            string xUnit = "";
+            string yUnit = "";
+
+            //Festelegung Einheiten:
+            if (live == false)
+            {
+                DataTable units = MainForm.GetUnitsDataTable();
+                xUnit = GetUnits(xGewDat, GewDaten)[0];   //liefert Einheit der x-Achse
+                yUnit = GetUnits(xGewDat, GewDaten)[1];   //liefert Einheit der y-Achse
+            }
+            if (live == true)
+            {
+                xUnit = "%";
+                yUnit = "m²/s³";
+            }
+
+            //Achseneistellungen festlegen:
             var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
-
-            string xUnit = GetUnits(xGewDat, GewDaten)[0];   //liefert Einheit der x-Achse
-            string yUnit = GetUnits(xGewDat, GewDaten)[1];   //liefert Einheit der y-Achse
-
             //chartname.Titles.Add("Test").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
             Chart1.AxisX.Title = xGewDat + " in " + xUnit;                     //Beschriftung der x-Achse
             Chart1.AxisX.TitleAlignment = StringAlignment.Center;             //Ausrichtung der x-Achsen-Beschriftung
@@ -206,42 +193,65 @@ namespace DriversGuide
             Chart1.AxisY.LabelStyle.Format = "";                              //Achsenbeschriftungsformat
             Chart1.AxisY.LabelStyle.IsEndLabelVisible = true;                 //true: erster u. letzter Wert der Achsenbeschriftung werden angezeigt
 
-            Chart1.AxisX.Minimum = Convert.ToInt64(tt.Rows[0][xGewDat]);                 //Festlegung x-Achsen-Minimum
-            Chart1.AxisX.Maximum = Convert.ToInt64(tt.Rows[tt.Rows.Count - 1][xGewDat]);   //Festlegung x-Achsen-Maximum
-            Chart1.AxisX.Interval = 20;                                                  //Festlegung x-Achsen-Intervall
+            Chart1.AxisX.Minimum = 0;                       //Festlegung y-Achsen-Minimum
+            Chart1.AxisX.Maximum = 100;   //Festlegung y-Achsen-Maximum
+            Chart1.AxisX.Interval = 20;                                      //Festlegung x-Achsen-Intervall
 
             Chart1.AxisY.Minimum = 0;                       //Festlegung y-Achsen-Minimum
             Chart1.AxisY.Maximum = Convert.ToInt64(ymax);   //Festlegung y-Achsen-Maximum
             Chart1.AxisY.Interval = 5;                      //Festlegung x-Achsen-Intervall
-
         }
 
-        private void Dynamic_SizeChanged(object sender, EventArgs e)
-        {
-            LocateCharts(ChUrb, ChRur, ChMw);   //Positionierung der charts
-            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw);   //Positionierung der labels
+        public void FillCharts(DataTable dturb, DataTable dtrur, DataTable dtmw, double ymax, double purb, double prur, double pmw, double borderUrb, double borderRur, double borderMw)
+        {   //Füllen der drei Charts, je nachdem, wie die Datatables aus Live verfügbar sind (leer od. nicht)
+            if (dturb.Rows.Count != 0)   //Prüfung, ob Datatable leer ist
+            {
+                Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
+                DrawPerzentilValue(ChUrb, ymax, purb);      //Zeichnen des Perzentilwertes bei 95 %
+                DrawDynamicLimit(ChUrb, ymax, borderUrb);   //Zeichnen des Perzentilgrenzwertes
+                AddDataPoints(dturb, ref ChUrb, "Perzentil", "a*v");
+
+                if (dtrur.Rows.Count == 0)
+                {
+                    ChRur.Series["a*v"].Points.AddXY(0, 0);
+                }
+                if (dtmw.Rows.Count == 0)
+                {
+                    ChMw.Series["a*v"].Points.AddXY(0, 0);
+                }
+            }
+            if (dtrur.Rows.Count != 0)   //Prüfung, ob Datatable leer ist
+            {
+                Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
+                DrawPerzentilValue(ChRur, ymax, prur);      //Zeichnen des Perzentilwertes bei 95 %
+                DrawDynamicLimit(ChRur, ymax, borderRur);   //Zeichnen des Perzentilgrenzwertes
+                AddDataPoints(dtrur, ref ChRur, "Perzentil", "a*v");
+
+                if (dtmw.Rows.Count == 0)
+                {
+                    ChMw.Series["a*v"].Points.AddXY(0, 0);
+                }
+            }
+            if (dtmw.Rows.Count != 0)   //Prüfung, ob Datatable leer ist
+            {
+                Draw95PLine(ChMw, ymax, pmw);               //Zeichnen der 95%-Linie
+                DrawPerzentilValue(ChMw, ymax, pmw);        //Zeichnen des Perzentilwertes bei 95 %
+                DrawDynamicLimit(ChMw, ymax, borderMw);     //Zeichnen des Perzentilgrenzwertes
+                AddDataPoints(dtmw, ref ChMw, "Perzentil", "a*v");
+            }
         }
 
-        private void MoveCursor(Chart chartname, Label labelname, MouseEventArgs e, DataTable tt, string xGewDat, string GewDaten, string xunit, string yunit)
-        {
-            //bei Bewegen der Maus wird der Cursor auf die aktuelle Mausposition gestellt und 
-            //die dazugehörigen x- u. y-Werte angezeigt
-
-            //wird erst ausgeführt nachdem gewisse Zeit verstrichen ist, da ansonsten noch nicht alle
-            //Datenpunkte in der Grafik gezeichnet wurden, was zu einer Fehlermeldung führt
-
-            double xpos = newchart.ActualXPosition(ref chartname, e, GewDaten);
-            double ypos = newchart.FindYValue(chartname, xpos, GewDaten);
-
-            chartname.ChartAreas[GewDaten].CursorX.Position = xpos;
-            chartname.ChartAreas[GewDaten].CursorY.Position = ypos;
-
-            labelname.Visible = true;
-            labelname.Text = "x = " + Math.Round(xpos, 1).ToString() + " " + xunit + "    " +
-                             "y = " + ypos.ToString() + " " + yunit;
-
-            //lblPos.BackColor = Color.White;
+        public void AddDataPoints(DataTable tt, ref Chart chartname, string xGewDat, string GewDaten)
+        {   //Hinzufügen der Datenreihe, die gezeichnet wird:
+            for (int i = 0; i < tt.Rows.Count; i += 4)   //füllen Datenpunke-Serie
+            {
+                chartname.Series[GewDaten].Points.AddXY(Convert.ToDouble(tt.Rows[i][xGewDat]), Convert.ToDouble(tt.Rows[i][GewDaten]));
+                //erzeugt Serie von Punkten mit denen gezeichnet wird
+            }
+            chartname.Series[GewDaten].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line)
+            chartname.Invalidate();
         }
+
 
         private void Draw95PLine(Chart chartname, double ymax, double perzval)   //Zeichnen der 95%-Linie
         {
@@ -257,14 +267,23 @@ namespace DriversGuide
             chartname.Series["95PLine"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
 
             chartname.Series.Add("95pLbl");                                  //Hinzufügen  Punkt für 95 % Label
-            chartname.Series["95pLbl"].Points.AddXY(92, 2);
+            if (live == true)
+            {
+                chartname.Series["95pLbl"].Points.AddXY(88.5, 2);
+                chartname.Series["95pLbl"].LabelAngle = -0;
+            }
+            if (live == false)
+            {
+                chartname.Series["95pLbl"].Points.AddXY(92, 2);
+                chartname.Series["95pLbl"].LabelAngle = -90;
+            }
             chartname.Series["95pLbl"].Color = Color.White;
             //chartname.Series["95pLbl"].AxisLabel = "Test";
             chartname.Series["95pLbl"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["95pLbl"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
             chartname.Series["95pLbl"].Label = "95 %";
+            chartname.Series["95pLbl"].LabelBackColor = Color.Transparent;
             chartname.Series["95pLbl"].LabelForeColor = Color.Red;
-            chartname.Series["95pLbl"].LabelAngle = -90;
             chartname.Series["95pLbl"].SmartLabelStyle.Enabled = false;
             chartname.Series["95pLbl"].ChartType = SeriesChartType.Column;
             chartname.Series["95pLbl"]["LabelStyle"] = "Center";
@@ -288,15 +307,14 @@ namespace DriversGuide
             //chartname.Series["PerzVal"].AxisLabel = "Test";
             chartname.Series["PerzVal"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["PerzVal"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-            chartname.Invalidate();
 
             chartname.Series.Add("PerzVLbl");                                  //Hinzufügen Punkt für Perzentilwert Label
-            chartname.Series["PerzVLbl"].Points.AddXY(0, perzval + 1);
+            chartname.Series["PerzVLbl"].Points.AddXY(5, perzval);
             chartname.Series["PerzVLbl"].Color = Color.White;
             //chartname.Series["95pLbl"].AxisLabel = "Test";
             chartname.Series["PerzVLbl"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["PerzVLbl"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
-            chartname.Series["PerzVLbl"].Label = Math.Round(perzval, 1).ToString() + " m²/s³";
+            chartname.Series["PerzVLbl"].Label = Math.Round(perzval, 1).ToString("F1") + " m²/s³";
             chartname.Series["PerzVLbl"].LabelForeColor = Color.Red;
             chartname.Series["PerzVLbl"].LabelBackColor = Color.White;
             chartname.Series["PerzVLbl"].LabelAngle = 0;
@@ -325,15 +343,14 @@ namespace DriversGuide
             //chartname.Series["DynLim"].AxisLabel = "Test";
             chartname.Series["DynLim"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["DynLim"].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-            chartname.Invalidate();
 
             chartname.Series.Add("DynLimLbl");                                  //Hinzufügen Punkt für Perzentilwert Label
-            chartname.Series["DynLimLbl"].Points.AddXY(0, dynborder + 1);
+            chartname.Series["DynLimLbl"].Points.AddXY(5, dynborder);
             chartname.Series["DynLimLbl"].Color = Color.White;
             //chartname.Series["DynLimLbl"].AxisLabel = "Test";
             chartname.Series["DynLimLbl"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["DynLimLbl"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
-            chartname.Series["DynLimLbl"].Label = Math.Round(dynborder, 1).ToString() + " m²/s³";
+            chartname.Series["DynLimLbl"].Label = Math.Round(dynborder, 1).ToString("F1") + " m²/s³";
             chartname.Series["DynLimLbl"].LabelForeColor = Color.Red;
             chartname.Series["DynLimLbl"].LabelBackColor = Color.White;
             chartname.Series["DynLimLbl"].LabelAngle = 0;
@@ -348,34 +365,113 @@ namespace DriversGuide
             chartname.Invalidate();
         }
 
+        private void EnableCursor(ref Chart chartname, string GewDaten)
+        {   //Aktivierung und Einstellung Cursor
+            var Chart1 = chartname.ChartAreas[GewDaten];   //dient nur der Verkürzung folgender Programmzeilen
+
+            Chart1.CursorX.IsUserEnabled = true;                 //aktiviert Cursor
+            Chart1.CursorX.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
+            Chart1.CursorX.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
+            Chart1.CursorX.Interval = 1;                         //Intervall des Cursors
+            Chart1.AxisX.ScaleView.Zoomable = true;
+            Chart1.CursorX.LineColor = Color.DarkOrange;         //Linienfarbe Cursor
+            Chart1.CursorX.LineWidth = 1;                        //Liniendicke Cursor
+            Chart1.CursorX.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
+
+            Chart1.CursorY.IsUserEnabled = true;                 //aktiviert Cursor
+            Chart1.CursorY.IsUserSelectionEnabled = true;        //aktiviert Bereichsauswahl
+            Chart1.CursorY.SelectionColor = Color.LightGray;     //Farbe Bereichsauswahl
+            Chart1.CursorY.Interval = 1;                         //Intervall des Cursors
+            Chart1.AxisY.ScaleView.Zoomable = true;
+            Chart1.CursorY.LineColor = Color.DarkOrange;         //Linienfarbe Cursor
+            Chart1.CursorY.LineWidth = 1;                        //Liniendicke Cursor
+            Chart1.CursorY.LineDashStyle = ChartDashStyle.Solid; //Linienart Cursor
+        }
+
+        private void LocateCharts(Chart chartname1, Chart chartname2, Chart chartname3)
+        {   //Positionierung der charts:
+            chartname1.Location = new Point(0, 0);
+            chartname1.Width = this.Width / 3;
+            chartname1.Height = this.Height - 10;
+            chartname2.Location = new Point(chartname1.Width, 0);
+            chartname2.Width = this.Width / 3;
+            chartname2.Height = this.Height - 10;
+            chartname3.Location = new Point(chartname1.Width + chartname2.Width, 0);
+            chartname3.Width = this.Width / 3;
+            chartname3.Height = this.Height - 10;
+        }
+
+        private void LocateLabels(Label labelname1, Label labelname2, Label labelname3, Chart chartname1, Chart chartname2, Chart chartname3)
+        {   //Positionierung der labels:
+            labelname1.Location = new Point(chartname1.Location.X + (chartname1.Width / 2) - 60, chartname1.Height - 10);   //Positionierung Label
+            labelname2.Location = new Point(chartname2.Location.X + (chartname2.Width / 2) - 60, chartname2.Height - 10);   //Positionierung Label
+            labelname3.Location = new Point(chartname3.Location.X + (chartname3.Width / 2) - 60, chartname3.Height - 10);      //Positionierung Label
+        }
+
+        private void Dynamic_SizeChanged(object sender, EventArgs e)
+        {
+            LocateCharts(ChUrb, ChRur, ChMw);   //Positionierung der charts
+            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw);   //Positionierung der labels
+        }
+
+        private void MoveCursor(Chart chartname, Label labelname, MouseEventArgs e, DataTable tt, string xGewDat, string GewDaten, string xunit, string yunit)
+        {
+            //bei Bewegen der Maus wird der Cursor auf die aktuelle Mausposition gestellt und 
+            //die dazugehörigen x- u. y-Werte angezeigt
+
+            //wird erst ausgeführt nachdem gewisse Zeit verstrichen ist, da ansonsten noch nicht alle
+            //Datenpunkte in der Grafik gezeichnet wurden, was zu einer Fehlermeldung führt
+
+            double xpos = newchart.ActualXPosition(ref chartname, e, GewDaten);
+            double ypos = newchart.FindYValue(chartname, xpos, GewDaten);
+
+            chartname.ChartAreas[GewDaten].CursorX.Position = xpos;
+            chartname.ChartAreas[GewDaten].CursorY.Position = ypos;
+
+            labelname.Visible = true;
+            labelname.Text = "x = " + Math.Round(xpos, 1).ToString("F1") + " " + xunit + "    " +
+                             "y = " + ypos.ToString("F2") + " " + yunit;
+
+            //lblPos.BackColor = Color.White;
+        }
+
         private void ChUrb_MouseMove(object sender, MouseEventArgs e)
         {
-            DataTable dturb = MainForm.GetUrbanDataTable();
-            DataTable units = MainForm.GetUnitsDataTable();
-            string xUnit = GetUnits("Perzentil", "a*v")[0];
-            string yUnit = GetUnits("Perzentil", "a*v")[1];
-            MoveCursor(ChUrb, lblUrb, e, dturb, "Perzentil", "a*v", xUnit, yUnit);
-            lblUrb.Visible = true;
+            if (live == false)
+            {
+                DataTable dturb = MainForm.GetUrbanDataTable();
+                DataTable units = MainForm.GetUnitsDataTable();
+                string xUnit = GetUnits("Perzentil", "a*v")[0];
+                string yUnit = GetUnits("Perzentil", "a*v")[1];
+                MoveCursor(ChUrb, lblUrb, e, dturb, "Perzentil", "a*v", xUnit, yUnit);
+                lblUrb.Visible = true;
+            }
         }
 
         private void ChRur_MouseMove(object sender, MouseEventArgs e)
         {
-            DataTable dtrur = MainForm.GetRuralDataTable();
-            DataTable units = MainForm.GetUnitsDataTable();
-            string xUnit = GetUnits("Perzentil", "a*v")[0];
-            string yUnit = GetUnits("Perzentil", "a*v")[1];
-            MoveCursor(ChRur, lblRur, e, dtrur, "Perzentil", "a*v", xUnit, yUnit);
-            lblRur.Visible = true;
+            if (live == false)
+            {
+                DataTable dtrur = MainForm.GetRuralDataTable();
+                DataTable units = MainForm.GetUnitsDataTable();
+                string xUnit = GetUnits("Perzentil", "a*v")[0];
+                string yUnit = GetUnits("Perzentil", "a*v")[1];
+                MoveCursor(ChRur, lblRur, e, dtrur, "Perzentil", "a*v", xUnit, yUnit);
+                lblRur.Visible = true;
+            }
         }
 
         private void ChMw_MouseMove(object sender, MouseEventArgs e)
         {
-            DataTable dtmw = MainForm.GetMotorwayDataTable();
-            DataTable units = MainForm.GetUnitsDataTable();
-            string xUnit = GetUnits("Perzentil", "a*v")[0];
-            string yUnit = GetUnits("Perzentil", "a*v")[1];
-            MoveCursor(ChMw, lblMw, e, dtmw, "Perzentil", "a*v", xUnit, yUnit);
-            lblMw.Visible = true;
+            if(live == false)
+            {
+                DataTable dtmw = MainForm.GetMotorwayDataTable();
+                DataTable units = MainForm.GetUnitsDataTable();
+                string xUnit = GetUnits("Perzentil", "a*v")[0];
+                string yUnit = GetUnits("Perzentil", "a*v")[1];
+                MoveCursor(ChMw, lblMw, e, dtmw, "Perzentil", "a*v", xUnit, yUnit);
+                lblMw.Visible = true;
+            }
         }
 
         private void SetStartScale(Chart chartname, string GewDatenX)
@@ -400,63 +496,10 @@ namespace DriversGuide
             SetStartScale(ChMw, "a*v");
         }
 
-        //private void DrawLive(object sender, EventArgs e)
+        //private void DeactSV(Chart chartname, string GewDaten)  //Deaktiviert Bereichsauswahl in Chart
         //{
-        //    lblUrb.Visible = false;
-        //    lblRur.Visible = false;
-        //    lblMw.Visible = false;
-
-        //    DataTable dturb = FormLive.GetUrbanDataTable();
-        //    DataTable dtrur = FormLive.GetRuralDataTable();
-        //    DataTable dtmw = FormLive.GetMotorwayDataTable();
-        //    DataTable units = FormLive.GetUnitsDataTable();
-
-        //    newchart.SetChartProperties(ref ChUrb, dturb, "Perzentil", "a*v", PlotCopy);
-        //    ChUrb.Titles.Add("Dynamik Stadt").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-        //    newchart.SetChartProperties(ref ChRur, dtrur, "Perzentil", "a*v", PlotCopy);
-        //    ChRur.Titles.Add("Dynamik Freiland").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-        //    newchart.SetChartProperties(ref ChMw, dtmw, "Perzentil", "a*v", PlotCopy);
-        //    ChMw.Titles.Add("Dynamik Autobahn").Font = new Font("Arial", 10, FontStyle.Bold); //Chart Title
-
-        //    double urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
-        //    double rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
-        //    double mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
-
-        //    double ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v auf nächste 5 aufgerundet
-
-        //    SetChAxes(ref ChUrb, dturb, "Perzentil", "a*v", ymax);
-        //    SetChAxes(ref ChRur, dtrur, "Perzentil", "a*v", ymax);
-        //    SetChAxes(ref ChMw, dtmw, "Perzentil", "a*v", ymax);
-
-        //    double purb = 0;   //Perzentilwert Stadt
-        //    double prur = 0;   //Perzentilwert Land
-        //    double pmw = 0;    //Perzentilwert Autobahn
-
-        //    FormLive.GetPercentiles(ref purb, ref prur, ref pmw);   //Zuweisung Perzentilwerte
-
-        //    double borderUrb = 0;
-        //    double borderRur = 0;
-        //    double borderMw = 0;
-
-        //    FormLive.GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);
-
-        //    Draw95PLine(ChUrb, ymax, purb);             //Zeichnen der 95%-Linie
-        //    Draw95PLine(ChRur, ymax, prur);             //Zeichnen der 95%-Linie
-        //    Draw95PLine(ChMw, ymax, pmw);               //Zeichnen der 95%-Linie
-        //    DrawPerzentilValue(ChUrb, ymax, purb);      //Zeichnen des Perzentilwertes bei 95 %
-        //    DrawPerzentilValue(ChRur, ymax, prur);      //Zeichnen des Perzentilwertes bei 95 %
-        //    DrawPerzentilValue(ChMw, ymax, pmw);        //Zeichnen des Perzentilwertes bei 95 %
-        //    DrawDynamicLimit(ChUrb, ymax, borderUrb);   //Zeichnen des Perzentilgrenzwertes
-        //    DrawDynamicLimit(ChRur, ymax, borderRur);   //Zeichnen des Perzentilgrenzwertes
-        //    DrawDynamicLimit(ChMw, ymax, borderMw);     //Zeichnen des Perzentilgrenzwertes
-
-
-        //    ChUrb.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-        //    ChRur.Series[0].IsVisibleInLegend = false;   //Ausblenden Chartseries-Name
-        //    ChMw.Series[0].IsVisibleInLegend = false;    //Ausblenden Chartseries-Name
-        //    DeactSV(ChUrb, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-        //    DeactSV(ChRur, "a*v");  //Deaktiviert Bereichsauswahl in Chart
-        //    DeactSV(ChMw, "a*v");  //Deaktiviert Bereichsauswahl in Chart
+        //    chartname.ChartAreas[GewDaten].AxisX.ScaleView.Zoomable = false;
+        //    chartname.ChartAreas[GewDaten].AxisY.ScaleView.Zoomable = false;
         //}
     }
 }
