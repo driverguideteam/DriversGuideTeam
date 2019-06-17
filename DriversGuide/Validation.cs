@@ -199,6 +199,11 @@ namespace DriversGuide
             fasterOH = dt_motorway.Clone();
             fasterHFF = dt_motorway.Clone();
             double min, duration, tooFast = 0;
+            bool con1 = false;
+            bool con2 = false;
+            bool con3 = false;
+            bool con4 = false;
+            bool con5 = false;
 
             //Get maximum and minimum speed in interval
             maxSpeed = (double)dt_motorway.Compute("MAX([" + column_speed + "])", "");
@@ -220,15 +225,61 @@ namespace DriversGuide
                 duration = (double)(dt_motorway.Rows.Count - 1) / 60;
                 tooFast = (double)(fasterHFF.Rows.Count - 1) / 60;
                 tooFast *= 100 / duration;
-            }            
+            }
 
-            //if criteria are matched return true
-            if (min > 90 && maxSpeed >= 110 && maxSpeed <= 145 && fasterOnehundred >= 5)
+            //if criteria are matched return true, otherwise define errors
+            //Give tips when near borders
+            if (min > 90 && maxSpeed >= 110)
+                con1 = true;
+            else
+                errors.Rows[0]["Motorway"] = "Autobahn: Geschwindigkeitsspanne zu gering";
+
+            if (maxSpeed >= 110 && maxSpeed <= 115)
+                tips.Rows[0]["Motorway"] = "Autobahn: Geschwindigkeitsspanne erhöhen";
+
+            if (maxSpeed <= 145)
+                con2 = true;
+            else if (maxSpeed <= 160 && tooFast <= 3)
+                con4 = true;
+            else
+                errors.Rows[0]["Motorway"] = "Autobahn: Geschwindigkeitsspanne zu hoch";
+
+            if (maxSpeed >= 140 && maxSpeed <= 145)
+                tips.Rows[0]["Motorway"] = "Autobahn: Geschwindigkeitsspanne verringern";            
+
+            if (fasterOnehundred >= 5)
+                con3 = true;
+            else
+                errors.Rows[1]["Motorway"] = "Weniger als 5 min schneller als 100 km/h gefahren";
+
+            if (fasterOnehundred >= 5 && fasterOnehundred <= 8)
+                tips.Rows[1]["Motorway"] = "Zeit über 100 km/h erhöhen";
+
+            if (maxSpeed <= 160)
+                con5 = true;
+            else
+                errors.Rows[2]["Motorway"] = "Höchstegeschwindigkeit zu hoch";
+
+            if (maxSpeed >= 145 && maxSpeed <= 160)
+                tips.Rows[2]["Motorway"] = "Höchstgeschwindigkeit verringern";
+
+            if (maxSpeed >= 110 && maxSpeed <= 120)
+                tips.Rows[2]["Motorway"] = "Höchstgeschwindigkeit erhöhen";
+
+            if (con1 && con2 && con3)
                 return true;
-            else if (min > 90 && maxSpeed >= 145 && maxSpeed <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
+            else if (min > 90 && maxSpeed >= 145 && con3 && con4)
                 return true;
             else
                 return false;
+
+            //if criteria are matched return true
+            //if (min > 90 && maxSpeed >= 110 && maxSpeed <= 145 && fasterOnehundred >= 5)
+            //    return true;
+            //else if (min > 90 && maxSpeed >= 145 && maxSpeed <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
+            //    return true;
+            //else
+            //    return false;
         }
 
         //Check the percentage of the distances per interval compared to complete trip
@@ -285,9 +336,9 @@ namespace DriversGuide
             else
                 errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
 
-            if (distrUrban >= 29 && distrUrban <= 34)
+            if (distrUrban >= 29 && distrUrban <= 32)
                 tips.Rows[0]["Distribution"] = "Stadtanteil erhöhen";
-            else if (distrUrban >= 39 && distrUrban <= 44)
+            else if (distrUrban >= 41 && distrUrban <= 44)
                 tips.Rows[0]["Distribution"] = "Standanteil verringern";
 
             if (distrRural >= 23)
@@ -300,9 +351,9 @@ namespace DriversGuide
             else
                 errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
-            if (distrRural >= 23 && distrRural <= 28)
+            if (distrRural >= 23 && distrRural <= 26)
                 tips.Rows[1]["Distribution"] = "Landanteil erhöhen";
-            else if (distrRural >= 38 && distrRural <= 43)
+            else if (distrRural >= 40 && distrRural <= 43)
                 tips.Rows[1]["Distribution"] = "Landanteil verringern";
 
             if (distrMotorway >= 23)
@@ -315,9 +366,9 @@ namespace DriversGuide
             else
                 errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
 
-            if (distrMotorway >= 23 && distrMotorway <= 28)
+            if (distrMotorway >= 23 && distrMotorway <= 26)
                 tips.Rows[1]["Distribution"] = "Autobahnanteil erhöhen";
-            else if (distrMotorway >= 38 && distrMotorway <= 43)
+            else if (distrMotorway >= 40 && distrMotorway <= 43)
                 tips.Rows[1]["Distribution"] = "Autobahnanteil verringern";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)
@@ -375,9 +426,9 @@ namespace DriversGuide
             else
                 errors.Rows[0]["Distribution"] = "Stadtanteil zu hoch";
 
-            if (distrUrban >= 29 && distrUrban <= 34)
+            if (distrUrban >= 29 && distrUrban <= 32)
                 tips.Rows[0]["Distribution"] = "Stadtanteil erhöhen";
-            else if (distrUrban >= 39 && distrUrban <= 44)
+            else if (distrUrban >= 41 && distrUrban <= 44)
                 tips.Rows[0]["Distribution"] = "Standanteil verringern";
 
             if (distrRural >= 23)
@@ -390,9 +441,9 @@ namespace DriversGuide
             else
                 errors.Rows[1]["Distribution"] = "Landanteil zu hoch";
 
-            if (distrRural >= 23 && distrRural <= 28)
+            if (distrRural >= 23 && distrRural <= 26)
                 tips.Rows[1]["Distribution"] = "Landanteil erhöhen";
-            else if (distrRural >= 38 && distrRural <= 43)
+            else if (distrRural >= 40 && distrRural <= 43)
                 tips.Rows[1]["Distribution"] = "Landanteil verringern";
 
             if (distrMotorway >= 23)
@@ -405,9 +456,9 @@ namespace DriversGuide
             else
                 errors.Rows[2]["Distribution"] = "Autobahnanteil zu hoch";
 
-            if (distrMotorway >= 23 && distrMotorway <= 28)
+            if (distrMotorway >= 23 && distrMotorway <= 26)
                 tips.Rows[1]["Distribution"] = "Autobahnanteil erhöhen";
-            else if (distrMotorway >= 38 && distrMotorway <= 43)
+            else if (distrMotorway >= 40 && distrMotorway <= 43)
                 tips.Rows[1]["Distribution"] = "Autobahnanteil verringern";
 
             if (con1 && con2 && con3 && con4 && con5 && con6)

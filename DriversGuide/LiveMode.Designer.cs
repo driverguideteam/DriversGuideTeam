@@ -31,11 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveMode));
             this.pnlSideBar = new System.Windows.Forms.Panel();
-            this.btnDyn = new System.Windows.Forms.Button();
             this.btnSimulation = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Panel();
             this.btnOverview = new System.Windows.Forms.Panel();
-            this.btn_Fileauswahl = new System.Windows.Forms.Panel();
+            this.btnDynamic = new System.Windows.Forms.Panel();
             this.pnlLogo = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlTopContent = new System.Windows.Forms.Panel();
@@ -56,31 +55,19 @@
             this.pnlSideBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlSideBar.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.pnlSideBar.Controls.Add(this.btnDyn);
+            this.pnlSideBar.Controls.Add(this.btnDynamic);
             this.pnlSideBar.Controls.Add(this.btnSimulation);
             this.pnlSideBar.Controls.Add(this.btnGPS);
             this.pnlSideBar.Controls.Add(this.btnOverview);
-            this.pnlSideBar.Controls.Add(this.btn_Fileauswahl);
             this.pnlSideBar.Controls.Add(this.pnlLogo);
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(109, 450);
             this.pnlSideBar.TabIndex = 32;
             // 
-            // btnDyn
-            // 
-            this.btnDyn.Location = new System.Drawing.Point(26, 342);
-            this.btnDyn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnDyn.Name = "btnDyn";
-            this.btnDyn.Size = new System.Drawing.Size(56, 19);
-            this.btnDyn.TabIndex = 40;
-            this.btnDyn.Text = "Dynamik";
-            this.btnDyn.UseVisualStyleBackColor = true;
-            this.btnDyn.Click += new System.EventHandler(this.btnDyn_Click);
-            // 
             // btnSimulation
             // 
-            this.btnSimulation.Location = new System.Drawing.Point(0, 178);
+            this.btnSimulation.Location = new System.Drawing.Point(0, 86);
             this.btnSimulation.Name = "btnSimulation";
             this.btnSimulation.Size = new System.Drawing.Size(109, 75);
             this.btnSimulation.TabIndex = 3;
@@ -106,7 +93,7 @@
             // btnOverview
             // 
             this.btnOverview.Enabled = false;
-            this.btnOverview.Location = new System.Drawing.Point(0, 269);
+            this.btnOverview.Location = new System.Drawing.Point(0, 178);
             this.btnOverview.Name = "btnOverview";
             this.btnOverview.Size = new System.Drawing.Size(109, 75);
             this.btnOverview.TabIndex = 1;
@@ -116,17 +103,18 @@
             this.btnOverview.MouseLeave += new System.EventHandler(this.btnOverview_MouseLeave);
             this.btnOverview.Resize += new System.EventHandler(this.btnOverview_Resize);
             // 
-            // btn_Fileauswahl
+            // btnDynamic
             // 
-            this.btn_Fileauswahl.Location = new System.Drawing.Point(0, 86);
-            this.btn_Fileauswahl.Name = "btn_Fileauswahl";
-            this.btn_Fileauswahl.Size = new System.Drawing.Size(109, 75);
-            this.btn_Fileauswahl.TabIndex = 0;
-            this.btn_Fileauswahl.Click += new System.EventHandler(this.btn_Fileauswahl_Click);
-            this.btn_Fileauswahl.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Fileauswahl_Paint);
-            this.btn_Fileauswahl.MouseEnter += new System.EventHandler(this.btn_Fileauswahl_MouseEnter);
-            this.btn_Fileauswahl.MouseLeave += new System.EventHandler(this.btn_Fileauswahl_MouseLeave);
-            this.btn_Fileauswahl.Resize += new System.EventHandler(this.btn_Fileauswahl_Resize);
+            this.btnDynamic.Enabled = false;
+            this.btnDynamic.Location = new System.Drawing.Point(0, 269);
+            this.btnDynamic.Name = "btnDynamic";
+            this.btnDynamic.Size = new System.Drawing.Size(109, 75);
+            this.btnDynamic.TabIndex = 0;
+            this.btnDynamic.Click += new System.EventHandler(this.btnDyn_Click);
+            this.btnDynamic.Paint += new System.Windows.Forms.PaintEventHandler(this.btnDynamic_Paint);
+            this.btnDynamic.MouseEnter += new System.EventHandler(this.btnDynamic_MouseEnter);
+            this.btnDynamic.MouseLeave += new System.EventHandler(this.btnDynamic_MouseLeave);
+            this.btnDynamic.Resize += new System.EventHandler(this.btnDynamic_Resize);
             // 
             // pnlLogo
             // 
@@ -249,7 +237,6 @@
         private System.Windows.Forms.Panel pnlBottomContent;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.Panel btn_Fileauswahl;
         private System.Windows.Forms.Panel btnOverview;
         private System.Windows.Forms.Panel btnGPS;
         private System.Windows.Forms.Label lblHide;
@@ -258,5 +245,6 @@
         private System.Windows.Forms.Timer timerSimulation;
         private System.Windows.Forms.Panel btnSimulation;
         private System.Windows.Forms.Button btnDyn;
+        private System.Windows.Forms.Panel btnDynamic;
     }
 }

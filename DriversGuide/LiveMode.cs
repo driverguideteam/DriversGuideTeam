@@ -55,7 +55,7 @@ namespace DriversGuide
             FormStart.Hide();
 
             InitializeComponent();
-            bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btn_Fileauswahl.ClientSize.Height);
+            bmp = new Bitmap(btnDynamic.ClientSize.Width, btnDynamic.ClientSize.Height);
             z = Graphics.FromImage(bmp);
             lblHide.Parent = this;
             lblShow.Parent = this;
@@ -244,7 +244,8 @@ namespace DriversGuide
                 
                 btnGPS.Enabled = true;
                 btnOverview.Enabled = true;
-                calcDone = true;
+                btnDynamic.Enabled = true;
+                calcDone = true;               
             }            
         }
 
@@ -311,67 +312,68 @@ namespace DriversGuide
                 
                 btnGPS.Enabled = true;
                 btnOverview.Enabled = true;
+                btnDynamic.Enabled = true;
                 calcDone = true;
             }
         }
 
-        private void btn_Fileauswahl_Click(object sender, EventArgs e)
-        {
-            ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
-            ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
-            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        //private void btn_Fileauswahl_Click(object sender, EventArgs e)
+        //{
+        //    ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
+        //    ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
+        //    //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
-            ofd.Title = "Textdatei öffnen";
-            ofd.FileName = "";
+        //    ofd.Title = "Textdatei öffnen";
+        //    ofd.FileName = "";
 
-            DialogResult dr = ofd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                LiveDatei = new MeasurementFile(ofd.FileName);
-                LiveDataset = LiveDatei.ConvertCSVtoDataTable();
+        //    DialogResult dr = ofd.ShowDialog();
+        //    if (dr == DialogResult.OK)
+        //    {
+        //        LiveDatei = new MeasurementFile(ofd.FileName);
+        //        LiveDataset = LiveDatei.ConvertCSVtoDataTable();
 
-                //Stopwatch stopwatch = new Stopwatch();
-                //stopwatch.Start();
-                DoCalculationsStatic(true);
-                //stopwatch.Stop();
-                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
-            }
-            //timer1.Start();
-        }
+        //        //Stopwatch stopwatch = new Stopwatch();
+        //        //stopwatch.Start();
+        //        DoCalculationsStatic(true);
+        //        //stopwatch.Stop();
+        //        //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+        //    }
+        //    //timer1.Start();
+        //}
 
-        private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)
-        {
-            btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
-        }
+        //private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)
+        //{
+        //    btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        //}
 
-        private void btn_Fileauswahl_MouseEnter(object sender, EventArgs e)
-        {
-            btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#7AB8DE");
-        }
+        //private void btn_Fileauswahl_MouseEnter(object sender, EventArgs e)
+        //{
+        //    btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        //}
 
-        private void btn_Fileauswahl_Paint(object sender, PaintEventArgs e)
-        {
-            if (btn_Fileauswahl.Enabled)
-            {
-                DrawInBitmap(btn_Fileauswahl, "File-Auswahl", enabled);
-                Graphics g = e.Graphics;                
-                g.DrawImage(bmp, 0, 0);                
-            }
-            else
-            {
-                DrawInBitmap(btn_Fileauswahl, "File-Auswahl", disabled);
-                Graphics g = e.Graphics;                
-                g.DrawImage(bmp, 0, 0);
-            }
-        }
+        //private void btn_Fileauswahl_Paint(object sender, PaintEventArgs e)
+        //{
+        //    if (btn_Fileauswahl.Enabled)
+        //    {
+        //        DrawInBitmap(btn_Fileauswahl, "File-Auswahl", enabled);
+        //        Graphics g = e.Graphics;                
+        //        g.DrawImage(bmp, 0, 0);                
+        //    }
+        //    else
+        //    {
+        //        DrawInBitmap(btn_Fileauswahl, "File-Auswahl", disabled);
+        //        Graphics g = e.Graphics;                
+        //        g.DrawImage(bmp, 0, 0);
+        //    }
+        //}
 
-        private void btn_Fileauswahl_Resize(object sender, EventArgs e)
-        {
-            bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btn_Fileauswahl.ClientSize.Height);
-            z = Graphics.FromImage(bmp);
+        //private void btn_Fileauswahl_Resize(object sender, EventArgs e)
+        //{
+        //    bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btnFileauswahl.ClientSize.Height);
+        //    z = Graphics.FromImage(bmp);
 
-            btn_Fileauswahl.Invalidate();
-        }
+        //    btnFileauswahl.Invalidate();
+        //}
 
         private void DrawInBitmap(Panel caller, string text, Color color)
         {
@@ -580,9 +582,9 @@ namespace DriversGuide
             //btn_Fileauswahl.Top = half - 170;
             //btnOverview.Top = half - 50;
             //btnGPS.Top = half + 70;
-            btn_Fileauswahl.Top = half - 175;
-            btnSimulation.Top = half - 83;
-            btnOverview.Top = half + 8;
+            btnSimulation.Top = half - 175;
+            btnOverview.Top = half - 83;
+            btnDynamic.Top = half + 8;
             btnGPS.Top = half + 100;            
         }
 
@@ -659,7 +661,9 @@ namespace DriversGuide
                 Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
                 perUrban = Berechnung.CalcPercentile_Interval(ref urban, "a*v");
                 perRural = Berechnung.CalcPercentile_Interval(ref rural, "a*v");
-                perMotorway = Berechnung.CalcPercentile_Interval(ref motorway, "a*v");                
+                perMotorway = Berechnung.CalcPercentile_Interval(ref motorway, "a*v");
+                FormGPS.SetRunningState(false);
+                FormGPS.RefreshMap();
                 stopwatch.Stop();
                 MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
             }
@@ -694,5 +698,40 @@ namespace DriversGuide
                 lblHide.BackColor = FormDynamic.BackColor;
             }
         }
+
+        private void btnDynamic_MouseLeave(object sender, EventArgs e)
+        {
+            btnDynamic.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
+
+        private void btnDynamic_MouseEnter(object sender, EventArgs e)
+        {
+            btnDynamic.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
+
+        private void btnDynamic_Paint(object sender, PaintEventArgs e)
+        {
+            if (btnDynamic.Enabled)
+            {
+                DrawInBitmap(btnDynamic, "Dynamik", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btnDynamic, "Dynamik", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        private void btnDynamic_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btnDynamic.ClientSize.Width, btnDynamic.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
+
+            btnDynamic.Invalidate();
+        }
+
     }
 }

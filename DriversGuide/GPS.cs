@@ -106,6 +106,11 @@ namespace DriversGuide
             AddRouteLive(lat, lon, speed, time);
         }
 
+        public void SetRunningState(bool running)
+        {
+            liveRun = running;
+        }
+
         public void AddMap()
         {
             AddRoute(lat, lon, speed, time);
@@ -139,7 +144,7 @@ namespace DriversGuide
             }
             else if (liveRun)
             {
-                centerLat = (double)dataset.Rows[dataset.Rows.Count-1][column_latitude];
+                centerLat = (double)dataset.Rows[dataset.Rows.Count - 1][column_latitude];
                 centerLon = (double)dataset.Rows[dataset.Rows.Count - 1][column_longitude];
             }
             else

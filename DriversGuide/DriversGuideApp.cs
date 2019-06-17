@@ -294,7 +294,7 @@ namespace DriversGuide
             pnlContent.Controls.Add(FormGPS);
             //myForm.FormBorderStyle = FormBorderStyle.None;
             FormGPS.Show();
-            FormGPS.Dock = DockStyle.Fill;
+            FormGPS.Dock = DockStyle.Fill;            
             lblHide.BackColor = FormGPS.BackColor;
             gpsActive = true;
         }
@@ -383,16 +383,11 @@ namespace DriversGuide
                 if (pnlSideBar.Location.X < 0)
                 {
                     pnlSideBar.Left += 10;
-                    //pnlContent.Left += 10;
-                    //pnlContent.Width -= 10;
                 }                        
                 else
                 {
                     tmrFade.Enabled = false;
                     inout = false;
-                    //pnlSideBar.Hide(); 
-                    //pnlContent.Left = pnlSideBar.Width;
-                    //pnlContent.Width = ClientSize.Width - pnlSideBar.Width;
                 }                    
             }
             else
@@ -400,8 +395,6 @@ namespace DriversGuide
                 if (pnlSideBar.Location.X > -pnlSideBar.Width)
                 {
                     pnlSideBar.Left -= 10;
-                    //pnlContent.Left -= 10;
-                    //pnlContent.Width += 10;
                 }
                 else
                 {

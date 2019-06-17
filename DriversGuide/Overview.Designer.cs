@@ -32,10 +32,10 @@
             this.picDistribution = new System.Windows.Forms.PictureBox();
             this.picDistance = new System.Windows.Forms.PictureBox();
             this.picColdStart = new System.Windows.Forms.PictureBox();
-            this.listBoxErrors = new System.Windows.Forms.ListBox();
             this.picHeadingError = new System.Windows.Forms.PictureBox();
             this.picHeadingTip = new System.Windows.Forms.PictureBox();
-            this.listBoxTip = new System.Windows.Forms.ListBox();
+            this.tipsMessages = new System.Windows.Forms.RichTextBox();
+            this.errorMessages = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDistribution)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDistance)).BeginInit();
@@ -84,20 +84,6 @@
             this.picColdStart.TabStop = false;
             this.picColdStart.Paint += new System.Windows.Forms.PaintEventHandler(this.picColdStart_Paint);
             // 
-            // listBoxErrors
-            // 
-            this.listBoxErrors.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.listBoxErrors.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBoxErrors.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.listBoxErrors.FormattingEnabled = true;
-            this.listBoxErrors.ItemHeight = 19;
-            this.listBoxErrors.Location = new System.Drawing.Point(536, 276);
-            this.listBoxErrors.Name = "listBoxErrors";
-            this.listBoxErrors.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxErrors.Size = new System.Drawing.Size(260, 152);
-            this.listBoxErrors.Sorted = true;
-            this.listBoxErrors.TabIndex = 1;
-            // 
             // picHeadingError
             // 
             this.picHeadingError.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -119,29 +105,46 @@
             this.picHeadingTip.TabStop = false;
             this.picHeadingTip.Paint += new System.Windows.Forms.PaintEventHandler(this.picHeadingTip_Paint);
             // 
-            // listBoxTip
+            // tipsMessages
             // 
-            this.listBoxTip.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.listBoxTip.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBoxTip.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.listBoxTip.FormattingEnabled = true;
-            this.listBoxTip.ItemHeight = 19;
-            this.listBoxTip.Location = new System.Drawing.Point(270, 276);
-            this.listBoxTip.Name = "listBoxTip";
-            this.listBoxTip.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxTip.Size = new System.Drawing.Size(260, 152);
-            this.listBoxTip.Sorted = true;
-            this.listBoxTip.TabIndex = 54;
+            this.tipsMessages.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tipsMessages.BackColor = System.Drawing.Color.White;
+            this.tipsMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tipsMessages.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tipsMessages.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.tipsMessages.Location = new System.Drawing.Point(270, 270);
+            this.tipsMessages.Name = "tipsMessages";
+            this.tipsMessages.ReadOnly = true;
+            this.tipsMessages.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.tipsMessages.Size = new System.Drawing.Size(260, 158);
+            this.tipsMessages.TabIndex = 56;
+            this.tipsMessages.Text = "";
+            // 
+            // errorMessages
+            // 
+            this.errorMessages.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.errorMessages.BackColor = System.Drawing.Color.White;
+            this.errorMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.errorMessages.Cursor = System.Windows.Forms.Cursors.Default;
+            this.errorMessages.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.errorMessages.Location = new System.Drawing.Point(537, 270);
+            this.errorMessages.Name = "errorMessages";
+            this.errorMessages.ReadOnly = true;
+            this.errorMessages.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.errorMessages.Size = new System.Drawing.Size(260, 158);
+            this.errorMessages.TabIndex = 57;
+            this.errorMessages.Text = "";
+            this.errorMessages.Visible = false;
             // 
             // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.listBoxTip);
+            this.Controls.Add(this.errorMessages);
+            this.Controls.Add(this.tipsMessages);
             this.Controls.Add(this.picHeadingTip);
             this.Controls.Add(this.picHeadingError);
-            this.Controls.Add(this.listBoxErrors);
             this.Controls.Add(this.picColdStart);
             this.Controls.Add(this.picGeneral);
             this.Controls.Add(this.picDistribution);
@@ -164,9 +167,9 @@
         private System.Windows.Forms.PictureBox picDistribution;
         private System.Windows.Forms.PictureBox picDistance;
         private System.Windows.Forms.PictureBox picColdStart;
-        private System.Windows.Forms.ListBox listBoxErrors;
         private System.Windows.Forms.PictureBox picHeadingError;
         private System.Windows.Forms.PictureBox picHeadingTip;
-        private System.Windows.Forms.ListBox listBoxTip;
+        private System.Windows.Forms.RichTextBox tipsMessages;
+        private System.Windows.Forms.RichTextBox errorMessages;
     }
 }
