@@ -236,6 +236,10 @@ namespace DriversGuide
                 dt.Columns.Add("di", typeof(Double));
                 dt.Columns.Add("ai", typeof(Double));
                 dt.Columns.Add("a*v", typeof(Double));
+
+                urban = dt.Clone();
+                rural = dt.Clone();
+                motorway = dt.Clone();
             }
 
             //Calculation of distance

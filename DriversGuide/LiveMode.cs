@@ -38,6 +38,7 @@ namespace DriversGuide
         bool valid = false;
         bool calcDone = false;
         bool live = false;
+        int countData = 5;
 
         Calculations Berechnung;
         Validation Gueltigkeit;
@@ -189,6 +190,14 @@ namespace DriversGuide
             Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
             Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
             Berechnung.GetPercentiles(ref perUrban, ref perRural, ref perMotorway);
+
+            if (countData == 20)
+            {
+                countData = 0;
+                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            }
+            else
+                countData++;
             
             values.Rows[1]["Verteilung"] = distrUrban;
             values.Rows[2]["Verteilung"] = distrRural;
