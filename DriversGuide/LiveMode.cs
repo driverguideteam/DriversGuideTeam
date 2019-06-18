@@ -358,63 +358,63 @@ namespace DriversGuide
             }
         }
 
-        //private void btn_Fileauswahl_Click(object sender, EventArgs e)
-        //{
-        //    ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
-        //    ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
-        //    //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        private void btn_Fileauswahl_Click(object sender, EventArgs e)
+        {
+            ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
+            ofd.InitialDirectory = "C:\\Repositories\01_Doku\\Vorgabe\\";
+            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
-        //    ofd.Title = "Textdatei öffnen";
-        //    ofd.FileName = "";
+            ofd.Title = "Textdatei öffnen";
+            ofd.FileName = "";
 
-        //    DialogResult dr = ofd.ShowDialog();
-        //    if (dr == DialogResult.OK)
-        //    {
-        //        LiveDatei = new MeasurementFile(ofd.FileName);
-        //        LiveDataset = LiveDatei.ConvertCSVtoDataTable();
+            DialogResult dr = ofd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                LiveDatei = new MeasurementFile(ofd.FileName);
+                LiveDataset = LiveDatei.ConvertCSVtoDataTable();
 
-        //        //Stopwatch stopwatch = new Stopwatch();
-        //        //stopwatch.Start();
-        //        DoCalculationsStatic(true);
-        //        //stopwatch.Stop();
-        //        //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
-        //    }
-        //    //timer1.Start();
-        //}
+                //Stopwatch stopwatch = new Stopwatch();
+                //stopwatch.Start();
+                DoCalculationsStatic(true);
+                //stopwatch.Stop();
+                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+            }
+            //timer1.Start();
+        }
 
-        //private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)
-        //{
-        //    btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
-        //}
+        private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
+        }
 
-        //private void btn_Fileauswahl_MouseEnter(object sender, EventArgs e)
-        //{
-        //    btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#7AB8DE");
-        //}
+        private void btn_Fileauswahl_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#7AB8DE");
+        }
 
-        //private void btn_Fileauswahl_Paint(object sender, PaintEventArgs e)
-        //{
-        //    if (btn_Fileauswahl.Enabled)
-        //    {
-        //        DrawInBitmap(btn_Fileauswahl, "File-Auswahl", enabled);
-        //        Graphics g = e.Graphics;                
-        //        g.DrawImage(bmp, 0, 0);                
-        //    }
-        //    else
-        //    {
-        //        DrawInBitmap(btn_Fileauswahl, "File-Auswahl", disabled);
-        //        Graphics g = e.Graphics;                
-        //        g.DrawImage(bmp, 0, 0);
-        //    }
-        //}
+        private void btn_Fileauswahl_Paint(object sender, PaintEventArgs e)
+        {
+            if (btn_Fileauswahl.Enabled)
+            {
+                DrawInBitmap(btn_Fileauswahl, "File-Auswahl", enabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+            else
+            {
+                DrawInBitmap(btn_Fileauswahl, "File-Auswahl", disabled);
+                Graphics g = e.Graphics;
+                g.DrawImage(bmp, 0, 0);
+            }
+        }
 
-        //private void btn_Fileauswahl_Resize(object sender, EventArgs e)
-        //{
-        //    bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btnFileauswahl.ClientSize.Height);
-        //    z = Graphics.FromImage(bmp);
+        private void btn_Fileauswahl_Resize(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btn_Fileauswahl.ClientSize.Height);
+            z = Graphics.FromImage(bmp);
 
-        //    btnFileauswahl.Invalidate();
-        //}
+            btn_Fileauswahl.Invalidate();
+        }
 
         private void DrawInBitmap(Panel caller, string text, Color color)
         {
@@ -422,7 +422,7 @@ namespace DriversGuide
             z.SmoothingMode = SmoothingMode.AntiAlias;
 
             float breite = 109;
-            float hoehe = 75;
+            float hoehe = 60;
 
             Matrix myMatrix = new Matrix();
             myMatrix.Scale(bmp.Width / breite, bmp.Height / hoehe);
@@ -607,11 +607,12 @@ namespace DriversGuide
         private void CenterButtons()
         {
             int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
-            
-            btnSimulation.Top = half - 175;
-            btnOverview.Top = half - 83;
-            btnDynamic.Top = half + 8;
-            btnGPS.Top = half + 100;            
+
+            btn_Fileauswahl.Top = half - 178;
+            btnSimulation.Top = half - 104;
+            btnOverview.Top = half - 30;
+            btnDynamic.Top = half + 44;
+            btnGPS.Top = half + 118;            
         }
 
         private void btnOverview_Click(object sender, EventArgs e)
@@ -846,6 +847,6 @@ namespace DriversGuide
         private void pnlTopContent_Click(object sender, EventArgs e)
         {
             topBottom = true;
-        }
+        }        
     }
 }
