@@ -122,7 +122,7 @@ namespace DriversGuide
         public void GetPercentileBorders(ref double borderUrban, ref double borderRural, ref double borderMotorway)
         {
             if (calcDone)
-                Berechnung.GetRPA(ref borderUrban, ref borderRural, ref borderMotorway);
+                Berechnung.GetBordersPercentile(ref borderUrban, ref borderRural, ref borderMotorway);
         }
 
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)

@@ -19,6 +19,7 @@ namespace DriversGuide
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
         private double distrUrban, distrRural, distrMotorway;
+        private double bordUrban, bordRural, bordMotorway;
         private string[] errors = new string[3];
         private DataTable urban;
         private DataTable rural;
@@ -493,11 +494,22 @@ namespace DriversGuide
          *      - motorway:         RPA for the motorway interval
         */
         //********************************************************************************************
-        public void GetRPA(ref double urban, ref double rural, ref double motorway)
+        public void GetBordersPercentile (ref double urban, ref double rural, ref double motorway)
         {
-            urban = RPAUrban;
-            rural = RPARural;
-            motorway = RPAMotorway;
+            if (avgSpeed_urban <= 74.6)
+                urban = (0.136 * avgSpeed_urban + 14.44);
+            else if (avgSpeed_urban > 74.6)
+                urban = (0.0742 * avgSpeed_urban + 18.966);
+
+            if (avgSpeed_rural <= 74.6)
+                rural = (0.136 * avgSpeed_rural + 14.44);
+            else if (avgSpeed_rural > 74.6)
+                rural = (0.0742 * avgSpeed_rural + 18.966);
+
+            if (avgSpeed_motorway <= 74.6)
+                motorway = (0.136 * avgSpeed_motorway + 14.44);
+            else if (avgSpeed_motorway > 74.6)
+                motorway = (0.0742 * avgSpeed_motorway + 18.966);
         }
 
         //Calculate the percentile of each interval
@@ -522,7 +534,7 @@ namespace DriversGuide
             //Enter the correct percentile values for each row into the dataTable
             for (int i = firstRow; i < lastRow; i++)
             {
-                dt_Interval.Rows[i]["Perzentil"] = (double)i / (lastRow - 1) * 100;
+                dt_Interval.Rows[i]["Perzentil"] = (double)(i + 1) / lastRow * 100;
 
                 //if no entry matches exactly 95 percent .. 
                 if (Convert.ToDouble(dt_Interval.Rows[i]["Perzentil"]) > 95 && Convert.ToDouble(dt_Interval.Rows[i-1]["Perzentil"]) < 95)
