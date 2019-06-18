@@ -224,7 +224,7 @@ namespace DriversGuide
             tripComplete = tripUrban + tripRural + tripMotorway;
             Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
             Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-            Berechnung.GetPercentiles(ref perUrban, ref perRural, ref perMotorway);
+            //Berechnung.GetPercentiles(ref perUrban, ref perRural, ref perMotorway);
 
             if (countData == 20)
             {
@@ -289,21 +289,26 @@ namespace DriversGuide
 
         private void DoCalculationsStatic(bool first)
         {
-            Berechnung = new Calculations();
+            if (first)
+                Berechnung = new Calculations();
+
             Gueltigkeit = new Validation();
             string column_speed = "OBD_Vehicle_Speed_(PID_13)";            
             string column_distance = "di";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
             string column_time = "Time";
             double distrUrban = 0, distrRural = 0, distrMotorway = 0;
-            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
-            DataTable urban_temp = new DataTable();
-            DataTable rural_temp = new DataTable();
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0;           
             DataTable motorway_temp = new DataTable();
 
             Berechnung.CalcReq(ref LiveDataset, column_speed, first);
             Berechnung.SepIntervals(LiveDataset, column_speed);
             Berechnung.CalcDistancesInterval(column_distance);
-            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);     
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            Berechnung.PosCheck(column_acc);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, column_dynamic);        
             Gueltigkeit.InitErrorsDt();            
             Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
             Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
@@ -325,7 +330,7 @@ namespace DriversGuide
 
             values.Rows[1]["Strecke"] = tripUrban;
             values.Rows[2]["Strecke"] = tripRural;
-            values.Rows[3]["Strecke"] = tripMotorway;
+            values.Rows[3]["Strecke"] = tripMotorway;            
 
             if (first)
             {
@@ -355,7 +360,7 @@ namespace DriversGuide
                 btnOverview.Enabled = true;
                 btnDynamic.Enabled = true;
                 calcDone = true;
-            }
+            }            
         }
 
         private void btn_Fileauswahl_Click(object sender, EventArgs e)
@@ -372,12 +377,9 @@ namespace DriversGuide
             {
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable();
-
-                //Stopwatch stopwatch = new Stopwatch();
-                //stopwatch.Start();
+                
                 DoCalculationsStatic(true);
-                //stopwatch.Stop();
-                //MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+                RedrawDynamics();
             }
             //timer1.Start();
         }
@@ -700,12 +702,10 @@ namespace DriversGuide
             else
             {
                 timerSimulation.Stop();
-                Berechnung.SepIntervals(LiveDataset, "OBD_Vehicle_Speed_(PID_13)");
+                Berechnung.SepIntervals(LiveDataset, "OBD_Vehicle_Speed_(PID_13)");              
                 Berechnung.PosCheck("ai");
                 Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
-                perUrban = Berechnung.CalcPercentile_Interval(ref urban, "a*v");
-                perRural = Berechnung.CalcPercentile_Interval(ref rural, "a*v");
-                perMotorway = Berechnung.CalcPercentile_Interval(ref motorway, "a*v");
+                Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, "a*v");                
                 FormGPS.SetRunningState(false);
                 FormGPS.RefreshMap();
                 RedrawDynamics();

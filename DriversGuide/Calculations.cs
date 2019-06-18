@@ -15,6 +15,8 @@ namespace DriversGuide
         //Variables and DataTables to store average speed values, interval percentiles,
         //RPA values of the intervals, distances per interval and DataTables
         private double avgSpeed_urban, avgSpeed_rural, avgSpeed_motorway;
+        private double speed_urban, speed_rural, speed_motorway;
+        private double count_urban, count_rural, count_motorway;
         private double perUrban, perRural, perMotorway;
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
@@ -209,6 +211,16 @@ namespace DriversGuide
                 urban = dt.Clone();
                 rural = dt.Clone();
                 motorway = dt.Clone();
+                
+                //reset speed sums
+                speed_urban = 0;
+                speed_rural = 0;
+                speed_motorway = 0;
+
+                //reset data count for each interval
+                count_urban = 0;
+                count_rural = 0;
+                count_motorway = 0;
             }
 
             //Calculation of distance
@@ -219,13 +231,25 @@ namespace DriversGuide
                 strecke = speed / 3.6;
                 dt.Rows[lastRow - 1]["di"] = strecke;
 
-                //Add distance to according interval
+                //Add distance and speed to according interval
                 if (speed <= 60)
+                {
                     distUrban += strecke;
+                    speed_urban += speed;
+                    count_urban++;
+                }
                 else if (speed <= 90)
+                {
                     distRural += strecke;
+                    speed_rural += speed;
+                    count_rural++;
+                }
                 else
+                {
                     distMotorway += strecke;
+                    speed_motorway += speed;
+                    count_motorway++;
+                }
             }
 
             if (lastRow > 1)
@@ -279,6 +303,11 @@ namespace DriversGuide
                 perRural = CalcPercentile_Interval(ref rural, column_dynamic);
                 perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
             }
+
+            //calculate average speeds per interval
+            avgSpeed_urban = speed_urban / count_urban;
+            avgSpeed_rural = speed_rural / count_rural;
+            avgSpeed_motorway = speed_motorway / count_motorway;
 
             count++;         
         }
@@ -560,6 +589,22 @@ namespace DriversGuide
 
             //return the 95 percentile dynamic value
             return dynNF;
+        }
+
+        //Calculate the percentile for all three intervals by calling CalcPercentile_Interval methode
+        //********************************************************************************************
+        /*Parameters:
+         *      - urban_data:       DataTable with urban data
+         *      - rural_data:       DataTable with urban data
+         *      - motorway_data:    DataTable with urban data
+         *      - column:           string with the name of the column needed for the calculation
+        */
+        //********************************************************************************************
+        public void CalcPercentile_Complete (ref DataTable urban_data, ref DataTable rural_data, ref DataTable motorway_data, string column)
+        {
+            perUrban = CalcPercentile_Interval(ref urban_data, column);
+            perRural = CalcPercentile_Interval(ref rural_data, column);
+            perMotorway = CalcPercentile_Interval(ref motorway_data, column);
         }
 
         //Calculate RPA value for each intervall
