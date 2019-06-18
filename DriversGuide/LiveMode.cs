@@ -47,9 +47,6 @@ namespace DriversGuide
         Color enabled = Color.Teal;
         Color disabled = Color.Gray;
 
-
-        Stopwatch stopwatch = new Stopwatch();
-
         public LiveMode(StartScreen caller)
         {
             FormStart = caller;
@@ -135,33 +132,70 @@ namespace DriversGuide
             timerSimulation.Stop();
         }
 
+        private void SetCorrPos()
+        {
+            if (pnlTopContent.Controls[0] == FormLiveOverview)
+                FormLiveOverview.SetTopBottom(true);
+            else if (pnlTopContent.Controls[0] == FormDynamic)
+                FormDynamic.SetTopBottom(true);
+            else if (pnlTopContent.Controls[0] == FormGPS)
+                FormGPS.SetTopBottom(true);
+
+            if (pnlBottomContent.Controls[0] == FormLiveOverview)
+                FormLiveOverview.SetTopBottom(false);
+            else if (pnlBottomContent.Controls[0] == FormDynamic)
+                FormDynamic.SetTopBottom(false);
+            else if (pnlBottomContent.Controls[0] == FormGPS)
+                FormGPS.SetTopBottom(false);
+        }
+
         private void btnGPS_Click(object sender, EventArgs e)
         {
-            if (topBottom)
+            if (pnlTopContent.Controls[0] != FormGPS && pnlBottomContent.Controls[0] != FormGPS)
             {
-                pnlTopContent.Controls.Clear();
-                FormGPS = new GPS(this, live);
-                //myForm.TopLevel = false;
-                FormGPS.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormGPS);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormGPS.BackColor;
-                gpsActive = true;
+                if (topBottom)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormGPS);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormGPS.BackColor;
+                    gpsActive = true;
+                }
+                else
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormGPS);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormGPS.BackColor;
+                    gpsActive = true;
+                }
             }
             else
             {
-                pnlBottomContent.Controls.Clear();
-                FormGPS = new GPS(this, live);
-                //myForm.TopLevel = false;
-                FormGPS.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormGPS);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormGPS.BackColor;
-                gpsActive = true;
+                if (topBottom && pnlTopContent.Controls[0] != FormGPS)
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(pnlTopContent.Controls[0]);
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormGPS);
+
+                    SetCorrPos();
+                    gpsActive = true;
+                }
+                else if (!topBottom && pnlBottomContent.Controls[0] != FormGPS)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(pnlBottomContent.Controls[0]);
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormGPS);
+
+                    SetCorrPos();
+                    gpsActive = true;
+                }
             }
         }
 
@@ -239,10 +273,13 @@ namespace DriversGuide
                 FormGPS.AutoScroll = true;
                 pnlBottomContent.Controls.Add(FormGPS);
                 FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormGPS.BackColor;
+                FormGPS.Dock = DockStyle.Fill;                
                 gpsActive = true;
-                
+
+                FormDynamic = new Dynamic(this);
+                FormDynamic.AutoScroll = true;
+                FormDynamic.Dock = DockStyle.Fill;
+
                 btnGPS.Enabled = true;
                 btnOverview.Enabled = true;
                 btnDynamic.Enabled = true;
@@ -308,9 +345,12 @@ namespace DriversGuide
                 pnlBottomContent.Controls.Add(FormGPS);
                 FormGPS.Show();
                 FormGPS.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormGPS.BackColor;
                 gpsActive = true;
-                
+
+                FormDynamic = new Dynamic(this);
+                FormDynamic.AutoScroll = true;
+                FormDynamic.Dock = DockStyle.Fill;
+
                 btnGPS.Enabled = true;
                 btnOverview.Enabled = true;
                 btnDynamic.Enabled = true;
@@ -505,13 +545,9 @@ namespace DriversGuide
 
         private void lblHide_Click(object sender, EventArgs e)
         {
-            //pnlSideBar.Hide();
             tmrFade.Enabled = true;
             lblHide.Hide();
-            //lblShow.Show();
             lblShow.Left = 3;
-            //pnlContent.Left = 0;
-            //pnlContent.Width = ClientSize.Width;
             tmrFade.Enabled = true;
         }
 
@@ -520,7 +556,6 @@ namespace DriversGuide
             tmrFade.Enabled = true;
             lblShow.Hide();
             lblHide.Show();
-            //pnlSideBar.Show();
             pnlTopContent.Left = pnlSideBar.Width;
             pnlTopContent.Width = ClientSize.Width - pnlSideBar.Width;
             pnlBottomContent.Left = pnlSideBar.Width;
@@ -534,16 +569,11 @@ namespace DriversGuide
                 if (pnlSideBar.Location.X < 0)
                 {
                     pnlSideBar.Left += 10;
-                    //pnlContent.Left += 10;
-                    //pnlContent.Width -= 10;
                 }
                 else
                 {
                     tmrFade.Enabled = false;
                     inout = false;
-                    //pnlSideBar.Hide(); 
-                    //pnlContent.Left = pnlSideBar.Width;
-                    //pnlContent.Width = ClientSize.Width - pnlSideBar.Width;
                 }
             }
             else
@@ -551,8 +581,6 @@ namespace DriversGuide
                 if (pnlSideBar.Location.X > -pnlSideBar.Width)
                 {
                     pnlSideBar.Left -= 10;
-                    //pnlContent.Left -= 10;
-                    //pnlContent.Width += 10;
                 }
                 else
                 {
@@ -579,10 +607,7 @@ namespace DriversGuide
         private void CenterButtons()
         {
             int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
-
-            //btn_Fileauswahl.Top = half - 170;
-            //btnOverview.Top = half - 50;
-            //btnGPS.Top = half + 70;
+            
             btnSimulation.Top = half - 175;
             btnOverview.Top = half - 83;
             btnDynamic.Top = half + 8;
@@ -591,29 +616,48 @@ namespace DriversGuide
 
         private void btnOverview_Click(object sender, EventArgs e)
         {
-            if (topBottom)
+            if (pnlTopContent.Controls[0] != FormLiveOverview && pnlBottomContent.Controls[0] != FormLiveOverview)
             {
-                pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this, live);
-                //myForm.TopLevel = false;
-                FormLiveOverview.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormLiveOverview);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormLiveOverview.Show();
-                FormLiveOverview.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormLiveOverview.BackColor;
+                if (topBottom)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormLiveOverview);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormLiveOverview.BackColor;
+                }
+                else
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormLiveOverview);
+
+                    SetCorrPos();
+                }
             }
             else
             {
-                pnlBottomContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this, live);
-                //myForm.TopLevel = false;
-                FormLiveOverview.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormLiveOverview);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormLiveOverview.Show();
-                FormLiveOverview.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormLiveOverview.BackColor;
+                if (topBottom && pnlTopContent.Controls[0] != FormLiveOverview)
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(pnlTopContent.Controls[0]);
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormLiveOverview);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormLiveOverview.BackColor;
+                }
+                else if (!topBottom && pnlBottomContent.Controls[0] != FormLiveOverview)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(pnlBottomContent.Controls[0]);
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormLiveOverview);
+
+                    SetCorrPos();
+                }
+
             }
         }
 
@@ -631,10 +675,8 @@ namespace DriversGuide
             {
                 LiveDatei = new MeasurementFile(ofd.FileName); // Datatable anlegen
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable(); // Datatable befüllen
-                LiveDataset.Clear();        // Daten aus Table löschen
-                                                                          
-                stopwatch.Start();
-                
+                LiveDataset.Clear();        // Daten aus Table löschen                                                                         
+                              
                 DoCalculations(true);
             }
             timerSimulation.Start(); // Simulation starten
@@ -665,8 +707,7 @@ namespace DriversGuide
                 perMotorway = Berechnung.CalcPercentile_Interval(ref motorway, "a*v");
                 FormGPS.SetRunningState(false);
                 FormGPS.RefreshMap();
-                stopwatch.Stop();
-                MessageBox.Show("Time elapsed: " + stopwatch.Elapsed.ToString());
+                RedrawDynamics();
             }
 
             FormLiveOverview.RefreshData();
@@ -719,28 +760,47 @@ namespace DriversGuide
 
         private void btnDyn_Click(object sender, EventArgs e)
         {
-            if (topBottom)
+            if (pnlTopContent.Controls[0] != FormDynamic && pnlBottomContent.Controls[0] != FormDynamic)
             {
-                pnlTopContent.Controls.Clear();
-                FormDynamic = new Dynamic(this, live);
-                FormDynamic.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormDynamic);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormDynamic.Show();
-                FormDynamic.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormDynamic.BackColor;
+                if (topBottom)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormDynamic);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormDynamic.BackColor;
+                }
+                else
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormDynamic);
+
+                    SetCorrPos();
+                }
             }
             else
             {
-                pnlBottomContent.Controls.Clear();
-                FormDynamic = new Dynamic(this, live);
-                //myForm.TopLevel = false;
-                FormDynamic.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormDynamic);
-                //myForm.FormBorderStyle = FormBorderStyle.None;
-                FormDynamic.Show();
-                FormDynamic.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormDynamic.BackColor;
+                if (topBottom && pnlTopContent.Controls[0] != FormDynamic)
+                {
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(pnlTopContent.Controls[0]);
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(FormDynamic);
+
+                    SetCorrPos();
+
+                    lblHide.BackColor = FormDynamic.BackColor;
+                }
+                else if (!topBottom && pnlBottomContent.Controls[0] != FormDynamic)
+                {
+                    pnlTopContent.Controls.Clear();
+                    pnlTopContent.Controls.Add(pnlBottomContent.Controls[0]);
+                    pnlBottomContent.Controls.Clear();
+                    pnlBottomContent.Controls.Add(FormDynamic);
+
+                    SetCorrPos();
+                }
             }
         }
 
@@ -778,5 +838,14 @@ namespace DriversGuide
             btnDynamic.Invalidate();
         }
 
+        private void pnlBottomContent_Click(object sender, EventArgs e)
+        {
+            topBottom = false;
+        }
+
+        private void pnlTopContent_Click(object sender, EventArgs e)
+        {
+            topBottom = true;
+        }
     }
 }

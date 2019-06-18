@@ -55,14 +55,16 @@
             legend1.Name = "Legend1";
             this.ChUrb.Legends.Add(legend1);
             this.ChUrb.Location = new System.Drawing.Point(0, 0);
+            this.ChUrb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ChUrb.Name = "ChUrb";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.ChUrb.Series.Add(series1);
-            this.ChUrb.Size = new System.Drawing.Size(310, 446);
+            this.ChUrb.Size = new System.Drawing.Size(232, 362);
             this.ChUrb.TabIndex = 0;
             this.ChUrb.Text = "chart1";
+            this.ChUrb.Click += new System.EventHandler(this.ChUrb_Click);
             this.ChUrb.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChUrb_MouseMove);
             // 
             // ChRur
@@ -71,15 +73,17 @@
             this.ChRur.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.ChRur.Legends.Add(legend2);
-            this.ChRur.Location = new System.Drawing.Point(311, -3);
+            this.ChRur.Location = new System.Drawing.Point(233, -2);
+            this.ChRur.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ChRur.Name = "ChRur";
             series2.ChartArea = "ChartArea1";
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.ChRur.Series.Add(series2);
-            this.ChRur.Size = new System.Drawing.Size(310, 446);
+            this.ChRur.Size = new System.Drawing.Size(232, 362);
             this.ChRur.TabIndex = 1;
             this.ChRur.Text = "chart2";
+            this.ChRur.Click += new System.EventHandler(this.ChRur_Click);
             this.ChRur.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChRur_MouseMove);
             // 
             // ChMw
@@ -88,47 +92,52 @@
             this.ChMw.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.ChMw.Legends.Add(legend3);
-            this.ChMw.Location = new System.Drawing.Point(618, -3);
+            this.ChMw.Location = new System.Drawing.Point(464, -2);
+            this.ChMw.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ChMw.Name = "ChMw";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.ChMw.Series.Add(series3);
-            this.ChMw.Size = new System.Drawing.Size(314, 449);
+            this.ChMw.Size = new System.Drawing.Size(236, 365);
             this.ChMw.TabIndex = 2;
             this.ChMw.Text = "chart3";
+            this.ChMw.Click += new System.EventHandler(this.ChMw_Click);
             this.ChMw.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChMw_MouseMove);
             // 
             // lblUrb
             // 
             this.lblUrb.AutoSize = true;
-            this.lblUrb.Location = new System.Drawing.Point(234, 410);
+            this.lblUrb.Location = new System.Drawing.Point(176, 333);
+            this.lblUrb.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUrb.Name = "lblUrb";
-            this.lblUrb.Size = new System.Drawing.Size(46, 17);
+            this.lblUrb.Size = new System.Drawing.Size(35, 13);
             this.lblUrb.TabIndex = 3;
             this.lblUrb.Text = "label1";
             // 
             // lblRur
             // 
             this.lblRur.AutoSize = true;
-            this.lblRur.Location = new System.Drawing.Point(530, 410);
+            this.lblRur.Location = new System.Drawing.Point(398, 333);
+            this.lblRur.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRur.Name = "lblRur";
-            this.lblRur.Size = new System.Drawing.Size(46, 17);
+            this.lblRur.Size = new System.Drawing.Size(35, 13);
             this.lblRur.TabIndex = 4;
             this.lblRur.Text = "label1";
             // 
             // lblMw
             // 
             this.lblMw.AutoSize = true;
-            this.lblMw.Location = new System.Drawing.Point(846, 410);
+            this.lblMw.Location = new System.Drawing.Point(634, 333);
+            this.lblMw.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMw.Name = "lblMw";
-            this.lblMw.Size = new System.Drawing.Size(46, 17);
+            this.lblMw.Size = new System.Drawing.Size(35, 13);
             this.lblMw.TabIndex = 5;
             this.lblMw.Text = "label1";
             // 
             // Dynamic
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblMw);
             this.Controls.Add(this.lblRur);
@@ -136,9 +145,8 @@
             this.Controls.Add(this.ChMw);
             this.Controls.Add(this.ChRur);
             this.Controls.Add(this.ChUrb);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Dynamic";
-            this.Size = new System.Drawing.Size(932, 446);
+            this.Size = new System.Drawing.Size(699, 362);
             this.Load += new System.EventHandler(this.Dynamic_Load);
             this.SizeChanged += new System.EventHandler(this.Dynamic_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.ChUrb)).EndInit();

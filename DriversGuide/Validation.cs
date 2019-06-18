@@ -13,9 +13,10 @@ namespace DriversGuide
     class Validation
     {
         //Create new object of class Calculations
-        //needed for various methods in it
+        //needed for various methods
         Calculations Berechnungen = new Calculations();
 
+        //create needed variabled
         double distrUrban, distrRural, distrMotorway;
         double duration_hold = 0;
         double maxSpeed = 0;
@@ -24,9 +25,12 @@ namespace DriversGuide
         double holdTimeCold = 0;
         double fasterOnehundred = 0;
 
+        //create DataTables to store errors and tips
         DataTable errors = new DataTable();
         DataTable tips = new DataTable();
 
+        //Init columns and rows of errors dataTable
+        //********************************************************************************************
         public void InitErrorsDt ()
         {
             errors.Columns.Add("Distance", typeof(string));
@@ -44,6 +48,8 @@ namespace DriversGuide
             errors.Rows.Add();
         }
 
+        //Init columns and rows of tips dataTable
+        //********************************************************************************************
         public void InitTipsDt()
         {
             tips.Columns.Add("Distance", typeof(string));
@@ -947,21 +953,8 @@ namespace DriversGuide
             //Get the now seperated intervals
             Berechnungen.SepIntervals(dt, column_speed);
             Berechnungen.GetIntervals(ref urban, ref rural, ref motorway);
-
-            //Call all methods for checking every criteria
-            //if all of them return true, all criteria are matched and this
-            //methode returns true
-            //if (CheckDistanceComplete(dt, column_speed, column_distance) &&
-            //    CheckDistributionComplete(dt, column_speed, column_distance) &&
-            //    CheckDuration(dt, column_time) &&
-            //    CheckSpeeds(urban, motorway, column_speed, column_time) &&
-            //    CheckColdStart(dt, column_speed, column_time, column_coolant))
-            //{
-            //    return true;
-            //}
-            //else
-            //    return false;
-
+            
+            //check every criteria to determine if trip is valid
             if (CheckDistanceComplete(dt, column_speed, column_distance))
                 stateDistance = true;
             else

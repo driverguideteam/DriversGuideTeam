@@ -18,7 +18,7 @@ namespace DriversGuide
         GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
         PlotGraphic PlotCopy;
         bool live = false;
-        bool liveRun = false;
+        private bool topBottomSave;
         double urbmax = 0;      //Maximalwert a*v Stadt
         double rurmax = 0;      //Maximalwert a*v Freiland
         double mwmax = 0;       //Maximalwert a*v Autobahn
@@ -36,20 +36,12 @@ namespace DriversGuide
         DataTable units;
 
 
-        public Dynamic(LiveMode caller, bool liveRunning)
+        public Dynamic(LiveMode caller)
         {
             FormLive = caller;
             InitializeComponent();
             live = true;
-            if (liveRunning)
-            {
-                liveRun = true;
-
-            }
-            else
-            {
-                //???
-            }
+            topBottomSave = FormLive.topBottom;
         }
 
         public Dynamic(DriversGuideApp caller2)
@@ -59,6 +51,10 @@ namespace DriversGuide
             live = false;
         }
 
+        public void SetTopBottom(bool pos)
+        {
+            topBottomSave = pos;
+        }
 
         public void GetChosenData(PlotGraphic ConnectForm)
         {
@@ -494,6 +490,21 @@ namespace DriversGuide
         private void ChMw_MouseWheel(object sender, MouseEventArgs e)
         {
             SetStartScale(ChMw, "a*v");
+        }
+
+        private void ChRur_Click(object sender, EventArgs e)
+        {
+            FormLive.topBottom = topBottomSave;
+        }
+
+        private void ChUrb_Click(object sender, EventArgs e)
+        {
+            FormLive.topBottom = topBottomSave;
+        }
+
+        private void ChMw_Click(object sender, EventArgs e)
+        {
+            FormLive.topBottom = topBottomSave;
         }
 
         //private void DeactSV(Chart chartname, string GewDaten)  //Deaktiviert Bereichsauswahl in Chart

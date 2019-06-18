@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveMode));
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.btnDynamic = new System.Windows.Forms.Panel();
             this.btnSimulation = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Panel();
             this.btnOverview = new System.Windows.Forms.Panel();
-            this.btnDynamic = new System.Windows.Forms.Panel();
             this.pnlLogo = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlTopContent = new System.Windows.Forms.Panel();
@@ -64,6 +64,19 @@
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(109, 450);
             this.pnlSideBar.TabIndex = 32;
+            // 
+            // btnDynamic
+            // 
+            this.btnDynamic.Enabled = false;
+            this.btnDynamic.Location = new System.Drawing.Point(0, 269);
+            this.btnDynamic.Name = "btnDynamic";
+            this.btnDynamic.Size = new System.Drawing.Size(109, 75);
+            this.btnDynamic.TabIndex = 0;
+            this.btnDynamic.Click += new System.EventHandler(this.btnDyn_Click);
+            this.btnDynamic.Paint += new System.Windows.Forms.PaintEventHandler(this.btnDynamic_Paint);
+            this.btnDynamic.MouseEnter += new System.EventHandler(this.btnDynamic_MouseEnter);
+            this.btnDynamic.MouseLeave += new System.EventHandler(this.btnDynamic_MouseLeave);
+            this.btnDynamic.Resize += new System.EventHandler(this.btnDynamic_Resize);
             // 
             // btnSimulation
             // 
@@ -103,19 +116,6 @@
             this.btnOverview.MouseLeave += new System.EventHandler(this.btnOverview_MouseLeave);
             this.btnOverview.Resize += new System.EventHandler(this.btnOverview_Resize);
             // 
-            // btnDynamic
-            // 
-            this.btnDynamic.Enabled = false;
-            this.btnDynamic.Location = new System.Drawing.Point(0, 269);
-            this.btnDynamic.Name = "btnDynamic";
-            this.btnDynamic.Size = new System.Drawing.Size(109, 75);
-            this.btnDynamic.TabIndex = 0;
-            this.btnDynamic.Click += new System.EventHandler(this.btnDyn_Click);
-            this.btnDynamic.Paint += new System.Windows.Forms.PaintEventHandler(this.btnDynamic_Paint);
-            this.btnDynamic.MouseEnter += new System.EventHandler(this.btnDynamic_MouseEnter);
-            this.btnDynamic.MouseLeave += new System.EventHandler(this.btnDynamic_MouseLeave);
-            this.btnDynamic.Resize += new System.EventHandler(this.btnDynamic_Resize);
-            // 
             // pnlLogo
             // 
             this.pnlLogo.BackColor = System.Drawing.Color.LightBlue;
@@ -148,6 +148,7 @@
             this.pnlTopContent.Name = "pnlTopContent";
             this.pnlTopContent.Size = new System.Drawing.Size(885, 225);
             this.pnlTopContent.TabIndex = 39;
+            this.pnlTopContent.Click += new System.EventHandler(this.pnlTopContent_Click);
             // 
             // lblHide
             // 
@@ -184,6 +185,7 @@
             this.pnlBottomContent.Name = "pnlBottomContent";
             this.pnlBottomContent.Size = new System.Drawing.Size(885, 225);
             this.pnlBottomContent.TabIndex = 40;
+            this.pnlBottomContent.Click += new System.EventHandler(this.pnlBottomContent_Click);
             // 
             // timer1
             // 
