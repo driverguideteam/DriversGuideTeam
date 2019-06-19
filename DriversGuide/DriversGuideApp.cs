@@ -183,6 +183,7 @@ namespace DriversGuide
             DataTable rural_temp = new DataTable();
             DataTable motorway_temp = new DataTable();
             string[] errorMess = new string[3];
+            string[] tipsMess = new string[3];
 
             //List<string> errors = new List<string>();
 
@@ -195,10 +196,15 @@ namespace DriversGuide
             errors = Gueltigkeit.GetErrors();
             tips = Gueltigkeit.GetTips();
             errorMess = Berechnung.GetErrors();
+            tipsMess = Berechnung.GetTips();
 
             errors.Rows[0]["Other"] = errorMess[0];
             errors.Rows[1]["Other"] = errorMess[1];
             errors.Rows[2]["Other"] = errorMess[2];
+
+            tips.Rows[0]["Other"] = tipsMess[0];
+            tips.Rows[1]["Other"] = tipsMess[1];
+            tips.Rows[2]["Other"] = tipsMess[2];
 
             Berechnung.SepIntervals(test, column_speed);
             Berechnung.GetIntervals(ref urban_temp, ref rural_temp, ref motorway_temp);

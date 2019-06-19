@@ -21,8 +21,8 @@ namespace DriversGuide
         private double RPAUrban, RPARural, RPAMotorway;
         private double distUrban, distRural, distMotorway;
         private double distrUrban, distrRural, distrMotorway;
-        private double bordUrban, bordRural, bordMotorway;
         private string[] errors = new string[3];
+        private string[] tips = new string[3];
         private DataTable urban;
         private DataTable rural;
         private DataTable motorway;
@@ -492,12 +492,53 @@ namespace DriversGuide
         //Return the error messages
         //********************************************************************************************
         /*Parameters:
-         *      - errors:            String arraywith error messages
+         *      - errors:            string array with error messages
         */
         //********************************************************************************************
         public string[] GetErrors()
         {
+            double bordUrban = 0;
+            double bordRural = 0;
+            double bordMotorway = 0;
+
+            GetBordersPercentile(ref bordUrban, ref bordRural, ref bordMotorway);
+
+            if (perUrban > bordUrban)
+                errors[0] = "Stadt: Dynamik zu hoch";
+
+            if (perRural > bordRural)
+                errors[1] = "Land: Dynamik zu hoch";
+
+            if (perMotorway > bordMotorway)
+                errors[2] = "Autobahn: Dynamik zu hoch";
+
             return errors;
+        }
+
+        //Return the tips messages
+        //********************************************************************************************
+        /*Parameters:    
+         *      - tips:              string array with tips messages
+        */
+        //********************************************************************************************
+        public string[] GetTips()
+        {
+            double bordUrban = 0;
+            double bordRural = 0;
+            double bordMotorway = 0;
+
+            GetBordersPercentile(ref bordUrban, ref bordRural, ref bordMotorway);
+
+            if (perUrban <= bordUrban - 5)
+                tips[0] = "Stadt: Dynamik erhöhen";
+
+            if (perRural <= bordRural - 5)
+                tips[1] = "Land: Dynamik erhöhen";
+
+            if (perMotorway <= bordMotorway - 5)
+                tips[2] = "Autobahn: Dynamik erhöhen";
+
+            return tips;
         }
 
         //Get the distribution values per interval
@@ -518,9 +559,9 @@ namespace DriversGuide
         //Get the RPA values per interval
         //********************************************************************************************
         /*Parameters:
-         *      - urban:            RPA for the urban interval        
-         *      - rural:            RPA for the rural interval
-         *      - motorway:         RPA for the motorway interval
+         *      - urban:            percentile border for the urban interval        
+         *      - rural:            percentile border for the rural interval
+         *      - motorway:         percentile border for the motorway interval
         */
         //********************************************************************************************
         public void GetBordersPercentile (ref double urban, ref double rural, ref double motorway)
