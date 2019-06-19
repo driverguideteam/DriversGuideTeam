@@ -13,13 +13,17 @@ namespace DriversGuide
 {
     public partial class OverviewLive : UserControl
     {
-        //Set needed Form References and variables
+        //Set needed form reference
         LiveMode FormLive;
+
+        //create needed graphics and bitmaps
         Graphics bar;
         Bitmap barBmp;
         Graphics strCont;
         Bitmap bmpStrCont;
         DataTable values;
+
+        //create needed variables
         private bool topBottomSave;
         private bool liveRunning = false;
 
@@ -149,7 +153,7 @@ namespace DriversGuide
         //clr1, clr2, clr3:     colors of the corresponding interval in which bar is drawn
         //heading:              heading to be drawn
         //unit:                 unit of the bar data
-        //borders:              upper and lower boundries of the interval data (0 upper boundry val1, 1 lower boundry val1, ...)
+        //borders:              upper and lower boundries of the interval data (borders[0] upper boundry val1, borders[1] lower boundry val1, ...)
         private void DrawBarBitmap(double val1, double val2, double val3, Color clr1, Color clr2, Color clr3, string heading, string unit, float[] borders)
         {
             //set the correct scale and transform init position
@@ -256,7 +260,7 @@ namespace DriversGuide
         //paint barBitmap into distance pictureBox
         private void picDistance_Paint(object sender, PaintEventArgs e)
         {
-            //get the current distances
+            //get current distances
             double distUrban = Convert.ToDouble(values.Rows[1]["Strecke"]);
             double distRural = Convert.ToDouble(values.Rows[2]["Strecke"]);
             double distMotorway = Convert.ToDouble(values.Rows[3]["Strecke"]);
@@ -324,7 +328,7 @@ namespace DriversGuide
             FormLive.topBottom = topBottomSave;
         }
 
-        //paint string bitmap with elapsed time and current speed into pictureBox
+        //paint string bitmap with elapsed time and current speed into General pictureBox
         private void picGeneral_Paint(object sender, PaintEventArgs e)
         {
             //get current duration
@@ -357,7 +361,7 @@ namespace DriversGuide
                     DrawStringBitmap(timeElapsed, Color.Black);
             }
 
-            //paint bitMap
+            //paint bitmap
             Graphics g = e.Graphics;
             g.DrawImage(bmpStrCont, 0, 0);
         }

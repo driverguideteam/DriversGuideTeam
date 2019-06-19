@@ -117,6 +117,15 @@ namespace DriversGuide
                 distMotorway = 0;
         }
 
+        //Perform a multiplikation by a choosen factor on the choosen column
+        //only used for testing purposes
+        //********************************************************************************************
+        /*Parameters:
+         *      - dt:               dataTable with the data
+         *      - column:           which column the multiplikation is performed on
+         *      - multiplier:       the faktor by which the multiplication is performed
+        */
+        //********************************************************************************************
         private void PerformMutliplikationOnColumn(ref DataTable dt, string column, double multiplier)
         {
             int firstRow = 0;
@@ -125,7 +134,8 @@ namespace DriversGuide
 
             for (int i = firstRow; i < lastRow; i++)
             {
-                //Calculate dynamic by multiplying velocity and acceleration value and dividing the product with 3.6
+                //multiply each value in the choosen column by the choosen multiplier
+                //and write it to the corresponding item in the dataTable
                 val = Convert.ToDouble(dt.Rows[i][column]) * multiplier;
                 dt.Rows[i][column] = val;
             }
@@ -387,12 +397,6 @@ namespace DriversGuide
                 motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
             else
                 motorway = dt.Clone();
-
-
-            //Seperate DataTable dt into three intervals according to the speed values
-            //urban = dt.Select("[" + column_speed + "] <=  60").CopyToDataTable();
-            //rural = dt.Select("[" + column_speed + "] >  60 AND [" + column_speed + "] <= 90").CopyToDataTable();
-            //motorway = dt.Select("[" + column_speed + "] >  90").CopyToDataTable();
         }
 
         //Call method makePosCheckCount(...) and check if every interval has more than 100 entries
@@ -503,6 +507,8 @@ namespace DriversGuide
 
             GetBordersPercentile(ref bordUrban, ref bordRural, ref bordMotorway);
 
+            //determine if percentiles are above borders
+            //if so return errors
             if (perUrban > bordUrban)
                 errors[0] = "Stadt: Dynamik zu hoch";
 
@@ -529,6 +535,8 @@ namespace DriversGuide
 
             GetBordersPercentile(ref bordUrban, ref bordRural, ref bordMotorway);
 
+            //determine if percentiles are far from border
+            //if so write tips
             if (perUrban <= bordUrban - 5)
                 tips[0] = "Stadt: Dynamik erhöhen";
 

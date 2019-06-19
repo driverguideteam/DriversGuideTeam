@@ -183,12 +183,6 @@ namespace DriversGuide
                 return true;
             else
                 return false;
-
-            //if urban criteria matched return true
-            //if (avgSpeed >= 15 && avgSpeed <= 40 && duration_ratio >= 6 && duration_ratio <= 30 && countTime <= 120)
-            //    return true;
-            //else
-            //    return false;
         }
 
         //Check if motorway criteria are matched
@@ -278,14 +272,6 @@ namespace DriversGuide
                 return true;
             else
                 return false;
-
-            //if criteria are matched return true
-            //if (min > 90 && maxSpeed >= 110 && maxSpeed <= 145 && fasterOnehundred >= 5)
-            //    return true;
-            //else if (min > 90 && maxSpeed >= 145 && maxSpeed <= 160 && fasterOnehundred >= 5 && tooFast <= 3)
-            //    return true;
-            //else
-            //    return false;
         }
 
         //Check the percentage of the distances per interval compared to complete trip
@@ -380,12 +366,6 @@ namespace DriversGuide
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;
             else return false;
-
-            //if criteria are matched, return true
-            //if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
-            //    return true;
-            //else
-            //    return false;
         }
 
         //Check the percentage of the distances per interval compared to complete trip
@@ -470,11 +450,6 @@ namespace DriversGuide
             if (con1 && con2 && con3 && con4 && con5 && con6)
                 return true;
             else return false;
-
-            //if (distrUrban >= 29 && distrUrban <= 44 && distrRural >= 23 && distrRural <= 43 && distrMotorway >= 23 && distrMotorway <= 43)
-            //    return true;
-            //else
-            //    return false;
         }             
 
         //Get the distribution values per interval
@@ -591,15 +566,12 @@ namespace DriversGuide
         //********************************************************************************************
         public bool CheckSpeeds(DataTable urban, DataTable motorway, string column_speed, string column_time)
         {
-            //Call methods for cheching urban and motorway criteria, if they both return true,
-            //this method returns true
-            //if (CheckUrban(urban, column_speed, column_time) && CheckMotorway(motorway, column_speed))
-            //    return true;
-            //else
-            //    return false;
+            //create needed variables
             bool stateUrban = false;
             bool stateMotorway = false;
 
+            //Call methods for cheching urban and motorway criteria, if they both return true,
+            //this method returns true         
             if (CheckUrban(urban, column_speed, column_time))
                 stateUrban = true;
             else
@@ -656,11 +628,6 @@ namespace DriversGuide
                 return true;
             else
                 return false;
-
-            //if (duration >= 90 && duration <= 120)
-            //    return true;
-            //else
-            //    return false;
         }
 
         //Check if distances per interval are greater than 16 kilometers
@@ -872,13 +839,18 @@ namespace DriversGuide
                 return true;
             else
                 return false;
-            //if criteria are matched, return true
-            //if (time_start <= 15 && holdTimeCold <= 90 && avgSpeedCold >= 15 && avgSpeedCold <= 40 && maxSpeedCold <= 60)
-            //    return true;
-            //else
-            //    return false;
         }
 
+        //Checks altitude data --> currently not finished or working
+        //due to the fact that no free map with height data included is available
+        //********************************************************************************************
+        /*Parameters:
+         *      - dt:               DataTable with the complete dataset
+         *      - column_altitude:  string with the name of the altitude column
+         *      - column_distance:  string with the name of the distance column
+         *      - init:             bool for defining if it is the first call
+        */
+        //********************************************************************************************
         public bool CheckAltitude(ref DataTable dt, string column_altitude, string column_distance, bool init)
         {
             double firstVal = Convert.ToDouble(dt.Rows[0][column_altitude]);

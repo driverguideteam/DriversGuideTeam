@@ -14,55 +14,69 @@ namespace DriversGuide
 {
     public partial class LiveMode : Form
     {
+        //create the needed forms and classes
         StartScreen FormStart;
         GPS FormGPS;
         Dynamic FormDynamic;
-        OverviewLive FormLiveOverview;             
-        Bitmap bmp;
-        Graphics z;
-        public bool topBottom = true;
+        OverviewLive FormLiveOverview;
         MeasurementFile LiveDatei;
-        private DataTable LiveDataset = new DataTable();       
+        Calculations Berechnung;
+        Validation Gueltigkeit;
+
+        //create dataTables for the individual datasets
+        private DataTable LiveDataset = new DataTable();
         private DataTable urban = new DataTable();
         private DataTable rural = new DataTable();
         private DataTable motorway = new DataTable();
+        private DataTable values = new DataTable();
 
+        //create a bitmap used for drawing the buttons
+        Bitmap bmp;
+        Graphics z;
+
+        //define colors for the differnt states of the buttons
+        Color enabled = Color.Teal;
+        Color disabled = Color.Gray;
+
+        //create needed variables
+        public bool topBottom = true;   
         private double perUrban;
         private double perRural;
         private double perMotorway;
-
         bool inout = false;
-        bool gpsActive = false;
-        private DataTable values = new DataTable();
+        bool gpsActive = false;        
         bool calc = false;
         bool valid = false;
         bool calcDone = false;
         bool live = false;
         int countData = 5;
-        int ElapsedTicks = 0;
+        int ElapsedTicks = 0;        
 
-        Calculations Berechnung;
-        Validation Gueltigkeit;
-
-        Color enabled = Color.Teal;
-        Color disabled = Color.Gray;
-
+        //when form gets initialized
         public LiveMode(StartScreen caller)
         {
+            //get reference to calling form and hide it
             FormStart = caller;
             FormStart.Hide();
 
             InitializeComponent();
+
+            //initialize bitmap
             bmp = new Bitmap(btnDynamic.ClientSize.Width, btnDynamic.ClientSize.Height);
             z = Graphics.FromImage(bmp);
+
+            //init labels and center buttons
             lblHide.Parent = this;
             lblShow.Parent = this;
             lblHide.BringToFront();
             lblShow.BringToFront();
             CenterButtons();
+
+            //init the value dataTable
             InitValueData();
         }
 
+        //define correct form of values dataTable
         private void InitValueData()
         {
             values.Columns.Clear();
@@ -88,43 +102,53 @@ namespace DriversGuide
             values.Rows[3]["Klasse"] = "Autobahn";
         }
 
+        //get a copy of the complete dataset
         public DataTable GetCompleteDataTable()
         {
             return LiveDataset.Copy();
         }
 
+        //get a copy of the values dataset
         public DataTable GetValuesDataTable()
         {
             return values.Copy();
         }
 
+        //get a copy of the urban dataset
         public DataTable GetUrbanDataTable()
         {
             return urban.Copy();
         }
 
+        //get a copy of the rural dataset
         public DataTable GetRuralDataTable()
         {
             return rural.Copy();
         }
 
+        //get a copy of the motorway dataset
         public DataTable GetMotorwayDataTable()
         {
             return motorway.Copy();
         }
 
+        //get the percentile values for each interval
         public void GetPercentiles(ref double percentileUrban, ref double percentileRural, ref double percentileMotorway)
         {
+            //.. by calling the getPercentiles methode of the calculations class after the calculation is done
             if (calcDone)
                 Berechnung.GetPercentiles(ref percentileUrban, ref percentileRural, ref percentileMotorway);
         }
 
+        //get the percentile borders for each interval
         public void GetPercentileBorders(ref double borderUrban, ref double borderRural, ref double borderMotorway)
         {
+            //.. by calling the getBorderPercentile methode of the calculations class after the calculation is done
             if (calcDone)
                 Berechnung.GetBordersPercentile(ref borderUrban, ref borderRural, ref borderMotorway);
         }
 
+        //when this form is closed, show calling form again and stop timers
         private void LiveMode_FormClosed(object sender, FormClosedEventArgs e)
         {
             FormStart.Show();
@@ -132,6 +156,8 @@ namespace DriversGuide
             timerSimulation.Stop();
         }
 
+        //used to set the correct position for each user control by storing the position 
+        //to a variable in each user control
         private void SetCorrPos()
         {
             if (pnlTopContent.Controls[0] == FormLiveOverview)
@@ -149,8 +175,195 @@ namespace DriversGuide
                 FormGPS.SetTopBottom(false);
         }
 
+        //Calculates all needed data in running mode
+        private void DoCalculations(bool first)
+        {
+            //if it is called for the first time, init a new calculations class
+            if (first)
+                Berechnung = new Calculations();
+
+            //create needed variables
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_time = "Time";
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0, tripComplete = 0;
+
+            //calculate requirements, get trip length per interval, calculate length of whole trip
+            //calculate the distributions and get them by using the calculations class
+            Berechnung.CalcReqLive(ref LiveDataset, column_speed, first);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            tripComplete = tripUrban + tripRural + tripMotorway;
+            Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
+            Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+
+            //every 20 counts the stored interval dataTables are retrieved from the calculations class
+            if (countData == 20)
+            {
+                countData = 0;
+                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            }
+            else
+                countData++;
+
+            //fill values dataTable for later use of data
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            if (LiveDataset.Rows.Count != 0)
+            {
+                values.Rows[0]["Strecke"] = tripComplete;
+                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+                values.Rows[0]["Geschwindigkeit"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_speed]);
+            }
+            else
+            {
+                values.Rows[0]["Strecke"] = 0;
+                values.Rows[0]["Dauer"] = 0;
+                values.Rows[0]["Geschwindigkeit"] = 0;
+            }
+
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+
+            //if called the first time
+            if (first)
+            {
+                //the Overview user control is added to the top panel
+                live = true;
+                pnlTopContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this, true);
+                FormLiveOverview.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormLiveOverview);
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+                topBottom = false;
+                pnlBottomContent.Controls.Clear();
+
+                //the GPS user control is added to the bottom panel
+                FormGPS = new GPS(this, live);
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                gpsActive = true;
+
+                //the Dynamic user control is initialized
+                FormDynamic = new Dynamic(this);
+                FormDynamic.AutoScroll = true;
+                FormDynamic.Dock = DockStyle.Fill;
+
+                //the Buttuons are actived
+                btnGPS.Enabled = true;
+                btnOverview.Enabled = true;
+                btnDynamic.Enabled = true;
+                calcDone = true;
+
+                //set the correct positions the user controls are located
+                SetCorrPos();
+            }
+        }
+
+        //calculates all neede data in static mode
+        private void DoCalculationsStatic(bool first)
+        {
+            //if it is called for the first time, init new calculations and validation classes
+            if (first)
+            {
+                Berechnung = new Calculations();
+                Gueltigkeit = new Validation();
+            }
+
+            //create needed variables
+            string column_speed = "OBD_Vehicle_Speed_(PID_13)";
+            string column_distance = "di";
+            string column_acc = "ai";
+            string column_dynamic = "a*v";
+            string column_time = "Time";
+            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
+            double tripUrban = 0, tripRural = 0, tripMotorway = 0;
+
+            //calculate requirements, seperate dataset into intervals, calculate the trips per interval
+            //get the trip values, delete all data with acceleration < 0.1 m/s^2, get the interval
+            //and calculate the percentiles per interval by using the calculations class
+            Berechnung.CalcReq(ref LiveDataset, column_speed, first);
+            Berechnung.SepIntervals(LiveDataset, column_speed);
+            Berechnung.CalcDistancesInterval(column_distance);
+            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
+            Berechnung.PosCheck(column_acc);
+            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, column_dynamic);
+
+            //initialize error dataTable, check and get distribution values by using the 
+            //validation class
+            Gueltigkeit.InitErrorsDt();
+            Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
+            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
+
+            //fill values dataTable for later use of data
+            values.Rows[1]["Verteilung"] = distrUrban;
+            values.Rows[2]["Verteilung"] = distrRural;
+            values.Rows[3]["Verteilung"] = distrMotorway;
+
+            if (LiveDataset.Rows.Count != 0)
+            {
+                values.Rows[0]["Strecke"] = tripUrban + tripRural + tripMotorway;
+                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
+            }
+            else
+            {
+                values.Rows[0]["Strecke"] = 0;
+                values.Rows[0]["Dauer"] = 0;
+            }
+
+            values.Rows[1]["Strecke"] = tripUrban;
+            values.Rows[2]["Strecke"] = tripRural;
+            values.Rows[3]["Strecke"] = tripMotorway;
+
+            //if called the first time
+            if (first)
+            {
+                //the Overview user control is added to the top panel
+                live = false;
+                pnlTopContent.Controls.Clear();
+                FormLiveOverview = new OverviewLive(this, false);
+                FormLiveOverview.AutoScroll = true;
+                pnlTopContent.Controls.Add(FormLiveOverview);
+                FormLiveOverview.Show();
+                FormLiveOverview.Dock = DockStyle.Fill;
+                lblHide.BackColor = FormLiveOverview.BackColor;
+
+                //the GPS user control is added to the bottom panel
+                topBottom = false;
+                pnlBottomContent.Controls.Clear();
+                FormGPS = new GPS(this, live);
+                FormGPS.AutoScroll = true;
+                pnlBottomContent.Controls.Add(FormGPS);
+                FormGPS.Show();
+                FormGPS.Dock = DockStyle.Fill;
+                gpsActive = true;
+
+                //the Dynamic user control is initialized
+                FormDynamic = new Dynamic(this);
+                FormDynamic.AutoScroll = true;
+                FormDynamic.Dock = DockStyle.Fill;
+
+                //the Buttuons are actived
+                btnGPS.Enabled = true;
+                btnOverview.Enabled = true;
+                btnDynamic.Enabled = true;
+                calcDone = true;
+            }
+        }
+
+        //when button is clicked, determine which panel the user has selected and draw the
+        //GPS user control to this panel
         private void btnGPS_Click(object sender, EventArgs e)
         {
+            //if GPS is already displayed swap panels if the user wants to
+            //if not hide the user control that is selected and draw the GPS instead
             if (pnlTopContent.Controls[0] != FormGPS && pnlBottomContent.Controls[0] != FormGPS)
             {
                 if (topBottom)
@@ -199,170 +412,15 @@ namespace DriversGuide
             }
         }
 
+        //get new data each tick of the timer
         private void timer1_Tick(object sender, EventArgs e)
         {
             LiveDataset.Clear();
             LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
             DoCalculations(true);
-        }        
+        }      
 
-        private void DoCalculations(bool first)
-        {
-            if (first)
-                Berechnung = new Calculations();
-           
-            string column_speed = "OBD_Vehicle_Speed_(PID_13)";            
-            string column_time = "Time";
-            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
-            double tripUrban = 0, tripRural = 0, tripMotorway = 0, tripComplete = 0;
-            DataTable urban_temp = new DataTable();
-            DataTable rural_temp = new DataTable();
-            DataTable motorway_temp = new DataTable();
-
-            Berechnung.CalcReqLive(ref LiveDataset, column_speed, first);
-            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
-            tripComplete = tripUrban + tripRural + tripMotorway;
-            Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
-            Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-            //Berechnung.GetPercentiles(ref perUrban, ref perRural, ref perMotorway);
-
-            if (countData == 20)
-            {
-                countData = 0;
-                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
-            }
-            else
-                countData++;
-            
-            values.Rows[1]["Verteilung"] = distrUrban;
-            values.Rows[2]["Verteilung"] = distrRural;
-            values.Rows[3]["Verteilung"] = distrMotorway;
-
-            if (LiveDataset.Rows.Count != 0)
-            {
-                values.Rows[0]["Strecke"] = tripComplete;
-                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
-                values.Rows[0]["Geschwindigkeit"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_speed]);
-            }
-            else
-            {
-                values.Rows[0]["Strecke"] = 0;
-                values.Rows[0]["Dauer"] = 0;
-                values.Rows[0]["Geschwindigkeit"] = 0;
-            }
-
-            values.Rows[1]["Strecke"] = tripUrban;
-            values.Rows[2]["Strecke"] = tripRural;
-            values.Rows[3]["Strecke"] = tripMotorway;           
-
-
-            if (first)
-            {
-                live = true;
-                pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this, true);                
-                FormLiveOverview.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormLiveOverview);
-                FormLiveOverview.Show();
-                FormLiveOverview.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormLiveOverview.BackColor;
-                topBottom = false;
-                pnlBottomContent.Controls.Clear();
-
-                FormGPS = new GPS(this, live);
-                FormGPS.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormGPS);
-                FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;                
-                gpsActive = true;
-
-                FormDynamic = new Dynamic(this);
-                FormDynamic.AutoScroll = true;
-                FormDynamic.Dock = DockStyle.Fill;
-
-                btnGPS.Enabled = true;
-                btnOverview.Enabled = true;
-                btnDynamic.Enabled = true;
-                calcDone = true;               
-            }            
-        }
-
-        private void DoCalculationsStatic(bool first)
-        {
-            if (first)
-                Berechnung = new Calculations();
-
-            Gueltigkeit = new Validation();
-            string column_speed = "OBD_Vehicle_Speed_(PID_13)";            
-            string column_distance = "di";
-            string column_acc = "ai";
-            string column_dynamic = "a*v";
-            string column_time = "Time";
-            double distrUrban = 0, distrRural = 0, distrMotorway = 0;
-            double tripUrban = 0, tripRural = 0, tripMotorway = 0;           
-            DataTable motorway_temp = new DataTable();
-
-            Berechnung.CalcReq(ref LiveDataset, column_speed, first);
-            Berechnung.SepIntervals(LiveDataset, column_speed);
-            Berechnung.CalcDistancesInterval(column_distance);
-            Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
-            Berechnung.PosCheck(column_acc);
-            Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
-            Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, column_dynamic);        
-            Gueltigkeit.InitErrorsDt();            
-            Gueltigkeit.CheckDistributionComplete(LiveDataset, column_speed, column_distance);
-            Gueltigkeit.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
-
-            values.Rows[1]["Verteilung"] = distrUrban;
-            values.Rows[2]["Verteilung"] = distrRural;
-            values.Rows[3]["Verteilung"] = distrMotorway;
-
-            if (LiveDataset.Rows.Count != 0)
-            {
-                values.Rows[0]["Strecke"] = tripUrban + tripRural + tripMotorway;
-                values.Rows[0]["Dauer"] = Convert.ToDouble(LiveDataset.Rows[LiveDataset.Rows.Count - 1][column_time]) / 60000d;
-            }
-            else
-            {
-                values.Rows[0]["Strecke"] = 0;
-                values.Rows[0]["Dauer"] = 0;
-            }
-
-            values.Rows[1]["Strecke"] = tripUrban;
-            values.Rows[2]["Strecke"] = tripRural;
-            values.Rows[3]["Strecke"] = tripMotorway;            
-
-            if (first)
-            {
-                live = false;
-                pnlTopContent.Controls.Clear();
-                FormLiveOverview = new OverviewLive(this, false);                
-                FormLiveOverview.AutoScroll = true;
-                pnlTopContent.Controls.Add(FormLiveOverview);
-                FormLiveOverview.Show();
-                FormLiveOverview.Dock = DockStyle.Fill;
-                lblHide.BackColor = FormLiveOverview.BackColor;
-                
-                topBottom = false;
-                pnlBottomContent.Controls.Clear();
-                FormGPS = new GPS(this, live);
-                FormGPS.AutoScroll = true;
-                pnlBottomContent.Controls.Add(FormGPS);
-                FormGPS.Show();
-                FormGPS.Dock = DockStyle.Fill;
-                gpsActive = true;
-
-                FormDynamic = new Dynamic(this);
-                FormDynamic.AutoScroll = true;
-                FormDynamic.Dock = DockStyle.Fill;
-
-                btnGPS.Enabled = true;
-                btnOverview.Enabled = true;
-                btnDynamic.Enabled = true;
-                calcDone = true;
-            }            
-        }
-
+        //open a select file dialog to get the file with the needed data
         private void btn_Fileauswahl_Click(object sender, EventArgs e)
         {
             ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
@@ -375,27 +433,36 @@ namespace DriversGuide
             DialogResult dr = ofd.ShowDialog();
             if (dr == DialogResult.OK)
             {
+                //if data is retrieved correctly
+                //data is written to dataTable
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable();
                 
+                //and calculations are performed
+                //as well as dynamic graphics are drawn
                 DoCalculationsStatic(true);
                 RedrawDynamics();
             }
             //timer1.Start();
         }
 
+        //set background matching color of the button when the mouse leaves it
         private void btn_Fileauswahl_MouseLeave(object sender, EventArgs e)
         {
             btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
+        //set slightly different color of the button when the mouse enters it
+        //to determine the size of the button
         private void btn_Fileauswahl_MouseEnter(object sender, EventArgs e)
         {
             btn_Fileauswahl.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
+        //paint the formated text from the bitmap into the button
         private void btn_Fileauswahl_Paint(object sender, PaintEventArgs e)
         {
+            //choose text color according to state
             if (btn_Fileauswahl.Enabled)
             {
                 DrawInBitmap(btn_Fileauswahl, "File-Auswahl", enabled);
@@ -410,6 +477,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw content if button is resized
         private void btn_Fileauswahl_Resize(object sender, EventArgs e)
         {
             bmp = new Bitmap(btn_Fileauswahl.ClientSize.Width, btn_Fileauswahl.ClientSize.Height);
@@ -418,14 +486,18 @@ namespace DriversGuide
             btn_Fileauswahl.Invalidate();
         }
 
+        //draws the wished title for the button to a bitmap
         private void DrawInBitmap(Panel caller, string text, Color color)
         {
+            //clear graphics and enable smoother lines
             z.Clear(caller.BackColor);
             z.SmoothingMode = SmoothingMode.AntiAlias;
 
+            //set width and height
             float breite = 109;
             float hoehe = 60;
 
+            //transform matrix and set new base point
             Matrix myMatrix = new Matrix();
             myMatrix.Scale(bmp.Width / breite, bmp.Height / hoehe);
 
@@ -433,28 +505,36 @@ namespace DriversGuide
 
             z.Transform = myMatrix;
 
+            //set type and style of the fond
             Font type = new Font("Century Gothic", 12f, FontStyle.Bold);
             Brush style = new SolidBrush(color);
 
+            //set the format for the text
             StringFormat sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
 
+            //draw the text to graphics
             z.DrawString(text, type, style, new Point(0, 0), sf);
         }
 
+        //set background matching color of the button when the mouse leaves it
         private void btnOverview_MouseLeave(object sender, EventArgs e)
         {
             btnOverview.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
+        //set slightly different color of the button when the mouse enters it
+        //to determine the size of the button
         private void btnOverview_MouseEnter(object sender, EventArgs e)
         {
             btnOverview.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
+        //paint the formated text from the bitmap into the button
         private void btnOverview_Paint(object sender, PaintEventArgs e)
         {
+            //choose text color according to state
             if (btnOverview.Enabled)
             {
                 DrawInBitmap(btnOverview, "Übersicht", enabled);
@@ -469,6 +549,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw content if button is resized
         private void btnOverview_Resize(object sender, EventArgs e)
         {
             bmp = new Bitmap(btnOverview.ClientSize.Width, btnOverview.ClientSize.Height);
@@ -477,18 +558,23 @@ namespace DriversGuide
             btnOverview.Invalidate();
         }
 
+        //set background matching color of the button when the mouse leaves it
         private void btnGPS_MouseLeave(object sender, EventArgs e)
         {
             btnGPS.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
+        //set slightly different color of the button when the mouse enters it
+        //to determine the size of the button
         private void btnGPS_MouseEnter(object sender, EventArgs e)
         {
             btnGPS.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
+        //paint the formated text from the bitmap into the button
         private void btnGPS_Paint(object sender, PaintEventArgs e)
         {
+            //choose text color according to state
             if (btnGPS.Enabled)
             {
                 DrawInBitmap(btnGPS, "GPS", enabled);
@@ -503,6 +589,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw content if button is resized
         private void btnGPS_Resize(object sender, EventArgs e)
         {
             bmp = new Bitmap(btnGPS.ClientSize.Width, btnGPS.ClientSize.Height);
@@ -511,18 +598,23 @@ namespace DriversGuide
             btnGPS.Invalidate();
         }
 
+        //set background matching color of the button when the mouse leaves it
         private void btnSimulation_MouseLeave(object sender, EventArgs e)
         {
             btnSimulation.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
+        //set slightly different color of the button when the mouse enters it
+        //to determine the size of the button
         private void btnSimulation_MouseEnter(object sender, EventArgs e)
         {
             btnSimulation.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
+        //paint the formated text from the bitmap into the button
         private void btnSimulation_Paint(object sender, PaintEventArgs e)
         {
+            //choose text color according to state
             if (btnSimulation.Enabled)
             {
                 DrawInBitmap(btnSimulation, "Simulation", enabled);
@@ -537,6 +629,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw content if button is resized
         private void btnSimulation_Resize(object sender, EventArgs e)
         {
             bmp = new Bitmap(btnSimulation.ClientSize.Width, btnSimulation.ClientSize.Height);
@@ -545,16 +638,21 @@ namespace DriversGuide
             btnSimulation.Invalidate();
         }
 
+        //when the hide label is clicked
         private void lblHide_Click(object sender, EventArgs e)
         {
+            //slowely slide sidepanel to the left until it is no longer visible
             tmrFade.Enabled = true;
             lblHide.Hide();
             lblShow.Left = 3;
             tmrFade.Enabled = true;
         }
 
+        //when label show is clicked
         private void lblShow_Click(object sender, EventArgs e)
         {
+            //slowly slide the sidepanel back into the form until it reaches its 
+            //initial position
             tmrFade.Enabled = true;
             lblShow.Hide();
             lblHide.Show();
@@ -564,6 +662,7 @@ namespace DriversGuide
             pnlBottomContent.Width = ClientSize.Width - pnlSideBar.Width;
         }
 
+        //timer used for slowly moving the sidepanel in or out
         private void tmrFade_Tick(object sender, EventArgs e)
         {
             if (inout)
@@ -597,17 +696,22 @@ namespace DriversGuide
             }
         }
 
+        //if the form is resized
         private void LiveMode_Resize(object sender, EventArgs e)
         {
+            //set the panels to the new sizes
             pnlTopContent.Height = ClientSize.Height / 2;
             pnlBottomContent.Top = ClientSize.Height / 2;
             pnlBottomContent.Height = ClientSize.Height / 2;
 
+            //and re-center buttons
             CenterButtons();
         }
 
+        //make sure the buttons are always centered corretly in the middle of the side panel
         private void CenterButtons()
         {
+            //calculate the postion of the middle and center buttons according to that
             int half = (ClientSize.Height - pnlLogo.Height) / 2 + pnlLogo.Height;
 
             btn_Fileauswahl.Top = half - 178;
@@ -617,8 +721,12 @@ namespace DriversGuide
             btnGPS.Top = half + 118;            
         }
 
+        //when button is clicked, determine which panel the user has selected and draw the
+        //Overview user control to this panel
         private void btnOverview_Click(object sender, EventArgs e)
         {
+            //if Overview is already displayed swap panels if the user wants to
+            //if not hide the user control that is selected and draw the Overview instead
             if (pnlTopContent.Controls[0] != FormLiveOverview && pnlBottomContent.Controls[0] != FormLiveOverview)
             {
                 if (topBottom)
@@ -664,6 +772,9 @@ namespace DriversGuide
             }
         }
 
+        //open a select file dialog to get the file with the needed data
+        //then start a timer which adds a new datarow to the
+        //dataset at each tick -> simulating a real drive
         private void btnSimulation_Click(object sender, EventArgs e)
         {
             ofd.Filter = "Textdateien |*.txt| Alle Dateien|*.*";
@@ -680,16 +791,13 @@ namespace DriversGuide
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable(); // Datatable befüllen
                 LiveDataset.Clear();        // Daten aus Table löschen                                                                         
                               
-                DoCalculations(true);
+                DoCalculations(true);       // Neue Zeile in die Berechnung einfließen lassen
             }
-            timerSimulation.Start(); // Simulation starten
-           
-           
-          //BTN_Simulation Click und timerSimulation Tick sind das Problem  
 
-
+            timerSimulation.Start(); // Simulation starten   
         }
 
+        //add new datarow to dataset each timer-tick
         private void timerSimulation_Tick(object sender, EventArgs e)
         {
             DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
@@ -697,23 +805,28 @@ namespace DriversGuide
             if (!dr.IsNull(0))
             {
                 LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
-                DoCalculations(false);
+                DoCalculations(false);       // Berechnungen durchführen
             }
             else
             {
+                // Wenn der die letzte Zeile eingelesen wurde
+                // wird die Berechnung ein letztes Mal durchgeführt
+                // und die user controls mit den neuen Daten aktualisiert
                 timerSimulation.Stop();
                 Berechnung.SepIntervals(LiveDataset, "OBD_Vehicle_Speed_(PID_13)");              
                 Berechnung.PosCheck("ai");
                 Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
                 Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, "a*v");                
                 FormGPS.SetRunningState(false);
-                FormGPS.RefreshMap();
                 RedrawDynamics();
             }
 
+            // Die user controls mit den neuen Daten aktualisieren
             FormLiveOverview.RefreshData();
             FormGPS.RefreshMap();
 
+            // Zeichne die Dynamik Charts nur nach bestimmter Anzahl an ticks
+            // um Ressourcen zu schonen
             ElapsedTicks += 1;
             int test = 5 * (int)Math.Round((ElapsedTicks + 2) / 5.0);
             if (ElapsedTicks == test)
@@ -722,6 +835,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw the dynamic charts
         private void RedrawDynamics()
         {
             double urbmax = 0;      //Maximalwert a*v Stadt
@@ -759,8 +873,12 @@ namespace DriversGuide
             }
         }
 
+        //when button is clicked, determine which panel the user has selected and draw the
+        //Dynamic user control to this panel
         private void btnDyn_Click(object sender, EventArgs e)
         {
+            //if Dynamic is already displayed swap panels if the user wants to
+            //if not hide the user control that is selected and draw the Dynamic instead
             if (pnlTopContent.Controls[0] != FormDynamic && pnlBottomContent.Controls[0] != FormDynamic)
             {
                 if (topBottom)
@@ -805,18 +923,23 @@ namespace DriversGuide
             }
         }
 
+        //set background matching color of the button when the mouse leaves it
         private void btnDynamic_MouseLeave(object sender, EventArgs e)
         {
             btnDynamic.BackColor = ColorTranslator.FromHtml("#FF87CEFA");
         }
 
+        //set slightly different color of the button when the mouse enters it
+        //to determine the size of the button
         private void btnDynamic_MouseEnter(object sender, EventArgs e)
         {
             btnDynamic.BackColor = ColorTranslator.FromHtml("#7AB8DE");
         }
 
+        //paint the formated text from the bitmap into the button
         private void btnDynamic_Paint(object sender, PaintEventArgs e)
         {
+            //choose text color according to state
             if (btnDynamic.Enabled)
             {
                 DrawInBitmap(btnDynamic, "Dynamik", enabled);
@@ -831,6 +954,7 @@ namespace DriversGuide
             }
         }
 
+        //redraw content if button is resized
         private void btnDynamic_Resize(object sender, EventArgs e)
         {
             bmp = new Bitmap(btnDynamic.ClientSize.Width, btnDynamic.ClientSize.Height);
@@ -839,11 +963,13 @@ namespace DriversGuide
             btnDynamic.Invalidate();
         }
 
+        //if bottom panel is empty and clicked, set selected position to bottom
         private void pnlBottomContent_Click(object sender, EventArgs e)
         {
             topBottom = false;
         }
 
+        //if top panel is empty and clicked, set selected position to top
         private void pnlTopContent_Click(object sender, EventArgs e)
         {
             topBottom = true;
