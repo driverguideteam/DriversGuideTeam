@@ -18,6 +18,7 @@ namespace DriversGuide
         DataTable units = new DataTable();
         DataTable dheaders = new DataTable();
         int SimualtionRowCount = 0;
+        int rowCount = 0;
        
         /*
          Einlesen des Messfiles + Convertierung in 2 Datentables "dt" und "units"
@@ -111,7 +112,7 @@ namespace DriversGuide
 
         public DataTable ConvertLiveCSVtoDataTable()
         {
-
+            dt.Clear();
 
             StreamReader sr = new StreamReader(Filename);
             string[] headers = sr.ReadLine().Split('\t');
@@ -156,6 +157,20 @@ namespace DriversGuide
             }
             
             
+            return drs;
+        }
+
+        public DataRow AddSLiveRows()
+        {
+            DataRow drs = dt.NewRow();
+
+            if (rowCount < dt.Rows.Count)
+            {
+                drs = dt.Rows[rowCount];
+                rowCount++;
+            }
+
+
             return drs;
         }
 

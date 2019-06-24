@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveMode));
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.btn_Fileauswahl = new System.Windows.Forms.Panel();
             this.btnDynamic = new System.Windows.Forms.Panel();
             this.btnSimulation = new System.Windows.Forms.Panel();
             this.btnGPS = new System.Windows.Forms.Panel();
@@ -45,7 +46,6 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tmrFade = new System.Windows.Forms.Timer(this.components);
             this.timerSimulation = new System.Windows.Forms.Timer(this.components);
-            this.btn_Fileauswahl = new System.Windows.Forms.Panel();
             this.pnlSideBar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             this.pnlTopContent.SuspendLayout();
@@ -66,6 +66,18 @@
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(109, 450);
             this.pnlSideBar.TabIndex = 32;
+            // 
+            // btn_Fileauswahl
+            // 
+            this.btn_Fileauswahl.Location = new System.Drawing.Point(0, 83);
+            this.btn_Fileauswahl.Name = "btn_Fileauswahl";
+            this.btn_Fileauswahl.Size = new System.Drawing.Size(109, 60);
+            this.btn_Fileauswahl.TabIndex = 2;
+            this.btn_Fileauswahl.Click += new System.EventHandler(this.btn_Fileauswahl_Click);
+            this.btn_Fileauswahl.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Fileauswahl_Paint);
+            this.btn_Fileauswahl.MouseEnter += new System.EventHandler(this.btn_Fileauswahl_MouseEnter);
+            this.btn_Fileauswahl.MouseLeave += new System.EventHandler(this.btn_Fileauswahl_MouseLeave);
+            this.btn_Fileauswahl.Resize += new System.EventHandler(this.btn_Fileauswahl_Resize);
             // 
             // btnDynamic
             // 
@@ -191,7 +203,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 500;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ofd
@@ -207,18 +219,6 @@
             // 
             this.timerSimulation.Interval = 1;
             this.timerSimulation.Tick += new System.EventHandler(this.timerSimulation_Tick);
-            // 
-            // btn_Fileauswahl
-            // 
-            this.btn_Fileauswahl.Location = new System.Drawing.Point(0, 83);
-            this.btn_Fileauswahl.Name = "btn_Fileauswahl";
-            this.btn_Fileauswahl.Size = new System.Drawing.Size(109, 60);
-            this.btn_Fileauswahl.TabIndex = 2;
-            this.btn_Fileauswahl.Click += new System.EventHandler(this.btn_Fileauswahl_Click);
-            this.btn_Fileauswahl.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Fileauswahl_Paint);
-            this.btn_Fileauswahl.MouseEnter += new System.EventHandler(this.btn_Fileauswahl_MouseEnter);
-            this.btn_Fileauswahl.MouseLeave += new System.EventHandler(this.btn_Fileauswahl_MouseLeave);
-            this.btn_Fileauswahl.Resize += new System.EventHandler(this.btn_Fileauswahl_Resize);
             // 
             // LiveMode
             // 

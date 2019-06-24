@@ -176,7 +176,7 @@ namespace DriversGuide
         }
 
         //Calculates all needed data in running mode
-        private void DoCalculations(bool first)
+        private void DoCalculations(bool first, double interval)
         {
             //if it is called for the first time, init a new calculations class
             if (first)
@@ -190,14 +190,18 @@ namespace DriversGuide
 
             //calculate requirements, get trip length per interval, calculate length of whole trip
             //calculate the distributions and get them by using the calculations class
-            Berechnung.CalcReqLive(ref LiveDataset, column_speed, first);
+            Berechnung.CalcReqLive(ref LiveDataset, column_speed, first, interval);
             Berechnung.GetTripInt(ref tripUrban, ref tripRural, ref tripMotorway);
             tripComplete = tripUrban + tripRural + tripMotorway;
             Berechnung.CalcDistributionLive(tripUrban, tripRural, tripMotorway, tripComplete);
             Berechnung.GetDistribution(ref distrUrban, ref distrRural, ref distrMotorway);
 
-            //every 20 counts the stored interval dataTables are retrieved from the calculations class
-            if (countData == 20)
+            //every interval counts the stored interval dataTables are retrieved from the calculations class
+            if (interval == 1)
+            {
+                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+            }
+            if (interval > 1 && countData == interval)
             {
                 countData = 0;
                 Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
@@ -415,9 +419,36 @@ namespace DriversGuide
         //get new data each tick of the timer
         private void timer1_Tick(object sender, EventArgs e)
         {
-            LiveDataset.Clear();
-            LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
-            DoCalculations(true);
+           // LiveDataset.Clear();
+            //LiveDataset = LiveDatei.ConvertLiveCSVtoDataTable();
+            //DoCalculations(true);
+
+            DataRow dr = LiveDataset.NewRow(); // Reihe dr Typedef
+            LiveDatei.ConvertLiveCSVtoDataTable();
+            dr = LiveDatei.AddSLiveRows(); // Reihe aus Live Datei auslesen
+            if (!dr.IsNull(0))
+            {
+                LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
+                DoCalculations(false, 1);       // Berechnungen durchführen
+            }
+            else
+            {
+                // Wenn der die letzte Zeile eingelesen wurde
+                // wird die Berechnung ein letztes Mal durchgeführt
+                // und die user controls mit den neuen Daten aktualisiert
+                timerSimulation.Stop();
+                Berechnung.SepIntervals(LiveDataset, "OBD_Vehicle_Speed_(PID_13)");
+                Berechnung.PosCheck("ai");
+                Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
+                Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, "a*v");
+                FormGPS.SetRunningState(false);
+                RedrawDynamics();
+            }
+
+            // Die user controls mit den neuen Daten aktualisieren
+            FormLiveOverview.RefreshData();
+            FormGPS.RefreshMap();
+            RedrawDynamics();
         }      
 
         //open a select file dialog to get the file with the needed data
@@ -437,11 +468,28 @@ namespace DriversGuide
                 //data is written to dataTable
                 LiveDatei = new MeasurementFile(ofd.FileName);
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable();
+                LiveDataset.Clear();
+                DataRow drl = LiveDataset.NewRow(); // Reihe dr Typedef
+                LiveDatei.ConvertLiveCSVtoDataTable();
+                drl = LiveDatei.AddSLiveRows(); // Reihe aus Live Datei auslesen
+
+              
+                LiveDataset.ImportRow(drl);   // Reihe zu LiveDataset hinzufügen
+                   
                 
+
+
                 //and calculations are performed
                 //as well as dynamic graphics are drawn
-                DoCalculationsStatic(true);
+                DoCalculations(true, 1);
                 RedrawDynamics();
+                timer1.Start();
+            }
+
+            else
+            {
+                //Wen kein File eingelesen wurde den Benutzer darauf hinweisen
+                MessageBox.Show("Bitte File einlesen!", "Fehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //timer1.Start();
         }
@@ -791,10 +839,17 @@ namespace DriversGuide
                 LiveDataset = LiveDatei.ConvertCSVtoDataTable(); // Datatable befüllen
                 LiveDataset.Clear();        // Daten aus Table löschen                                                                         
                               
-                DoCalculations(true);       // Neue Zeile in die Berechnung einfließen lassen
+                DoCalculations(true, 20);       // Neue Zeile in die Berechnung einfließen lassen
+                timerSimulation.Start(); // Simulation starten   
             }
 
-            timerSimulation.Start(); // Simulation starten   
+            else
+            {
+                //Wen kein File eingelesen wurde den Benutzer darauf hinweisen
+                MessageBox.Show("Bitte File einlesen!", "Fehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            
         }
 
         //add new datarow to dataset each timer-tick
@@ -805,7 +860,7 @@ namespace DriversGuide
             if (!dr.IsNull(0))
             {
                 LiveDataset.ImportRow(dr);   // Reihe zu LiveDataset hinzufügen
-                DoCalculations(false);       // Berechnungen durchführen
+                DoCalculations(false, 20);       // Berechnungen durchführen
             }
             else
             {

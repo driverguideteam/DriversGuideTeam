@@ -202,9 +202,10 @@ namespace DriversGuide
          *      - dt:             DataTable which contains complete dataset for calculations
          *      - column_speed:   string with the name of the column by which the calculations are done
          *      - init:           bool to determine if live Mode is running
+         *      - interval:       double to determine how often percentiles are calculated
         */
         //********************************************************************************************
-        public void CalcReqLive(ref DataTable dt, string column_speed, bool init)
+        public void CalcReqLive(ref DataTable dt, string column_speed, bool init, double interval)
         {
             int lastRow = dt.Rows.Count;
             double strecke;
@@ -289,8 +290,28 @@ namespace DriversGuide
             }
 
             //count data proccessed
-            //if 20 data chunks are proccessed calculate percentiles per interval
-            if (count == 20)
+            //if interval count data chunks are proccessed calculate percentiles per interval
+            if (interval == 1 && count >= 20)
+            {
+                //seperate intervals
+                SepIntervals(dt, column_speed);
+
+                //make intervals positive
+                if (urban.Rows.Count > 0)
+                    MakePosCheckCount(ref urban, column_acc);
+
+                if (rural.Rows.Count > 0)
+                    MakePosCheckCount(ref rural, column_acc);
+
+                if (motorway.Rows.Count > 0)
+                    MakePosCheckCount(ref motorway, column_acc);
+
+                //calculate the percentiles
+                perUrban = CalcPercentile_Interval(ref urban, column_dynamic);
+                perRural = CalcPercentile_Interval(ref rural, column_dynamic);
+                perMotorway = CalcPercentile_Interval(ref motorway, column_dynamic);
+            }
+            if (interval > 1 && count == interval)
             {
                 //reset count
                 count = 0;
