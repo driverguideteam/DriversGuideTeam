@@ -14,22 +14,24 @@ namespace DriversGuide
 {
     public partial class PlotGraphic : Form
     {
-        DriversGuideApp Form1Copy;                   //Verbindung zu Hauptform
-        Datenauswahl AuswahlCopy;          //Verbindung zu Datenauswahlform
-        DataTable tt = new DataTable();    //Erstellung neues Datatable
-        DataTable units = new DataTable(); //Erstellung neues Datatable für Einheiten
+        DriversGuideApp Form1Copy;                        //Verbindung zu Hauptform
+        Datenauswahl AuswahlCopy;                         //Verbindung zu Datenauswahlform
+        DataTable tt = new DataTable();                   //Erstellung neues Datatable
+        DataTable units = new DataTable();                //Erstellung neues Datatable für Einheiten
         GraphicsCreate newchart = new GraphicsCreate();   //neue Grafik erstellen, Eigenschaften in GraphicsCreate festgelegt
         int i = 0;
-        public bool ChartReady = false;   //bool-Wert für Timer
+        public bool ChartReady = false;                   //bool-Wert für Timer
 
         public PlotGraphic(DriversGuideApp CreateForm)
         {
-            Form1Copy = CreateForm;   //Zugriff auf Hauptform
+            Form1Copy = CreateForm;                        //Zugriff auf Hauptform
             InitializeComponent();
-            this.chart1.MouseWheel += chart1_MouseWheel;   //Erstellen MouseWheel-Ereignis
-            this.chart2.MouseWheel += chart2_MouseWheel;   //Erstellen MouseWheel-Ereignis
-            this.chart3.MouseWheel += chart3_MouseWheel;   //Erstellen MouseWheel-Ereignis
-            this.chart4.MouseWheel += chart4_MouseWheel;   //Erstellen MouseWheel-Ereignis
+
+            //Erstellen MouseWheel-Ereignis
+            this.chart1.MouseWheel += chart1_MouseWheel;
+            this.chart2.MouseWheel += chart2_MouseWheel;
+            this.chart3.MouseWheel += chart3_MouseWheel;
+            this.chart4.MouseWheel += chart4_MouseWheel;
         }
 
         public void ConnectToDatenauswahl(Datenauswahl CreateForm)
@@ -39,8 +41,9 @@ namespace DriversGuide
 
         public string[] GiveChosenData()
         {
+            //gibt die Namen der Datenreihen zurück, welche für die Grafik ausgewählt wurden (max. 4)
             string[] GewDaten = AuswahlCopy.ChosenData();
-            return GewDaten;   //gibt die Namen der Datenreihen zurück, welche für die Grafik ausgewählt wurden (max. 4)
+            return GewDaten;   
         }
 
         public string[] GetUnits(string GewDaten)   //liefert StringArray mit x- u. y-Einheiten
@@ -48,25 +51,24 @@ namespace DriversGuide
             units = Form1Copy.GetUnitsDataTable();   //Kopie des Einheiten-Datatables
 
             //string xUnit = Convert.ToString((units.Rows[0]["Time"]));
-            string xUnit = "sec";
-            string yUnit = Convert.ToString((units.Rows[0][GewDaten]));
+            string xUnit = "sec";                                         //Einheit x-Achse
+            string yUnit = Convert.ToString((units.Rows[0][GewDaten]));   //Einheit x-Achse
 
-            string[] xyUnits = new string[] { xUnit, yUnit };   //erstellt StringArray mit x- u. y-Einheiten
-
-            return xyUnits;   //liefert StingArray zurück
+            string[] xyUnits = new string[] { xUnit, yUnit };             //erstellt StringArray mit x- u. y-Einheiten
+            return xyUnits;                                               //liefert StingArray zurück
         }
 
-        public string TimeInHhmmss(int seconds)
+        public string TimeInHhmmss(int seconds)   //Konvertierung Zeitformat in hh:mm:ss
         {
             TimeSpan time = TimeSpan.FromSeconds(seconds);
-
             string hhmmss = time.ToString(@"hh\ \h\ mm\ \m\ ss\ \s");
-
             return hhmmss;
         }
 
         public DataTable AddTimeFormat(ref DataTable tt)
         {
+            //Hinzufügen einer zweiten Zeit-Spalte im Datatable in anderem Zeitformat 
+
             for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeit in sec
             {
                 tt.Rows[i]["Time"] = Convert.ToInt64((tt.Rows[i]["Time"])) / 1000;
@@ -74,7 +76,7 @@ namespace DriversGuide
 
             tt.Columns.Add("TimeFormat", typeof(string));
 
-            for (int i = 0; i < tt.Rows.Count; i++)   //Umrechnung Zeitformat
+            for (int i = 0; i < tt.Rows.Count; i++)   //Konvertierung Zeitformat
             {
                tt.Rows[i]["TimeFormat"] = TimeInHhmmss(Convert.ToInt32((tt.Rows[i]["Time"])));    
             }
@@ -91,24 +93,27 @@ namespace DriversGuide
             tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
             tt = tt.Copy();                          //Kopie des Datatables
 
-            AddTimeFormat(ref tt);
+            AddTimeFormat(ref tt);   //Hinzufügen einer zweiten Zeit-Spalte im Datatable in anderem Zeitformat 
 
+            //Löschen der Diagramminhalte
             ClearChart(chart1);
             ClearChart(chart2);
             ClearChart(chart3);
             ClearChart(chart4);
+            //Ausblenden der Labels
             lblPos1.Visible = false;
             lblPos2.Visible = false;
             lblPos3.Visible = false;
             lblPos4.Visible = false;
 
+            //Rückgabe der gewählten Daten zu grafischen Anzeige
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten1 = GewDatenMZ[0];
             string GewDaten2 = GewDatenMZ[1];
             string GewDaten3 = GewDatenMZ[2];
             string GewDaten4 = GewDatenMZ[3];
 
-            LocateCharts(GewDaten1, GewDaten2, GewDaten3, GewDaten4);
+            LocateCharts(GewDaten1, GewDaten2, GewDaten3, GewDaten4);   //Positionierung der Diagramme
 
             //Chart CreateChart = new Chart();
             //CreateChart.Show();
@@ -120,7 +125,7 @@ namespace DriversGuide
             chartname.ChartAreas.Clear();   //Löschen der Diagrammoberfläche
         }
 
-        private void DrawChart(Chart chartname, DataTable tt, string GewDat)
+        private void DrawChart(Chart chartname, DataTable tt, string GewDat)       //Zeichnen des Diagramms
         {
             newchart.ConnectToForm1(Form1Copy);                                    //Form1-Verlinkung zu GraphicsCreate
             newchart.GetChosenData(this);                                          //erstellt Zugriff auf Datenauswahl-Feld
@@ -128,19 +133,21 @@ namespace DriversGuide
             newchart.SetChartAxes(ref chartname, tt, "Time", GewDat, this);        //Festlegen der x-u.y-Achsen-Eigenschaften
         }
 
-        private void LocateLabel(Chart chartname, Label labelname)
-        {
+        private void LocateLabel(Chart chartname, Label labelname)   //Positionierung des Labels
+        {   
             labelname.Location = new Point(chartname.Location.X + chartname.Width - 150, chartname.Location.Y + 10);
             labelname.Visible = false;
         }
 
-        public void LocateCharts(string GewDaten1, string GewDaten2, string GewDaten3, string GewDaten4)
+        public void LocateCharts(string GewDaten1, string GewDaten2, string GewDaten3, string GewDaten4)   //Positionierung der Diagramme
         {
             tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
             tt = tt.Copy();                          //Kopie des Datatables
 
-            AddTimeFormat(ref tt);
+            AddTimeFormat(ref tt);   //Hinzufügen einer zweiten Zeit-Spalte im Datatable in anderem Zeitformat 
 
+
+            //Positionierung der Diagramme abhängig davon, wie viele Daten ausgewählt wurden (--> wie viele Diagramme gezeichnet werden)
             if (GewDaten1 != "" && GewDaten2 == "" && GewDaten3 == "" && GewDaten4 == "")
             {
                 chart1.Height = pictureBox1.Height;
@@ -231,7 +238,7 @@ namespace DriversGuide
             tmrTimeSpan.Enabled = true;   //aktiviert Timer, um verstrichene Zeit zu messen
         }
 
-        private void SetStartScale(Chart chartname, string GewDatenX)
+        private void SetStartScale(Chart chartname, string GewDatenX)   //Startskalierung der Achsen
         {
             chartname.ChartAreas[GewDatenX].AxisY.ScaleView.ZoomReset(0);   //Startskalierung der y-Achse
             chartname.ChartAreas[GewDatenX].AxisX.ScaleView.ZoomReset(0);   //Startskalierung der x-Achse - Festlegen der Startansicht, nicht des Koordinatensystems
@@ -247,67 +254,74 @@ namespace DriversGuide
                 //wird erst ausgeführt nachdem gewisse Zeit verstrichen ist, da ansonsten noch nicht alle
                 //Datenpunkte in der Grafik gezeichnet wurden, was zu einer Fehlermeldung führt
 
-                string GewDaten = GiveChosenData()[x];
+                string GewDaten = GiveChosenData()[x];   //gewählte Daten (= gezeichnete Daten im Diagramm)
 
-                double xpos = newchart.ActualXPosition(ref chartname, e, GewDaten);
-                double ypos = newchart.FindYValue(chartname, xpos, GewDaten);
+                double xpos = newchart.ActualXPosition(ref chartname, e, GewDaten);   //aktueller x-Wert
+                double ypos = newchart.FindYValue(chartname, xpos, GewDaten);         //aktueller y-Wert
 
+                //setzen des Cursors auf aktuelle Werte
                 chartname.ChartAreas[GewDaten].CursorX.Position = xpos;
                 chartname.ChartAreas[GewDaten].CursorY.Position = ypos;
 
+                //Einheiten x- u. y-Achse
                 string xUnit = GetUnits(GewDaten)[0];
                 string yUnit = GetUnits(GewDaten)[1];
 
-                labelname.Visible = true;
+                //Label mit aktueller Positionsanzeige
                 labelname.Text = "x = " + tt.Rows[Convert.ToInt32(xpos)]["TimeFormat"] + "\n" +
                               "y = " + ypos.ToString("F2") + " " + yUnit;
-
+                labelname.Visible = true;
                 //lblPos.BackColor = Color.White;
 
+                //aktuelle GPS-Koordinaten (aus aktueller Zeit; Mauspoition)
                 double latitude = Convert.ToDouble(tt.Rows[Convert.ToInt32(xpos)]["GPS_Latitude"]);
                 double longitude = Convert.ToDouble(tt.Rows[Convert.ToInt32(xpos)]["GPS_Longitude"]);
 
+                //Setzen des Markers in der GPS-Ansicht
                 Form1Copy.SetMarker(latitude, longitude);
             }
         }
 
         private void MoveOtherCursor(Chart groundchart, int x, Chart otherchart, int y, Label labelname, MouseEventArgs e)
         {
-            //bei Bewegen der Maus wird der Cursor auf die aktuelle Mausposition gestellt und 
-            //die dazugehörigen x- u. y-Werte angezeigt
+            //bei Bewegen der Maus in einem Diagramm werden die Cursor in den anderen Diagrammen
+            //auch auf die aktuelle Mausposition gestellt und die dazugehörigen x- u. y-Werte angezeigt
 
             if (ChartReady == true)
             {
                 //wird erst ausgeführt nachdem gewisse Zeit verstrichen ist, da ansonsten noch nicht alle
                 //Datenpunkte in der Grafik gezeichnet wurden, was zu einer Fehlermeldung führt
 
-                string GewDaten = GiveChosenData()[x];
+                string GewDaten = GiveChosenData()[x];   //gewählte Daten (= gezeichnete Daten im Diagramm)
 
-                double xpos = newchart.ActualXPosition(ref groundchart, e, GewDaten);
+                double xpos = newchart.ActualXPosition(ref groundchart, e, GewDaten);   //aktuelle x-Position
 
                 if (otherchart.Visible == true)
                 {
-                    string OtherGewDaten = GiveChosenData()[y];
+                    string OtherGewDaten = GiveChosenData()[y];   //gewählte Daten im zweiten Diagramm
 
-                    double ypos = newchart.FindYValue(otherchart, xpos, OtherGewDaten);
+                    double ypos = newchart.FindYValue(otherchart, xpos, OtherGewDaten);   //aktueller y-Wert
 
+                    //setzen des Cursors in zweitem Diagramm auf aktuelle Position
                     otherchart.ChartAreas[OtherGewDaten].CursorX.Position = xpos;
                     otherchart.ChartAreas[OtherGewDaten].CursorY.Position = ypos;
-
+                    
+                    //Einheiten der Achsen
                     string xUnit = GetUnits(OtherGewDaten)[0];
                     string yUnit = GetUnits(OtherGewDaten)[1];
 
-                    labelname.Visible = true;
+                    //Label mit aktueller Positionsanzeige
                     labelname.Text = "x = " + tt.Rows[Convert.ToInt32(xpos)]["TimeFormat"] + "\n" +
                                   "y = " + ypos.ToString() + " " + yUnit;
+                    labelname.Visible = true;
                 }
-
                 //lblPos.BackColor = Color.White;
             }
         }
 
         private void chart1_MouseWheel(object sender, MouseEventArgs e)
         {
+            //Startskalierung der Diagrammachsen bei Drehen des Mausrades
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten1 = GewDatenMZ[0];
             SetStartScale(chart1, GewDaten1);
@@ -315,6 +329,7 @@ namespace DriversGuide
 
         private void chart2_MouseWheel(object sender, MouseEventArgs e)
         {
+            //Startskalierung der Diagrammachsen bei Drehen des Mausrades
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten2 = GewDatenMZ[1];
             SetStartScale(chart2, GewDaten2);
@@ -322,6 +337,7 @@ namespace DriversGuide
 
         private void chart3_MouseWheel(object sender, MouseEventArgs e)
         {
+            //Startskalierung der Diagrammachsen bei Drehen des Mausrades
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten3 = GewDatenMZ[2];
             SetStartScale(chart3, GewDaten3);
@@ -329,6 +345,7 @@ namespace DriversGuide
 
         private void chart4_MouseWheel(object sender, MouseEventArgs e)
         {
+            //Startskalierung der Diagrammachsen bei Drehen des Mausrades
             string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
             string GewDaten4 = GewDatenMZ[3];
             SetStartScale(chart4, GewDaten4);
@@ -348,7 +365,8 @@ namespace DriversGuide
         }
 
         private void chart1_MouseMove_1(object sender, MouseEventArgs e)
-        {
+        {           
+            //Cursorbewegung analog zu Mausbewegung im Diagramm
             MoveCursor(chart1, lblPos1, e, 0);
             MoveOtherCursor(chart1, 0, chart2, 1, lblPos2, e);
             MoveOtherCursor(chart1, 0, chart3, 2, lblPos3, e);
@@ -357,6 +375,7 @@ namespace DriversGuide
 
         private void chart2_MouseMove_1(object sender, MouseEventArgs e)
         {
+            //Cursorbewegung analog zu Mausbewegung im Diagramm
             MoveCursor(chart2, lblPos2, e, 1);
             MoveOtherCursor(chart2, 1, chart1, 0, lblPos1, e);
             MoveOtherCursor(chart2, 1, chart3, 2, lblPos3, e);
@@ -365,6 +384,7 @@ namespace DriversGuide
 
         private void chart3_MouseMove_1(object sender, MouseEventArgs e)
         {
+            //Cursorbewegung analog zu Mausbewegung im Diagramm
             MoveCursor(chart3, lblPos3, e, 2);
             MoveOtherCursor(chart3, 2, chart1, 0, lblPos1, e);
             MoveOtherCursor(chart3, 2, chart2, 1, lblPos2, e);
@@ -373,6 +393,7 @@ namespace DriversGuide
 
         private void chart4_MouseMove_1(object sender, MouseEventArgs e)
         {
+            //Cursorbewegung analog zu Mausbewegung im Diagramm
             MoveCursor(chart4, lblPos4, e, 3);
             MoveOtherCursor(chart4, 3, chart1, 0, lblPos1, e);
             MoveOtherCursor(chart4, 3, chart2, 1, lblPos2, e);
@@ -381,6 +402,7 @@ namespace DriversGuide
 
         private void PlotGraphic_Resize(object sender, EventArgs e)
         {
+            //neue Ausrichtung der Diagramme bei Änderung der Form-Größe
             if (ChartReady == true)
             {
                 string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück
@@ -396,6 +418,7 @@ namespace DriversGuide
 
         private void PlotGraphic_SizeChanged(object sender, EventArgs e)
         {
+            //neue Ausrichtung der Diagramme bei Änderung der Form-Größe
             if (ChartReady == true)
             {
                 string[] GewDatenMZ = GiveChosenData();   //gibt gewählten Datenreihen zurück

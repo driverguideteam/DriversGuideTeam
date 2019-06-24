@@ -12,9 +12,9 @@ namespace DriversGuide
 {
     public partial class Datenauswahl : Form
     {
-        DriversGuideApp Form1Copy;                  //Verbindung zu Hauptform
-        DataTable tt = new DataTable();              //Erstellung neues Datatable
-        int AnzGewDaten = 0;
+        DriversGuideApp Form1Copy;        //Verbindung zu Hauptform
+        DataTable tt = new DataTable();   //Erstellung neues Datatable
+        int AnzGewDaten = 0;              //Anzahl der ausgewählten Daten zur Anzeige
 
         public Datenauswahl(DriversGuideApp CreateForm)
         {
@@ -54,7 +54,7 @@ namespace DriversGuide
 
         private void Datenauswahl_Load_1(object sender, EventArgs e)
         {
-            tt = Form1Copy.GetCompleteDataTable();         //Kopie des Datatables
+            tt = Form1Copy.GetCompleteDataTable();       //Kopie des Datatables
             DataColumn column;
 
             for (int i = 1; i < tt.Columns.Count; i++)   //Füllen der Datenauswahlliste mit Spaltenüberschriften
@@ -63,29 +63,23 @@ namespace DriversGuide
                 lstChooseData.Items.Add(column.ColumnName);
             }
 
-            if (lstChooseData.Items.IndexOf("AcqTime") != null)
+            try
             {
+                //Entfernen der Zeit aus Datenauswahlliste (Zeit über Zeit zu zeichnen wäre unnötig)
                 lstChooseData.Items.RemoveAt(lstChooseData.Items.IndexOf("AcqTime"));
             }
-
-
+            catch { }
             lstChooseData.SelectedIndex = 0;   //Starteinstellung gewählter Index
-            
-            //for (int i = 1; i < ColumnHeaders.Columns.Count; i++)   //Füllen der Datenauswahlliste mit Spaltenüberschriften
-            //{
-            //    lstChooseData.Items.Add(ColumnHeaders.Columns[i]);
-            //}
-    
         }
 
-        private void lstChooseData_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void lstChooseData_MouseDoubleClick(object sender, MouseEventArgs e)    //Öffnen der Diagramme per Doppelklick
         {
             PlotGraphic NewDiagram = new PlotGraphic(Form1Copy);   //Erstellung neue DiagrammForm mit Verbingdung zu Hauptform
             NewDiagram.ConnectToDatenauswahl(this);                //Verbindung der DiagrammForm zur DatenauswahlListe
             NewDiagram.Show();                                     //Anzeige Diagramm
         }
 
-        private void lstChooseData_MouseDown_1(object sender, MouseEventArgs e)
+        private void lstChooseData_MouseDown_1(object sender, MouseEventArgs e)   //Auswahl von max. 4 Daten zu Anzeige
         {
             AnzGewDaten = lstChooseData.SelectedIndices.Count;
             Point pt = new Point(e.X, e.Y);
@@ -102,7 +96,7 @@ namespace DriversGuide
             }
         }
 
-        private void btnShowGraphics_Click(object sender, EventArgs e)
+        private void btnShowGraphics_Click(object sender, EventArgs e)    //Öffnen der Diagramme über Button
         {
             AnzGewDaten = lstChooseData.SelectedIndices.Count;
 

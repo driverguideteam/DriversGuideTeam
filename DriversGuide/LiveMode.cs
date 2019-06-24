@@ -864,7 +864,7 @@ namespace DriversGuide
             }
             else
             {
-                // Wenn der die letzte Zeile eingelesen wurde
+                // Wenn die letzte Zeile eingelesen wurde
                 // wird die Berechnung ein letztes Mal durchgeführt
                 // und die user controls mit den neuen Daten aktualisiert
                 timerSimulation.Stop();
@@ -873,7 +873,7 @@ namespace DriversGuide
                 Berechnung.GetIntervals(ref urban, ref rural, ref motorway);
                 Berechnung.CalcPercentile_Complete(ref urban, ref rural, ref motorway, "a*v");                
                 FormGPS.SetRunningState(false);
-                RedrawDynamics();
+                RedrawDynamics();   //Zeichnen der Dynamik-Diagramme
             }
 
             // Die user controls mit den neuen Daten aktualisieren
@@ -897,6 +897,7 @@ namespace DriversGuide
             double rurmax = 0;      //Maximalwert a*v Freiland
             double mwmax = 0;       //Maximalwert a*v Autobahn
             double ymax = 0;        //Maximalwert a*v generell
+            double bordermax = 0;   //Höchster Perzentilgrenzwert
             double purb = 0;        //Perzentilwert Stadt
             double prur = 0;        //Perzentilwert Freiland
             double pmw = 0;         //Perzentilwert Autobahn
@@ -904,21 +905,35 @@ namespace DriversGuide
             double borderRur = 0;   //Perzentilgrenzwert Freiland
             double borderMw = 0;    //Perzentilgrenzwert Autobahn
 
-            DataTable dturb = GetUrbanDataTable();
-            DataTable dtrur = GetRuralDataTable();
-            DataTable dtmw = GetMotorwayDataTable();
+            DataTable dturb = GetUrbanDataTable();     //Datatable Stadt
+            DataTable dtrur = GetRuralDataTable();     //Datatable Freiland
+            DataTable dtmw = GetMotorwayDataTable();   //Datatable Autobahn
 
             GetPercentiles(ref purb, ref prur, ref pmw);                        //Zuweisung Perzentilwerte
             GetPercentileBorders(ref borderUrb, ref borderRur, ref borderMw);   //Zuweisung Perzentilgrenzwerte
 
+            //Max-Wert a*v Stadt
             if (dturb.Rows.Count != 0)
-                urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Stadt
+                urbmax = Convert.ToDouble(dturb.Rows[dturb.Rows.Count - 1]["a*v"]);  
+            //Max-Wert a*v Land 
             if (dtrur.Rows.Count != 0)
-                rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   //Max-Wert a*v Land
+                rurmax = Convert.ToDouble(dtrur.Rows[dtrur.Rows.Count - 1]["a*v"]);   
+            //Max-Wert a*v Autobahn
             if (dtmw.Rows.Count != 0)
-                mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      //Max-Wert a*v Autobahn
+                mwmax = Convert.ToDouble(dtmw.Rows[dtmw.Rows.Count - 1]["a*v"]);      
 
-            ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax) + 3) / 5.0));  //Max-Wert a*v generell, auf nächste 5 aufgerundet
+            //Max-Wert a*v generell, auf nächste 5 aufgerundet
+            ymax = 5 * (int)Math.Round((Math.Max(urbmax, Math.Max(rurmax, mwmax)) + 3) / 5.0);
+            //größter Perzentilgrenzwert, auf nächste 5 aufgerundet
+            bordermax = 5 * (int)Math.Round((Math.Max(borderUrb, Math.Max(borderRur, borderMw)) + 3) / 5.0);
+           
+            //Festlegen y-Achsen-Maximum
+            if (bordermax > ymax)
+            {
+                ymax = bordermax;
+            }
+
+            //Zeichnen der Dynamik-Diagramme (Live bzw. Simulation)
             if (FormDynamic != null)
             {
                 FormDynamic.ClearAndSetChartsLive(ymax);
