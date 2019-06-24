@@ -349,12 +349,19 @@ namespace DriversGuide
             chartname.Series["PerzVLbl"].Points.AddXY(5, perzval);
             chartname.Series["PerzVLbl"].Color = Color.Transparent;                     //Farbe des Punktes
             chartname.Series["PerzVLbl"].IsVisibleInLegend = false;                     //Ausblenden Chartseries-Name
-            chartname.Series["PerzVLbl"].Label = "Aktueller Wert: " + Math.Round(perzval, 1).ToString("F1") + " m²/s³";   //Hinzufügen Label
             chartname.Series["PerzVLbl"].LabelBackColor = Color.White;                  //Hintergrundfarbe Label
             chartname.Series["PerzVLbl"].LabelAngle = 0;                                //Ausrichtung Label
             chartname.Series["PerzVLbl"].SmartLabelStyle.Enabled = false;               //Deaktivierung automatische Label-Positionierung
             chartname.Series["PerzVLbl"].ChartType = SeriesChartType.Column;            //Diagrammtyp
             chartname.Series["PerzVLbl"].Font = new System.Drawing.Font("Arial", 10);   //Schriftart u. Schriftgröße
+            if(live == true)
+            {
+                chartname.Series["PerzVLbl"].Label = "Aktueller Wert: " + Math.Round(perzval, 1).ToString("F1") + " m²/s³";   //Hinzufügen Label
+            }
+            else
+            {
+                chartname.Series["PerzVLbl"].Label = "95-%-Wert: " + Math.Round(perzval, 1).ToString("F1") + " m²/s³";   //Hinzufügen Label
+            }
             //chartname.Series["PerzVLbl"]["PointWidth"] = "0.7";
             //chartname.Series["PerzVLbl"].IsValueShownAsLabel = true;
 
