@@ -211,6 +211,7 @@ namespace DriversGuide
         public MeasurementFile (string a)
         {
             Filename = a;
+            dt.Clear();
         }
 
         public MeasurementFile ()

@@ -484,6 +484,7 @@ namespace DriversGuide
                 DoCalculations(true, 1);
                 RedrawDynamics();
                 timer1.Start();
+                timerSimulation.Stop();
             }
 
             else
@@ -840,7 +841,8 @@ namespace DriversGuide
                 LiveDataset.Clear();        // Daten aus Table löschen                                                                         
                               
                 DoCalculations(true, 20);       // Neue Zeile in die Berechnung einfließen lassen
-                timerSimulation.Start(); // Simulation starten   
+                timerSimulation.Start(); // Simulation starten  
+                timer1.Stop();
             }
 
             else
