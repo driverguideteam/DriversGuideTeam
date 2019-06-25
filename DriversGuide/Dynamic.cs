@@ -408,19 +408,6 @@ namespace DriversGuide
             }
             chartname.Series["DynLim"].ChartType = SeriesChartType.Spline;   // Festlegen des Diagrammtypes (hier Smooth-Line) 
             chartname.Series["DynLim"].IsVisibleInLegend = false;            //Ausblenden Chartseries-Name
-
-            ////Hinzufügen Perzentilwert-Label (durch Hinzufügen eines Punktes, der beschriftet wird)
-            //chartname.Series.Add("PerzVLbl");
-            //chartname.Series["PerzVLbl"].Points.AddXY(5, perzval);
-            //chartname.Series["PerzVLbl"].Color = Color.Transparent;                     //Farbe des Punktes
-            //chartname.Series["PerzVLbl"].IsVisibleInLegend = false;                     //Ausblenden Chartseries-Name
-            //chartname.Series["PerzVLbl"].Label = "Aktueller Wert: " + Math.Round(perzval, 1).ToString("F1") + " m²/s³";   //Hinzufügen Label
-            //chartname.Series["PerzVLbl"].LabelBackColor = Color.White;                  //Hintergrundfarbe Label
-            //chartname.Series["PerzVLbl"].LabelAngle = 0;                                //Ausrichtung Label
-            //chartname.Series["PerzVLbl"].SmartLabelStyle.Enabled = false;               //Deaktivierung automatische Label-Positionierung
-            //chartname.Series["PerzVLbl"].ChartType = SeriesChartType.Column;            //Diagrammtyp
-            //chartname.Series["PerzVLbl"]["LabelStyle"] = "BottomRight";                 //Label-Positionierung
-            //chartname.Series["PerzVLbl"].Font = new System.Drawing.Font("Arial", 10);   //Schriftart u. Schriftgröße
             
             //Hinzufügen Grenzwert-Label (durch Hinzufügen eines Punktes, der beschriftet wird)
             chartname.Series.Add("DynLimLbl");                                 
@@ -507,7 +494,7 @@ namespace DriversGuide
         {   //Positionierung der labels:
             labelname1.Location = new Point(chartname1.Location.X + (chartname1.Width / 2) - 60, chartname1.Height - 10);   //Positionierung Label
             labelname2.Location = new Point(chartname2.Location.X + (chartname2.Width / 2) - 60, chartname2.Height - 10);   //Positionierung Label
-            labelname3.Location = new Point(chartname3.Location.X + (chartname3.Width / 2) - 60, chartname3.Height - 10);      //Positionierung Label
+            labelname3.Location = new Point(chartname3.Location.X + (chartname3.Width / 2) - 60, chartname3.Height - 10);   //Positionierung Label
         }
 
         private void Dynamic_SizeChanged(object sender, EventArgs e)
