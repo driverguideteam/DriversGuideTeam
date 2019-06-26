@@ -90,6 +90,9 @@ namespace DriversGuide
             //this.MinimumSize = this.Size;
             //this.MaximumSize = this.Size;
 
+            //Deaktivierung Scrollbars
+            this.AutoScroll = false;
+
             tt = Form1Copy.GetCompleteDataTable();   //Holen des Datatables
             tt = tt.Copy();                          //Kopie des Datatables
 

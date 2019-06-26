@@ -68,7 +68,10 @@ namespace DriversGuide
         }
 
         private void Dynamic_Load(object sender, EventArgs e)
-        {   
+        {
+            //Deaktivierung Scrollbars
+            this.AutoScroll = false;
+
             //Ausblenden der Labels zu Beginn
             lblUrb.Visible = false;
             lblRur.Visible = false;
@@ -77,7 +80,7 @@ namespace DriversGuide
             //Positionierung der charts
             LocateCharts(ChUrb, ChRur, ChMw);
             //Positionierung der labels
-            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw); 
+            LocateLabels(lblUrb, lblRur, lblMw, ChUrb, ChRur, ChMw);
 
             if (live == false)  //nur im Auswertungsmodus
             {   
